@@ -13,13 +13,23 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 
-import { dogsService } from "../services/dogs";
+import { useDog } from "../hooks/useDogs";
 
 export default function DogProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const dog = id ? dogsService.getById(id) : undefined;
+  const { data: dog, isLoading } = useDog(id);
+
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="flex h-96 items-center justify-center">
+          Chargement...
+        </div>
+      </MainLayout>
+    );
+  }
 
   if (!dog) {
     return (
@@ -33,19 +43,39 @@ export default function DogProfile() {
     );
   }
 
+  const age = (() => {
+    const birth = new Date(dog.birthDate);
+    const today = new Date();
+
+    let years = today.getFullYear() - birth.getFullYear();
+
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birth.getDate())
+    ) {
+      years--;
+    }
+
+    return `${years} an${years > 1 ? "s" : ""}`;
+  })();
+
   return (
     <MainLayout>
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold">{dog.name}</h1>
+            <Button variant="ghost" onClick={() => navigate("/dogs")}>
+              ← Retour aux chiens
+            </Button>
+
+            <h1 className="mt-4 text-4xl font-bold">{dog.name}</h1>
 
             <p className="text-muted-foreground">{dog.breed}</p>
           </div>
 
-          <Button variant="outline" onClick={() => navigate("/dogs")}>
-            Retour
-          </Button>
+          <Button>Modifier</Button>
         </div>
 
         <Card>
@@ -57,10 +87,33 @@ export default function DogProfile() {
             <div>
               <h2 className="text-3xl font-bold">{dog.name}</h2>
 
-              <div className="mt-4 flex gap-3">
+              <div className="mt-4 flex flex-wrap gap-3">
                 <Badge>{dog.sex}</Badge>
 
                 <Badge variant="secondary">{dog.status}</Badge>
+              </div>
+
+              <div className="mt-6 space-y-2">
+                <p>
+                  <strong>Race :</strong> {dog.breed}
+                </p>
+
+                <p>
+                  <strong>Couleur :</strong> {dog.color}
+                </p>
+
+                <p>
+                  <strong>Poids :</strong> {dog.weight} kg
+                </p>
+
+                <p>
+                  <strong>Âge :</strong> {age}
+                </p>
+
+                <p>
+                  <strong>Date de naissance :</strong>{" "}
+                  {new Date(dog.birthDate).toLocaleDateString("fr-FR")}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -68,7 +121,7 @@ export default function DogProfile() {
 
         <Tabs defaultValue="general">
           <TabsList>
-            <TabsTrigger value="general">Général</TabsTrigger>
+            <TabsTrigger value="general">Informations</TabsTrigger>
 
             <TabsTrigger value="health">Santé</TabsTrigger>
 
