@@ -1,5 +1,6 @@
 import MainLayout from "../components/layout/MainLayout";
-import DogsTable from "../components/dogs/DogsTable";
+import DogGrid from "../components/dogs/DogGrid";
+import DogStats from "../components/dogs/DogStats";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 
@@ -8,7 +9,7 @@ export default function Dogs() {
     <MainLayout>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold">
+          <h1 className="flex items-center gap-2 text-4xl font-bold">
             🐶 Gestion des chiens
           </h1>
 
@@ -17,18 +18,16 @@ export default function Dogs() {
           </p>
         </div>
 
-        <Button>
-          + Ajouter un chien
-        </Button>
+        <Button>+ Ajouter un chien</Button>
       </div>
+
+      <DogStats />
 
       <div className="mb-6">
-        <Input
-          placeholder="Rechercher un chien..."
-        />
+        <Input placeholder="Rechercher un chien..." />
       </div>
 
-      <DogsTable />
+      <DogGrid />
     </MainLayout>
   );
 }
