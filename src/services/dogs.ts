@@ -3,29 +3,64 @@
 import type { Dog } from "../types/dog";
 import { mockDogs } from "../data/mockDogs";
 
-class DogsService {
-  private dogs: Dog[] = [...mockDogs];
+const STORAGE_KEY = "thedogmall.dogs";
 
-  getAll(): Dog[] {
-    return this.dogs;
+class DogsService {
+  private dogs: Dog[] = [];
+
+  constructor() {
+    this.load();
   }
 
-  getById(id: string): Dog | undefined {
+  private load() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+      this.dogs = JSON.parse(saved);
+      return;
+    }
+
+    this.dogs = [...mockDogs];
+    this.save();
+  }
+
+  private save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.dogs));
+  }
+
+  async getAll(): Promise<Dog[]> {
+    return [...this.dogs];
+  }
+
+  async getById(id: string): Promise<Dog | undefined> {
     return this.dogs.find((dog) => dog.id === id);
   }
 
-  create(dog: Dog) {
-    this.dogs.push(dog);
+  async create(dog: Omit<Dog, "id">): Promise<Dog> {
+    const newDog: Dog = {
+      ...dog,
+      id: crypto.randomUUID(),
+    };
+
+    this.dogs.push(newDog);
+
+    this.save();
+
+    return newDog;
   }
 
-  update(updatedDog: Dog) {
+  async update(updatedDog: Dog): Promise<void> {
     this.dogs = this.dogs.map((dog) =>
       dog.id === updatedDog.id ? updatedDog : dog,
     );
+
+    this.save();
   }
 
-  delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.dogs = this.dogs.filter((dog) => dog.id !== id);
+
+    this.save();
   }
 }
 

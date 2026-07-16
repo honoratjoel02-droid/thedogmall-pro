@@ -1,8 +1,9 @@
 import MainLayout from "../components/layout/MainLayout";
 import DogGrid from "../components/dogs/DogGrid";
 import DogStats from "../components/dogs/DogStats";
+import AddDogDialog from "../components/dogs/AddDogDialog";
+
 import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
 
 export default function Dogs() {
   return (
@@ -18,7 +19,7 @@ export default function Dogs() {
           </p>
         </div>
 
-        <Button>+ Ajouter un chien</Button>
+        <AddDogDialog />
       </div>
 
       <DogStats />

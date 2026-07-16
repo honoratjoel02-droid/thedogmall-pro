@@ -1,8 +1,18 @@
-import { dogsService } from "../../services/dogs";
 import { Card, CardContent } from "../ui/card";
+import { useDogs } from "../../hooks/useDogs";
 
 export default function DogStats() {
-  const dogs = dogsService.getAll();
+  const { data: dogs = [], isLoading } = useDogs();
+
+  if (isLoading) {
+    return (
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Card>
+          <CardContent className="p-6">Chargement...</CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const total = dogs.length;
 

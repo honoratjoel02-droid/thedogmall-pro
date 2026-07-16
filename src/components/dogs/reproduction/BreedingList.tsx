@@ -1,8 +1,16 @@
-import { breedingService } from "../../../services/breedings";
 import BreedingCard from "./BreedingCard";
+import { useBreedings } from "../../../hooks/useBreedings";
 
 export default function BreedingList() {
-  const breedings = breedingService.getAll();
+  const { data: breedings = [], isLoading } = useBreedings();
+
+  if (isLoading) {
+    return (
+      <div className="flex h-40 items-center justify-center text-muted-foreground">
+        Chargement...
+      </div>
+    );
+  }
 
   if (breedings.length === 0) {
     return (

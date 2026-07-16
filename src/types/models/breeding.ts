@@ -2,7 +2,12 @@
 
 export type BreedingMethod = "Naturelle" | "Insémination";
 
-export type BreedingStatus = "Planifiée" | "Réalisée" | "Annulée";
+export type BreedingStatus =
+  | "Planifiée"
+  | "En cours"
+  | "Gestation confirmée"
+  | "Échec"
+  | "Terminée";
 
 export interface Breeding {
   id: string;

@@ -2,27 +2,40 @@ import { useState } from "react";
 
 import DogSelect from "./DogSelect";
 
+import { useCreateBreeding } from "../../../hooks/useBreedings";
+
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 
 export default function BreedingForm() {
+  const createBreeding = useCreateBreeding();
+
   const [femaleId, setFemaleId] = useState("");
   const [maleId, setMaleId] = useState("");
   const [breedingDate, setBreedingDate] = useState("");
-  const [method, setMethod] = useState("Naturelle");
+  const [method, setMethod] = useState<"Naturelle" | "Insémination">(
+    "Naturelle",
+  );
   const [notes, setNotes] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log({
+    createBreeding.mutate({
       femaleId,
       maleId,
       breedingDate,
       method,
       notes,
+      status: "En cours",
     });
+
+    setFemaleId("");
+    setMaleId("");
+    setBreedingDate("");
+    setMethod("Naturelle");
+    setNotes("");
   }
 
   return (
@@ -53,7 +66,9 @@ export default function BreedingForm() {
         <select
           id="method"
           value={method}
-          onChange={(e) => setMethod(e.target.value)}
+          onChange={(e) =>
+            setMethod(e.target.value as "Naturelle" | "Insémination")
+          }
           className="w-full rounded-md border bg-background px-3 py-2"
         >
           <option value="Naturelle">Naturelle</option>
@@ -76,7 +91,11 @@ export default function BreedingForm() {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit">Enregistrer la saillie</Button>
+        <Button type="submit" disabled={createBreeding.isPending}>
+          {createBreeding.isPending
+            ? "Enregistrement..."
+            : "Enregistrer la saillie"}
+        </Button>
       </div>
     </form>
   );
