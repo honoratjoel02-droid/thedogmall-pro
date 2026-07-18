@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
+
 import type { Dog } from "../../types/dog";
-import { Card, CardContent } from "../ui/card";
+
+import EditDogDialog from "./EditDogDialog";
+import DeleteDogDialog from "./DeleteDogDialog";
+
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
 
 interface DogCardProps {
   dog: Dog;
@@ -58,6 +63,7 @@ export default function DogCard({ dog }: DogCardProps) {
 
           <div className="flex justify-between">
             <span className="text-muted-foreground">Date de naissance</span>
+
             <span className="font-medium">
               {new Date(dog.birthDate).toLocaleDateString("fr-FR")}
             </span>
@@ -77,7 +83,9 @@ export default function DogCard({ dog }: DogCardProps) {
             Voir
           </Button>
 
-          <Button className="flex-1">Modifier</Button>
+          <EditDogDialog dog={dog} />
+
+          <DeleteDogDialog dog={dog} />
         </div>
       </CardContent>
     </Card>

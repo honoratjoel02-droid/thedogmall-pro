@@ -1,134 +1,131 @@
-import { useState } from "react";
-
-import { useCreateDog } from "../../hooks/useDogs";
+// src/components/dogs/DogForm.tsx
+import { useEffect, useState } from "react";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-interface DogFormProps {
+import { useCreateDog, useUpdateDog } from "../../hooks/useDogs";
+import type { Dog } from "../../types/dog";
+
+type DogFormProps = {
+  dog?: Dog;
   onSuccess?: () => void;
-}
+};
 
-export default function DogForm({ onSuccess }: DogFormProps) {
+type FormData = Omit<Dog, "id">;
+
+const DEFAULT_VALUES: FormData = {
+  name: "",
+  sex: "Femelle",
+  breed: "",
+  color: "",
+  birthDate: "",
+  weight: 0,
+  status: "Disponible",
+  photo: "",
+};
+
+export default function DogForm({ dog, onSuccess }: DogFormProps) {
   const createDog = useCreateDog();
+  const updateDog = useUpdateDog();
 
-  const [name, setName] = useState("");
-  const [sex, setSex] = useState<"Mâle" | "Femelle">("Femelle");
-  const [breed, setBreed] = useState("");
-  const [color, setColor] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [weight, setWeight] = useState(0);
+  const [form, setForm] = useState<FormData>(DEFAULT_VALUES);
 
-  const [status, setStatus] = useState<
-    "Disponible" | "Réservé" | "Gestante" | "Retraité"
-  >("Disponible");
+  useEffect(() => {
+    if (dog) {
+      const { id, ...rest } = dog;
+      setForm(rest);
+    }
+  }, [dog]);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === "weight" ? Number(value) : value,
+    }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    createDog.mutate(
-      {
-        name,
-        sex,
-        breed,
-        color,
-        birthDate,
-        weight,
-        status,
-      },
-      {
-        onSuccess: () => {
-          setName("");
-          setBreed("");
-          setColor("");
-          setBirthDate("");
-          setWeight(0);
-          setStatus("Disponible");
+    if (!form.name.trim() || !form.breed.trim()) return;
 
-          onSuccess?.();
-        },
-      },
-    );
+    if (dog) {
+      await updateDog.mutateAsync({
+        id: dog.id,
+        data: form,
+      });
+    } else {
+      await createDog.mutateAsync(form);
+      setForm(DEFAULT_VALUES);
+    }
+
+    onSuccess?.();
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
+      <div>
         <Label>Nom</Label>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <Input name="name" value={form.name} onChange={handleChange} />
       </div>
 
-      <div className="space-y-2">
+      <div>
         <Label>Sexe</Label>
-
         <select
-          value={sex}
-          onChange={(e) => setSex(e.target.value as "Mâle" | "Femelle")}
-          className="w-full rounded-md border px-3 py-2"
+          className="w-full rounded-lg border p-2"
+          name="sex"
+          value={form.sex}
+          onChange={handleChange}
         >
-          <option value="Femelle">Femelle</option>
           <option value="Mâle">Mâle</option>
+          <option value="Femelle">Femelle</option>
         </select>
       </div>
 
-      <div className="space-y-2">
+      <div>
         <Label>Race</Label>
-
-        <Input
-          value={breed}
-          onChange={(e) => setBreed(e.target.value)}
-          required
-        />
+        <Input name="breed" value={form.breed} onChange={handleChange} />
       </div>
 
-      <div className="space-y-2">
+      <div>
         <Label>Couleur</Label>
-
-        <Input value={color} onChange={(e) => setColor(e.target.value)} />
+        <Input name="color" value={form.color} onChange={handleChange} />
       </div>
 
-      <div className="space-y-2">
+      <div>
         <Label>Date de naissance</Label>
-
         <Input
           type="date"
-          value={birthDate}
-          onChange={(e) => setBirthDate(e.target.value)}
+          name="birthDate"
+          value={form.birthDate}
+          onChange={handleChange}
         />
       </div>
 
-      <div className="space-y-2">
+      <div>
         <Label>Poids (kg)</Label>
-
         <Input
           type="number"
-          min={0}
           step="0.1"
-          value={weight}
-          onChange={(e) => setWeight(Number(e.target.value))}
+          name="weight"
+          value={form.weight}
+          onChange={handleChange}
         />
       </div>
 
-      <div className="space-y-2">
+      <div>
         <Label>Statut</Label>
-
         <select
-          value={status}
-          onChange={(e) =>
-            setStatus(
-              e.target.value as
-                | "Disponible"
-                | "Réservé"
-                | "Gestante"
-                | "Retraité",
-            )
-          }
-          className="w-full rounded-md border px-3 py-2"
+          className="w-full rounded-lg border p-2"
+          name="status"
+          value={form.status}
+          onChange={handleChange}
         >
           <option value="Disponible">Disponible</option>
           <option value="Réservé">Réservé</option>
@@ -137,11 +134,14 @@ export default function DogForm({ onSuccess }: DogFormProps) {
         </select>
       </div>
 
-      <div className="flex justify-end">
-        <Button type="submit" disabled={createDog.isPending}>
-          {createDog.isPending ? "Enregistrement..." : "Enregistrer"}
-        </Button>
+      <div>
+        <Label>Photo (URL)</Label>
+        <Input name="photo" value={form.photo ?? ""} onChange={handleChange} />
       </div>
+
+      <Button type="submit" className="w-full">
+        {dog ? "Enregistrer les modifications" : "Ajouter le chien"}
+      </Button>
     </form>
   );
 }

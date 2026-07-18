@@ -31,6 +31,7 @@ export function useCreateDog() {
     },
   });
 }
+
 export function useUpdateDog() {
   const queryClient = useQueryClient();
 
@@ -45,6 +46,20 @@ export function useUpdateDog() {
 
       queryClient.invalidateQueries({
         queryKey: ["dogs", variables.id],
+      });
+    },
+  });
+}
+
+export function useDeleteDog() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => dogsService.delete(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["dogs"],
       });
     },
   });

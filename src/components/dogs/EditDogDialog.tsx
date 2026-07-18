@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import type { Dog } from "../../types/dog";
+
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -11,21 +13,29 @@ import {
 
 import DogForm from "./DogForm";
 
-export default function AddDogDialog() {
+type Props = {
+  dog: Dog;
+};
+
+export default function EditDogDialog({ dog }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={(props) => <Button {...props}>+ Ajouter un chien</Button>}
+        render={(props) => (
+          <Button {...props} className="flex-1">
+            Modifier
+          </Button>
+        )}
       />
 
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Nouveau chien</DialogTitle>
+          <DialogTitle>Modifier {dog.name}</DialogTitle>
         </DialogHeader>
 
-        <DogForm onSuccess={() => setOpen(false)} />
+        <DogForm dog={dog} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

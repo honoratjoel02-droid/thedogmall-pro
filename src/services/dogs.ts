@@ -49,12 +49,21 @@ class DogsService {
     return newDog;
   }
 
-  async update(updatedDog: Dog): Promise<void> {
-    this.dogs = this.dogs.map((dog) =>
-      dog.id === updatedDog.id ? updatedDog : dog,
-    );
+  async update(id: string, data: Partial<Dog>): Promise<Dog | undefined> {
+    const index = this.dogs.findIndex((dog) => dog.id === id);
+
+    if (index === -1) {
+      return undefined;
+    }
+
+    this.dogs[index] = {
+      ...this.dogs[index],
+      ...data,
+    };
 
     this.save();
+
+    return this.dogs[index];
   }
 
   async delete(id: string): Promise<void> {
