@@ -1,9 +1,12 @@
 import DogCard from "./DogCard";
-import { useDogs } from "../../hooks/useDogs";
+import type { Dog } from "../../types/dog";
 
-export default function DogGrid() {
-  const { data: dogs = [], isLoading } = useDogs();
+type DogGridProps = {
+  dogs: Dog[];
+  isLoading?: boolean;
+};
 
+export default function DogGrid({ dogs, isLoading = false }: DogGridProps) {
   if (isLoading) {
     return (
       <div className="flex h-40 items-center justify-center">Chargement...</div>

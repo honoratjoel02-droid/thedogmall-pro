@@ -1,11 +1,48 @@
+import { useMemo, useState } from "react";
+
 import MainLayout from "../components/layout/MainLayout";
 import DogGrid from "../components/dogs/DogGrid";
 import DogStats from "../components/dogs/DogStats";
 import AddDogDialog from "../components/dogs/AddDogDialog";
+import DogFilters from "../components/dogs/DogFilters";
 
-import { Input } from "../components/ui/input";
+import { useDogs } from "../hooks/useDogs";
 
 export default function Dogs() {
+  const { data: dogs = [], isLoading } = useDogs();
+
+  const [search, setSearch] = useState("");
+  const [breed, setBreed] = useState("");
+  const [sex, setSex] = useState("");
+  const [status, setStatus] = useState("");
+
+  const breeds = useMemo(() => {
+    return [...new Set(dogs.map((dog) => dog.breed))].sort();
+  }, [dogs]);
+
+  const filteredDogs = useMemo(() => {
+    return dogs.filter((dog) => {
+      const matchesSearch = dog.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      const matchesBreed = breed === "" || dog.breed === breed;
+
+      const matchesSex = sex === "" || dog.sex === sex;
+
+      const matchesStatus = status === "" || dog.status === status;
+
+      return matchesSearch && matchesBreed && matchesSex && matchesStatus;
+    });
+  }, [dogs, search, breed, sex, status]);
+
+  function resetFilters() {
+    setSearch("");
+    setBreed("");
+    setSex("");
+    setStatus("");
+  }
+
   return (
     <MainLayout>
       <div className="mb-8 flex items-center justify-between">
@@ -24,11 +61,21 @@ export default function Dogs() {
 
       <DogStats />
 
-      <div className="mb-6">
-        <Input placeholder="Rechercher un chien..." />
-      </div>
+      <DogFilters
+        search={search}
+        onSearchChange={setSearch}
+        breed={breed}
+        onBreedChange={setBreed}
+        sex={sex}
+        onSexChange={setSex}
+        status={status}
+        onStatusChange={setStatus}
+        breeds={breeds}
+        resultsCount={filteredDogs.length}
+        onReset={resetFilters}
+      />
 
-      <DogGrid />
+      <DogGrid dogs={filteredDogs} isLoading={isLoading} />
     </MainLayout>
   );
 }
