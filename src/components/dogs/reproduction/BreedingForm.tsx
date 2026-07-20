@@ -1,75 +1,116 @@
 import { useState } from "react";
 
-import DogSelect from "./DogSelect";
-
-import { useCreateBreeding } from "../../../hooks/useBreedings";
-
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 
-export default function BreedingForm() {
-  const createBreeding = useCreateBreeding();
+import DogSelect from "./DogSelect";
 
+import type { Breeding, BreedingMethod } from "../../../types/models/breeding";
+
+type Props = {
+  onSubmit: (
+    breeding: Omit<Breeding, "id" | "createdAt" | "updatedAt">,
+  ) => void;
+};
+
+export default function BreedingForm({ onSubmit }: Props) {
   const [femaleId, setFemaleId] = useState("");
+
   const [maleId, setMaleId] = useState("");
-  const [breedingDate, setBreedingDate] = useState("");
-  const [method, setMethod] = useState<"Naturelle" | "Insémination">(
-    "Naturelle",
-  );
+
+  const [breedingDates, setBreedingDates] = useState([""]);
+
+  const [method, setMethod] = useState<BreedingMethod>("Naturelle");
+
   const [notes, setNotes] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function updateDate(index: number, value: string) {
+    const copy = [...breedingDates];
+
+    copy[index] = value;
+
+    setBreedingDates(copy);
+  }
+
+  function addDate() {
+    setBreedingDates([...breedingDates, ""]);
+  }
+
+  function removeDate(index: number) {
+    if (breedingDates.length === 1) return;
+
+    setBreedingDates(breedingDates.filter((_, i) => i !== index));
+  }
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    createBreeding.mutate({
+    if (!femaleId || !maleId) return;
+
+    const dates = breedingDates.filter((d) => d !== "");
+
+    if (dates.length === 0) return;
+
+    onSubmit({
       femaleId,
       maleId,
-      breedingDate,
+      breedingDates: dates,
       method,
+      pregnancyStatus: "En attente",
       notes,
-      status: "En cours",
     });
-
-    setFemaleId("");
-    setMaleId("");
-    setBreedingDate("");
-    setMethod("Naturelle");
-    setNotes("");
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <DogSelect
-        label="Femelle"
-        sex="Femelle"
-        value={femaleId}
-        onChange={setFemaleId}
-      />
+      <div>
+        <Label>Femelle</Label>
 
-      <DogSelect label="Mâle" sex="Mâle" value={maleId} onChange={setMaleId} />
-
-      <div className="space-y-2">
-        <Label htmlFor="breedingDate">Date de la saillie</Label>
-
-        <Input
-          id="breedingDate"
-          type="date"
-          value={breedingDate}
-          onChange={(e) => setBreedingDate(e.target.value)}
-        />
+        <DogSelect sex="Femelle" value={femaleId} onChange={setFemaleId} />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="method">Méthode</Label>
+      <div>
+        <Label>Mâle</Label>
+
+        <DogSelect sex="Mâle" value={maleId} onChange={setMaleId} />
+      </div>
+
+      <div className="space-y-3">
+        <Label>Dates des saillies</Label>
+
+        {breedingDates.map((date, index) => (
+          <div key={index} className="flex gap-2">
+            <Input
+              type="date"
+              value={date}
+              onChange={(e) => updateDate(index, e.target.value)}
+            />
+
+            {breedingDates.length > 1 && (
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => removeDate(index)}
+              >
+                ✕
+              </Button>
+            )}
+          </div>
+        ))}
+
+        <Button type="button" variant="outline" onClick={addDate}>
+          + Ajouter une date
+        </Button>
+      </div>
+
+      <div>
+        <Label>Mode</Label>
 
         <select
-          id="method"
+          className="w-full rounded-lg border p-2"
           value={method}
-          onChange={(e) =>
-            setMethod(e.target.value as "Naturelle" | "Insémination")
-          }
-          className="w-full rounded-md border bg-background px-3 py-2"
+          onChange={(e) => setMethod(e.target.value as BreedingMethod)}
         >
           <option value="Naturelle">Naturelle</option>
 
@@ -77,26 +118,19 @@ export default function BreedingForm() {
         </select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="notes">Notes</Label>
+      <div>
+        <Label>Observations</Label>
 
         <textarea
-          id="notes"
-          rows={4}
+          className="min-h-28 w-full rounded-lg border p-3"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="w-full rounded-md border bg-background px-3 py-2"
-          placeholder="Observations concernant la saillie..."
         />
       </div>
 
-      <div className="flex justify-end">
-        <Button type="submit" disabled={createBreeding.isPending}>
-          {createBreeding.isPending
-            ? "Enregistrement..."
-            : "Enregistrer la saillie"}
-        </Button>
-      </div>
+      <Button type="submit" className="w-full">
+        Enregistrer la saillie
+      </Button>
     </form>
   );
 }

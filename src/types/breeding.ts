@@ -11,7 +11,6 @@ export interface Breeding {
   id: string;
 
   femaleId: string;
-
   maleId: string;
 
   /**
@@ -23,19 +22,33 @@ export interface Breeding {
 
   pregnancyStatus: PregnancyStatus;
 
+  /**
+   * Facultatif
+   */
   ovulationDate?: string;
 
+  /**
+   * ng/mL
+   */
   progesterone?: number;
 
+  /**
+   * Confirmation échographie
+   */
   confirmationDate?: string;
 
+  /**
+   * Date réelle de mise bas
+   */
   birthDate?: string;
 
+  /**
+   * Nombre de chiots
+   */
   puppiesCount?: number;
 
   notes?: string;
 
   createdAt: string;
-
   updatedAt: string;
 }

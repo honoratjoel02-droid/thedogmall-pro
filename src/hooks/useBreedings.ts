@@ -24,3 +24,17 @@ export function useCreateBreeding() {
     },
   });
 }
+
+export function useDeleteBreeding() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => breedingService.delete(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["breedings"],
+      });
+    },
+  });
+}

@@ -1,4 +1,4 @@
-import { dogsService } from "../../../services/dogs";
+import { useDogs } from "../../../hooks/useDogs";
 
 interface DogSelectProps {
   label: string;
@@ -13,7 +13,9 @@ export default function DogSelect({
   value,
   onChange,
 }: DogSelectProps) {
-  const dogs = dogsService.getAll().filter((dog) => dog.sex === sex);
+  const { data: dogs = [], isLoading } = useDogs();
+
+  const filteredDogs = dogs.filter((dog) => dog.sex === sex);
 
   return (
     <div className="space-y-2">
@@ -22,11 +24,14 @@ export default function DogSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        disabled={isLoading}
         className="w-full rounded-md border bg-background px-3 py-2"
       >
-        <option value="">Sélectionner...</option>
+        <option value="">
+          {isLoading ? "Chargement..." : "Sélectionner..."}
+        </option>
 
-        {dogs.map((dog) => (
+        {filteredDogs.map((dog) => (
           <option key={dog.id} value={dog.id}>
             {dog.name}
           </option>

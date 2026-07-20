@@ -2,18 +2,42 @@
 
 import type { Breeding } from "../types/models/breeding";
 
-const breedings: Breeding[] = [];
+const STORAGE_KEY = "thedogmall.breedings";
 
-export const breedingService = {
-  getAll(): Breeding[] {
-    return breedings;
-  },
+class BreedingService {
+  private breedings: Breeding[] = [];
 
-  getById(id: string): Breeding | undefined {
-    return breedings.find((breeding) => breeding.id === id);
-  },
+  constructor() {
+    this.load();
+  }
 
-  create(breeding: Omit<Breeding, "id" | "createdAt" | "updatedAt">): Breeding {
+  private load() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+      this.breedings = JSON.parse(saved);
+      return;
+    }
+
+    this.breedings = [];
+    this.save();
+  }
+
+  private save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.breedings));
+  }
+
+  async getAll(): Promise<Breeding[]> {
+    return [...this.breedings];
+  }
+
+  async getById(id: string): Promise<Breeding | undefined> {
+    return this.breedings.find((breeding) => breeding.id === id);
+  }
+
+  async create(
+    breeding: Omit<Breeding, "id" | "createdAt" | "updatedAt">,
+  ): Promise<Breeding> {
     const newBreeding: Breeding = {
       ...breeding,
       id: crypto.randomUUID(),
@@ -21,34 +45,44 @@ export const breedingService = {
       updatedAt: new Date().toISOString(),
     };
 
-    breedings.push(newBreeding);
+    this.breedings.push(newBreeding);
+
+    this.save();
 
     return newBreeding;
-  },
+  }
 
-  update(id: string, data: Partial<Breeding>): Breeding | undefined {
-    const breeding = breedings.find((item) => item.id === id);
+  async update(
+    id: string,
+    data: Partial<Breeding>,
+  ): Promise<Breeding | undefined> {
+    const index = this.breedings.findIndex((breeding) => breeding.id === id);
 
-    if (!breeding) {
+    if (index === -1) {
       return undefined;
     }
 
-    Object.assign(breeding, data, {
+    this.breedings[index] = {
+      ...this.breedings[index],
+      ...data,
       updatedAt: new Date().toISOString(),
-    });
+    };
 
-    return breeding;
-  },
+    this.save();
 
-  delete(id: string): boolean {
-    const index = breedings.findIndex((item) => item.id === id);
+    return this.breedings[index];
+  }
 
-    if (index === -1) {
-      return false;
-    }
+  async delete(id: string): Promise<void> {
+    this.breedings = this.breedings.filter((breeding) => breeding.id !== id);
 
-    breedings.splice(index, 1);
+    this.save();
+  }
 
-    return true;
-  },
-};
+  async clear(): Promise<void> {
+    this.breedings = [];
+    this.save();
+  }
+}
+
+export const breedingService = new BreedingService();

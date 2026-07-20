@@ -1,8 +1,11 @@
 import BreedingCard from "./BreedingCard";
+
 import { useBreedings } from "../../../hooks/useBreedings";
+import { useDogs } from "../../../hooks/useDogs";
 
 export default function BreedingList() {
   const { data: breedings = [], isLoading } = useBreedings();
+  const { data: dogs = [] } = useDogs();
 
   if (isLoading) {
     return (
@@ -23,7 +26,7 @@ export default function BreedingList() {
   return (
     <div className="space-y-4">
       {breedings.map((breeding) => (
-        <BreedingCard key={breeding.id} breeding={breeding} />
+        <BreedingCard key={breeding.id} breeding={breeding} dogs={dogs} />
       ))}
     </div>
   );
