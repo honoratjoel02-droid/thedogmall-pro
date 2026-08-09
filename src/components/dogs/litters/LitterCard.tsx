@@ -7,6 +7,9 @@ import { Card, CardContent } from "../../ui/card";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 
+import EditLitterDialog from "./EditLitterDialog";
+import DeleteLitterDialog from "./DeleteLitterDialog";
+
 interface LitterCardProps {
   litter: Litter;
 }
@@ -37,14 +40,20 @@ export default function LitterCard({ litter }: LitterCardProps) {
           </div>
         </div>
 
-        <Button
-          variant="outline"
-          render={(props) => (
-            <Link {...props} to={`/litters/${litter.id}`}>
-              Voir
-            </Link>
-          )}
-        />
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            render={(props) => (
+              <Link {...props} to={`/litters/${litter.id}`}>
+                Voir
+              </Link>
+            )}
+          />
+
+          <EditLitterDialog litter={litter} />
+
+          <DeleteLitterDialog litter={litter} />
+        </div>
       </CardContent>
     </Card>
   );

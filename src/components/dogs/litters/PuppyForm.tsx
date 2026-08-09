@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { useCreatePuppy } from "../../../hooks/usePuppies";
+import type { Puppy } from "../../../types/models/puppy";
+import { useCreatePuppy, useUpdatePuppy } from "../../../hooks/usePuppies";
 
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
@@ -8,17 +9,25 @@ import { Label } from "../../ui/label";
 
 type PuppyFormProps = {
   litterId: string;
+  puppy?: Puppy;
   onSuccess?: () => void;
 };
 
-export default function PuppyForm({ litterId, onSuccess }: PuppyFormProps) {
+export default function PuppyForm({
+  litterId,
+  puppy,
+  onSuccess,
+}: PuppyFormProps) {
   const createPuppy = useCreatePuppy();
+  const updatePuppy = useUpdatePuppy();
 
-  const [identifier, setIdentifier] = useState("");
-  const [sex, setSex] = useState<"Mâle" | "Femelle">("Mâle");
-  const [color, setColor] = useState("");
-  const [birthWeightGrams, setBirthWeightGrams] = useState("");
-  const [notes, setNotes] = useState("");
+  const [identifier, setIdentifier] = useState(puppy?.identifier ?? "");
+  const [sex, setSex] = useState<"Mâle" | "Femelle">(puppy?.sex ?? "Mâle");
+  const [color, setColor] = useState(puppy?.color ?? "");
+  const [birthWeightGrams, setBirthWeightGrams] = useState(
+    puppy?.birthWeightGrams ? String(puppy.birthWeightGrams) : "",
+  );
+  const [notes, setNotes] = useState(puppy?.notes ?? "");
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -30,6 +39,24 @@ export default function PuppyForm({ litterId, onSuccess }: PuppyFormProps) {
     }
 
     setError("");
+
+    if (puppy) {
+      await updatePuppy.mutateAsync({
+        id: puppy.id,
+        data: {
+          identifier: identifier.trim(),
+          sex,
+          color: color || undefined,
+          birthWeightGrams: birthWeightGrams
+            ? Number(birthWeightGrams)
+            : undefined,
+          notes: notes || undefined,
+        },
+      });
+
+      onSuccess?.();
+      return;
+    }
 
     await createPuppy.mutateAsync({
       litterId,
@@ -118,8 +145,15 @@ export default function PuppyForm({ litterId, onSuccess }: PuppyFormProps) {
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={createPuppy.isPending}>
-          {createPuppy.isPending ? "Enregistrement..." : "Ajouter le chiot"}
+        <Button
+          type="submit"
+          disabled={createPuppy.isPending || updatePuppy.isPending}
+        >
+          {createPuppy.isPending || updatePuppy.isPending
+            ? "Enregistrement..."
+            : puppy
+              ? "Enregistrer les modifications"
+              : "Ajouter le chiot"}
         </Button>
       </div>
     </form>

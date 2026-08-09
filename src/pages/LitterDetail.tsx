@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import AddPuppyDialog from "../components/dogs/litters/AddPuppyDialog";
 import PuppyCard from "../components/dogs/litters/PuppyCard";
+import EditLitterDialog from "../components/dogs/litters/EditLitterDialog";
+import DeleteLitterDialog from "../components/dogs/litters/DeleteLitterDialog";
 
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -51,9 +53,17 @@ export default function LitterDetail() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <Button variant="ghost" onClick={() => navigate("/litters")}>
-          ← Retour
-        </Button>
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" onClick={() => navigate("/litters")}>
+            ← Retour
+          </Button>
+
+          <div className="flex gap-2">
+            <EditLitterDialog litter={litter} />
+
+            <DeleteLitterDialog litter={litter} redirectAfterDelete />
+          </div>
+        </div>
 
         <Card>
           <CardContent className="space-y-4 p-6">

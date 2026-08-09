@@ -9,6 +9,7 @@ import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 
 import PuppyTrackingDialog from "./PuppyTrackingDialog";
+import EditPuppyDialog from "./EditPuppyDialog";
 
 type Props = {
   puppy: Puppy;
@@ -93,6 +94,8 @@ export default function PuppyCard({ puppy }: Props) {
           )}
 
           <PuppyTrackingDialog puppy={puppy} />
+
+          <EditPuppyDialog puppy={puppy} />
 
           <Button
             variant="ghost"

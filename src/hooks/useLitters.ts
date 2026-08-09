@@ -44,3 +44,15 @@ export function useUpdateLitter() {
     },
   });
 }
+
+export function useDeleteLitter() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => littersService.delete(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["litters"] });
+    },
+  });
+}
