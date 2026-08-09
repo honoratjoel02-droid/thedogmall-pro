@@ -1,12 +1,9 @@
 // src/components/dogs/DogForm.tsx
-
 import { useEffect, useState } from "react";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-
-import DogPhotoUpload from "./DogPhotoUpload";
 
 import { useCreateDog, useUpdateDog } from "../../hooks/useDogs";
 import type { Dog } from "../../types/dog";
@@ -39,8 +36,6 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
     if (dog) {
       const { id, ...rest } = dog;
       setForm(rest);
-    } else {
-      setForm(DEFAULT_VALUES);
     }
   }, [dog]);
 
@@ -55,19 +50,10 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
     }));
   }
 
-  function handlePhotoChange(photo: string) {
-    setForm((prev) => ({
-      ...prev,
-      photo,
-    }));
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!form.name.trim()) return;
-
-    if (!form.breed.trim()) return;
+    if (!form.name.trim() || !form.breed.trim()) return;
 
     if (dog) {
       await updateDog.mutateAsync({
@@ -83,18 +69,14 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <DogPhotoUpload value={form.photo} onChange={handlePhotoChange} />
-
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Label>Nom</Label>
-
         <Input name="name" value={form.name} onChange={handleChange} />
       </div>
 
       <div>
         <Label>Sexe</Label>
-
         <select
           className="w-full rounded-lg border p-2"
           name="sex"
@@ -108,19 +90,16 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
 
       <div>
         <Label>Race</Label>
-
         <Input name="breed" value={form.breed} onChange={handleChange} />
       </div>
 
       <div>
         <Label>Couleur</Label>
-
         <Input name="color" value={form.color} onChange={handleChange} />
       </div>
 
       <div>
         <Label>Date de naissance</Label>
-
         <Input
           type="date"
           name="birthDate"
@@ -131,7 +110,6 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
 
       <div>
         <Label>Poids (kg)</Label>
-
         <Input
           type="number"
           step="0.1"
@@ -143,7 +121,6 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
 
       <div>
         <Label>Statut</Label>
-
         <select
           className="w-full rounded-lg border p-2"
           name="status"
@@ -155,6 +132,11 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
           <option value="Gestante">Gestante</option>
           <option value="Retraité">Retraité</option>
         </select>
+      </div>
+
+      <div>
+        <Label>Photo (URL)</Label>
+        <Input name="photo" value={form.photo ?? ""} onChange={handleChange} />
       </div>
 
       <Button type="submit" className="w-full">

@@ -10,6 +10,14 @@ export function useBreedings() {
   });
 }
 
+export function useBreeding(id?: string) {
+  return useQuery({
+    queryKey: ["breedings", id],
+    queryFn: () => breedingService.getById(id!),
+    enabled: !!id,
+  });
+}
+
 export function useCreateBreeding() {
   const queryClient = useQueryClient();
 
@@ -20,6 +28,25 @@ export function useCreateBreeding() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["breedings"],
+      });
+    },
+  });
+}
+
+export function useUpdateBreeding() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<Breeding> }) =>
+      breedingService.update(id, data),
+
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["breedings"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["breedings", variables.id],
       });
     },
   });

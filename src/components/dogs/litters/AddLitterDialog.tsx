@@ -10,23 +10,23 @@ import {
 
 import { Button } from "../../ui/button";
 
-import BreedingForm from "./BreedingForm";
+import LitterForm from "./LitterForm";
 
-export default function AddBreedingDialog() {
+export default function AddLitterDialog() {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={(props) => <Button {...props}>+ Nouvelle saillie</Button>}
+        render={(props) => <Button {...props}>+ Nouvelle portée</Button>}
       />
 
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Nouvelle saillie</DialogTitle>
+          <DialogTitle>Nouvelle portée</DialogTitle>
         </DialogHeader>
 
-        <BreedingForm onSuccess={() => setOpen(false)} />
+        <LitterForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

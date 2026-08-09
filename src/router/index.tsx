@@ -4,7 +4,9 @@ import Dashboard from "../pages/Dashboard";
 import Dogs from "../pages/Dogs";
 import DogProfile from "../pages/DogProfile";
 import Breeding from "../pages/Breeding";
+import BreedingDetail from "../pages/BreedingDetail";
 import Litters from "../pages/Litters";
+import LitterDetail from "../pages/LitterDetail";
 import Clients from "../pages/Clients";
 import Calendar from "../pages/Calendar";
 import Settings from "../pages/Settings";
@@ -28,8 +30,16 @@ export const router = createBrowserRouter([
     element: <Breeding />,
   },
   {
+    path: "/breeding/:id",
+    element: <BreedingDetail />,
+  },
+  {
     path: "/litters",
     element: <Litters />,
+  },
+  {
+    path: "/litters/:id",
+    element: <LitterDetail />,
   },
   {
     path: "/clients",

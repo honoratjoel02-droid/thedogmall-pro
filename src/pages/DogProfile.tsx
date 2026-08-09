@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import MainLayout from "../components/layout/MainLayout";
 import DogGeneralTab from "../components/dogs/profile/DogGeneralTab";
+import DogBreedingTab from "../components/dogs/profile/DogBreedingTab";
 import EditDogDialog from "../components/dogs/EditDogDialog";
 import DeleteDogDialog from "../components/dogs/DeleteDogDialog";
 import { Button } from "../components/ui/button";
@@ -107,7 +108,11 @@ export default function DogProfile() {
             <DogGeneralTab dog={dog} />
           </TabsContent>
 
-          {["health", "breeding", "documents", "photos"].map((tab) => (
+          <TabsContent value="breeding">
+            <DogBreedingTab dog={dog} />
+          </TabsContent>
+
+          {["health", "documents", "photos"].map((tab) => (
             <TabsContent key={tab} value={tab}>
               <Card>
                 <CardContent className="p-8">

@@ -13,9 +13,8 @@ export default function DogSelect({
   value,
   onChange,
 }: DogSelectProps) {
-  const { data: dogs = [], isLoading } = useDogs();
-
-  const filteredDogs = dogs.filter((dog) => dog.sex === sex);
+  const { data: allDogs = [] } = useDogs();
+  const dogs = allDogs.filter((dog) => dog.sex === sex);
 
   return (
     <div className="space-y-2">
@@ -24,14 +23,11 @@ export default function DogSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        disabled={isLoading}
         className="w-full rounded-md border bg-background px-3 py-2"
       >
-        <option value="">
-          {isLoading ? "Chargement..." : "Sélectionner..."}
-        </option>
+        <option value="">Sélectionner...</option>
 
-        {filteredDogs.map((dog) => (
+        {dogs.map((dog) => (
           <option key={dog.id} value={dog.id}>
             {dog.name}
           </option>

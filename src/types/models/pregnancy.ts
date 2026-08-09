@@ -17,7 +17,13 @@ export interface Pregnancy {
 
   ultrasoundDate?: string;
 
+  ultrasoundResult?: string;
+
   xrayDate?: string;
+
+  xrayResult?: string;
+
+  puppyCountEstimate?: number;
 
   status: PregnancyStatus;
 

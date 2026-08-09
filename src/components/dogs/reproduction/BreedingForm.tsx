@@ -1,116 +1,128 @@
 import { useState } from "react";
 
+import DogSelect from "./DogSelect";
+
+import { useCreateBreeding } from "../../../hooks/useBreedings";
+import { breedingSchema } from "../../../schemas/breeding";
+
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 
-import DogSelect from "./DogSelect";
-
-import type { Breeding, BreedingMethod } from "../../../types/models/breeding";
-
-type Props = {
-  onSubmit: (
-    breeding: Omit<Breeding, "id" | "createdAt" | "updatedAt">,
-  ) => void;
+type BreedingFormProps = {
+  onSuccess?: () => void;
 };
 
-export default function BreedingForm({ onSubmit }: Props) {
+export default function BreedingForm({ onSuccess }: BreedingFormProps) {
+  const createBreeding = useCreateBreeding();
+
   const [femaleId, setFemaleId] = useState("");
-
   const [maleId, setMaleId] = useState("");
-
-  const [breedingDates, setBreedingDates] = useState([""]);
-
-  const [method, setMethod] = useState<BreedingMethod>("Naturelle");
-
+  const [breedingDate, setBreedingDate] = useState("");
+  const [method, setMethod] = useState<"Naturelle" | "Insémination">(
+    "Naturelle",
+  );
   const [notes, setNotes] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  function updateDate(index: number, value: string) {
-    const copy = [...breedingDates];
-
-    copy[index] = value;
-
-    setBreedingDates(copy);
-  }
-
-  function addDate() {
-    setBreedingDates([...breedingDates, ""]);
-  }
-
-  function removeDate(index: number) {
-    if (breedingDates.length === 1) return;
-
-    setBreedingDates(breedingDates.filter((_, i) => i !== index));
-  }
-
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!femaleId || !maleId) return;
-
-    const dates = breedingDates.filter((d) => d !== "");
-
-    if (dates.length === 0) return;
-
-    onSubmit({
+    const result = breedingSchema.safeParse({
       femaleId,
       maleId,
-      breedingDates: dates,
+      breedingDate,
       method,
-      pregnancyStatus: "En attente",
       notes,
     });
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+
+      for (const issue of result.error.issues) {
+        fieldErrors[issue.path[0] as string] = issue.message;
+      }
+
+      setErrors(fieldErrors);
+
+      return;
+    }
+
+    if (femaleId === maleId) {
+      setErrors({ maleId: "La femelle et le mâle doivent être différents." });
+
+      return;
+    }
+
+    setErrors({});
+
+    await createBreeding.mutateAsync({
+      ...result.data,
+      status: "En cours",
+    });
+
+    setFemaleId("");
+    setMaleId("");
+    setBreedingDate("");
+    setMethod("Naturelle");
+    setNotes("");
+
+    onSuccess?.();
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <Label>Femelle</Label>
+      <div className="space-y-2">
+        <DogSelect
+          label="Femelle"
+          sex="Femelle"
+          value={femaleId}
+          onChange={setFemaleId}
+        />
 
-        <DogSelect sex="Femelle" value={femaleId} onChange={setFemaleId} />
+        {errors.femaleId && (
+          <p className="text-sm text-destructive">{errors.femaleId}</p>
+        )}
       </div>
 
-      <div>
-        <Label>Mâle</Label>
+      <div className="space-y-2">
+        <DogSelect
+          label="Mâle"
+          sex="Mâle"
+          value={maleId}
+          onChange={setMaleId}
+        />
 
-        <DogSelect sex="Mâle" value={maleId} onChange={setMaleId} />
+        {errors.maleId && (
+          <p className="text-sm text-destructive">{errors.maleId}</p>
+        )}
       </div>
 
-      <div className="space-y-3">
-        <Label>Dates des saillies</Label>
+      <div className="space-y-2">
+        <Label htmlFor="breedingDate">Date de la saillie</Label>
 
-        {breedingDates.map((date, index) => (
-          <div key={index} className="flex gap-2">
-            <Input
-              type="date"
-              value={date}
-              onChange={(e) => updateDate(index, e.target.value)}
-            />
+        <Input
+          id="breedingDate"
+          type="date"
+          value={breedingDate}
+          onChange={(e) => setBreedingDate(e.target.value)}
+        />
 
-            {breedingDates.length > 1 && (
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={() => removeDate(index)}
-              >
-                ✕
-              </Button>
-            )}
-          </div>
-        ))}
-
-        <Button type="button" variant="outline" onClick={addDate}>
-          + Ajouter une date
-        </Button>
+        {errors.breedingDate && (
+          <p className="text-sm text-destructive">{errors.breedingDate}</p>
+        )}
       </div>
 
-      <div>
-        <Label>Mode</Label>
+      <div className="space-y-2">
+        <Label htmlFor="method">Méthode</Label>
 
         <select
-          className="w-full rounded-lg border p-2"
+          id="method"
           value={method}
-          onChange={(e) => setMethod(e.target.value as BreedingMethod)}
+          onChange={(e) =>
+            setMethod(e.target.value as "Naturelle" | "Insémination")
+          }
+          className="w-full rounded-md border bg-background px-3 py-2"
         >
           <option value="Naturelle">Naturelle</option>
 
@@ -118,19 +130,26 @@ export default function BreedingForm({ onSubmit }: Props) {
         </select>
       </div>
 
-      <div>
-        <Label>Observations</Label>
+      <div className="space-y-2">
+        <Label htmlFor="notes">Notes</Label>
 
         <textarea
-          className="min-h-28 w-full rounded-lg border p-3"
+          id="notes"
+          rows={4}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+          className="w-full rounded-md border bg-background px-3 py-2"
+          placeholder="Observations concernant la saillie..."
         />
       </div>
 
-      <Button type="submit" className="w-full">
-        Enregistrer la saillie
-      </Button>
+      <div className="flex justify-end">
+        <Button type="submit" disabled={createBreeding.isPending}>
+          {createBreeding.isPending
+            ? "Enregistrement..."
+            : "Enregistrer la saillie"}
+        </Button>
+      </div>
     </form>
   );
 }

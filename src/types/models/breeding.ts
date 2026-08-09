@@ -1,10 +1,12 @@
+// src/types/models/breeding.ts
+
 export type BreedingMethod = "Naturelle" | "Insémination";
 
-export type PregnancyStatus =
-  | "En attente"
-  | "Confirmée"
-  | "Non gestante"
-  | "Mise bas"
+export type BreedingStatus =
+  | "Planifiée"
+  | "En cours"
+  | "Gestation confirmée"
+  | "Échec"
   | "Terminée";
 
 export interface Breeding {
@@ -14,24 +16,11 @@ export interface Breeding {
 
   maleId: string;
 
-  /**
-   * Plusieurs saillies possibles
-   */
-  breedingDates: string[];
+  breedingDate: string;
 
   method: BreedingMethod;
 
-  pregnancyStatus: PregnancyStatus;
-
-  ovulationDate?: string;
-
-  progesterone?: number;
-
-  confirmationDate?: string;
-
-  birthDate?: string;
-
-  puppiesCount?: number;
+  status: BreedingStatus;
 
   notes?: string;
 

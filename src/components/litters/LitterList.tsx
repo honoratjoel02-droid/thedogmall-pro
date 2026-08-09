@@ -1,8 +1,9 @@
-import BreedingCard from "./BreedingCard";
-import { useBreedings } from "../../../hooks/useBreedings";
+import { useLitters } from "../../hooks/useLitters";
 
-export default function BreedingList() {
-  const { data: breedings = [], isLoading } = useBreedings();
+import LitterCard from "./LitterCard";
+
+export default function LitterList() {
+  const { data: litters = [], isLoading } = useLitters();
 
   if (isLoading) {
     return (
@@ -12,18 +13,18 @@ export default function BreedingList() {
     );
   }
 
-  if (breedings.length === 0) {
+  if (litters.length === 0) {
     return (
       <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune saillie enregistrée.
+        Aucune portée enregistrée.
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      {breedings.map((breeding) => (
-        <BreedingCard key={breeding.id} breeding={breeding} />
+      {litters.map((litter) => (
+        <LitterCard key={litter.id} litter={litter} />
       ))}
     </div>
   );

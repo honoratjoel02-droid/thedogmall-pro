@@ -10,23 +10,27 @@ import {
 
 import { Button } from "../../ui/button";
 
-import BreedingForm from "./BreedingForm";
+import PuppyForm from "./PuppyForm";
 
-export default function AddBreedingDialog() {
+type Props = {
+  litterId: string;
+};
+
+export default function AddPuppyDialog({ litterId }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={(props) => <Button {...props}>+ Nouvelle saillie</Button>}
+        render={(props) => <Button {...props}>+ Ajouter un chiot</Button>}
       />
 
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Nouvelle saillie</DialogTitle>
+          <DialogTitle>Nouveau chiot</DialogTitle>
         </DialogHeader>
 
-        <BreedingForm onSuccess={() => setOpen(false)} />
+        <PuppyForm litterId={litterId} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

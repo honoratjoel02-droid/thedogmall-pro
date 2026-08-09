@@ -4,7 +4,7 @@ import type { Breeding } from "../types/models/breeding";
 
 const STORAGE_KEY = "thedogmall.breedings";
 
-class BreedingService {
+class BreedingsService {
   private breedings: Breeding[] = [];
 
   constructor() {
@@ -14,13 +14,7 @@ class BreedingService {
   private load() {
     const saved = localStorage.getItem(STORAGE_KEY);
 
-    if (saved) {
-      this.breedings = JSON.parse(saved);
-      return;
-    }
-
-    this.breedings = [];
-    this.save();
+    this.breedings = saved ? JSON.parse(saved) : [];
   }
 
   private save() {
@@ -38,11 +32,13 @@ class BreedingService {
   async create(
     breeding: Omit<Breeding, "id" | "createdAt" | "updatedAt">,
   ): Promise<Breeding> {
+    const now = new Date().toISOString();
+
     const newBreeding: Breeding = {
       ...breeding,
       id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: now,
+      updatedAt: now,
     };
 
     this.breedings.push(newBreeding);
@@ -52,10 +48,7 @@ class BreedingService {
     return newBreeding;
   }
 
-  async update(
-    id: string,
-    data: Partial<Breeding>,
-  ): Promise<Breeding | undefined> {
+  async update(id: string, data: Partial<Breeding>): Promise<Breeding | undefined> {
     const index = this.breedings.findIndex((breeding) => breeding.id === id);
 
     if (index === -1) {
@@ -78,11 +71,6 @@ class BreedingService {
 
     this.save();
   }
-
-  async clear(): Promise<void> {
-    this.breedings = [];
-    this.save();
-  }
 }
 
-export const breedingService = new BreedingService();
+export const breedingService = new BreedingsService();

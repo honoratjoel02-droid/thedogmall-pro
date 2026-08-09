@@ -22,7 +22,7 @@ export default function Dogs() {
 
   const filteredDogs = useMemo(() => {
     return dogs.filter((dog) => {
-      const matchesSearch = dog.name
+      const matchesSearch = (dog.name ?? "")
         .toLowerCase()
         .includes(search.toLowerCase());
 
