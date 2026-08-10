@@ -16,19 +16,19 @@ export default function FinanceSummary({ expenses, incomes }: Props) {
   const stats = [
     {
       title: "Recettes",
-      value: `+${totalIncomes.toLocaleString("fr-FR")} €`,
+      value: `+${totalIncomes.toLocaleString("fr-FR")} FCFA`,
       emoji: "💰",
       valueClassName: "text-emerald-600 dark:text-emerald-400",
     },
     {
       title: "Dépenses",
-      value: `-${totalExpenses.toLocaleString("fr-FR")} €`,
+      value: `-${totalExpenses.toLocaleString("fr-FR")} FCFA`,
       emoji: "💸",
       valueClassName: "text-destructive",
     },
     {
       title: "Solde",
-      value: `${balance >= 0 ? "+" : ""}${balance.toLocaleString("fr-FR")} €`,
+      value: `${balance >= 0 ? "+" : ""}${balance.toLocaleString("fr-FR")} FCFA`,
       emoji: balance >= 0 ? "📈" : "📉",
       valueClassName:
         balance >= 0

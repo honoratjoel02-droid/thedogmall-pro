@@ -83,7 +83,7 @@ export default function IncomesTable({ incomes, isLoading = false }: Props) {
               </TableCell>
 
               <TableCell className="font-medium text-emerald-600 dark:text-emerald-400">
-                +{income.amount.toLocaleString("fr-FR")} €
+                +{income.amount.toLocaleString("fr-FR")} FCFA
               </TableCell>
 
               <TableCell>

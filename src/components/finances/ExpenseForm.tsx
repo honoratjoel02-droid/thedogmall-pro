@@ -112,13 +112,13 @@ export default function ExpenseForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="amount">Montant (€)</Label>
+          <Label htmlFor="amount">Montant (FCFA)</Label>
 
           <Input
             id="amount"
             type="number"
             min={0}
-            step="0.01"
+            step="1"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
