@@ -12,9 +12,9 @@ export default function Litters() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-4xl font-bold">🐾 Portées</h1>
+            <h1 className="text-3xl font-bold sm:text-4xl">🐾 Portées</h1>
 
             <p className="text-muted-foreground">
               Gérez les portées, les chiots et leurs réservations.

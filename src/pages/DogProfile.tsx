@@ -55,7 +55,7 @@ export default function DogProfile() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <Button variant="ghost" onClick={() => navigate("/dogs")}>
             ← Retour
           </Button>
@@ -97,14 +97,16 @@ export default function DogProfile() {
         </Card>
 
         <Tabs defaultValue="general">
-          <TabsList>
-            <TabsTrigger value="general">Informations</TabsTrigger>
-            <TabsTrigger value="health">Santé</TabsTrigger>
-            <TabsTrigger value="breeding">Reproduction</TabsTrigger>
-            <TabsTrigger value="finances">Finances</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="photos">Photos</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList>
+              <TabsTrigger value="general">Informations</TabsTrigger>
+              <TabsTrigger value="health">Santé</TabsTrigger>
+              <TabsTrigger value="breeding">Reproduction</TabsTrigger>
+              <TabsTrigger value="finances">Finances</TabsTrigger>
+              <TabsTrigger value="documents">Documents</TabsTrigger>
+              <TabsTrigger value="photos">Photos</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="general">
             <DogGeneralTab dog={dog} />

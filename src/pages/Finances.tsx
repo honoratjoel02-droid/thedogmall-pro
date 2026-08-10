@@ -18,7 +18,7 @@ export default function Finances() {
     <MainLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold">💶 Finances</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">💰 Finances</h1>
 
           <p className="text-muted-foreground">
             Suivez les dépenses, les recettes et la rentabilité de votre
@@ -29,13 +29,13 @@ export default function Finances() {
         <FinanceSummary expenses={expenses} incomes={incomes} />
 
         <Tabs defaultValue="expenses">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <TabsList>
               <TabsTrigger value="expenses">Dépenses</TabsTrigger>
               <TabsTrigger value="incomes">Recettes</TabsTrigger>
             </TabsList>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <AddExpenseDialog />
               <AddIncomeDialog />
             </div>

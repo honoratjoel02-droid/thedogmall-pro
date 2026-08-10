@@ -35,7 +35,7 @@ export default function DogFinanceTab({ dog }: DogFinanceTabProps) {
     <div className="space-y-6">
       <FinanceSummary expenses={dogExpenses} incomes={dogIncomes} />
 
-      <div className="flex justify-end gap-2">
+      <div className="flex flex-wrap justify-end gap-2">
         <AddExpenseDialog
           defaultDogId={dog.id}
           label="+ Dépense pour ce chien"

@@ -39,7 +39,7 @@ export default function ClientDetail() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <Button variant="ghost" onClick={() => navigate("/clients")}>
             ← Retour
           </Button>

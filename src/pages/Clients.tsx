@@ -9,9 +9,9 @@ export default function Clients() {
 
   return (
     <MainLayout>
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-4xl font-bold">🧑‍🤝‍🧑 Clients</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">🧑‍🤝‍🧑 Clients</h1>
 
           <p className="text-muted-foreground">
             Gérez les clients de votre élevage.

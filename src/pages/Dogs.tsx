@@ -45,9 +45,9 @@ export default function Dogs() {
 
   return (
     <MainLayout>
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="flex items-center gap-2 text-4xl font-bold">
+          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
             🐶 Gestion des chiens
           </h1>
 

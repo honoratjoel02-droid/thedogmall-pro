@@ -111,8 +111,8 @@ export default function BreedingDetail() {
 
         <Card>
           <CardContent className="space-y-4 p-6">
-            <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h1 className="text-2xl font-bold sm:text-3xl">
                 {female?.name ?? "Femelle inconnue"} ❤️{" "}
                 {male?.name ?? "Mâle inconnu"}
               </h1>
@@ -140,7 +140,7 @@ export default function BreedingDetail() {
             )}
 
             {breeding.status === "En cours" && (
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-wrap gap-2 pt-2">
                 <Button
                   onClick={handleConfirmGestation}
                   disabled={isConfirming}
