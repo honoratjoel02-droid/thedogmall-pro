@@ -10,6 +10,7 @@ import LitterDetail from "../pages/LitterDetail";
 import Clients from "../pages/Clients";
 import ClientDetail from "../pages/ClientDetail";
 import Calendar from "../pages/Calendar";
+import Finances from "../pages/Finances";
 import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
 
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
   {
     path: "/calendar",
     element: <Calendar />,
+  },
+  {
+    path: "/finances",
+    element: <Finances />,
   },
   {
     path: "/settings",

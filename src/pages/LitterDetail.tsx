@@ -5,6 +5,11 @@ import AddPuppyDialog from "../components/dogs/litters/AddPuppyDialog";
 import PuppyCard from "../components/dogs/litters/PuppyCard";
 import EditLitterDialog from "../components/dogs/litters/EditLitterDialog";
 import DeleteLitterDialog from "../components/dogs/litters/DeleteLitterDialog";
+import FinanceSummary from "../components/finances/FinanceSummary";
+import ExpensesTable from "../components/finances/ExpensesTable";
+import IncomesTable from "../components/finances/IncomesTable";
+import AddExpenseDialog from "../components/finances/AddExpenseDialog";
+import AddIncomeDialog from "../components/finances/AddIncomeDialog";
 
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -13,6 +18,8 @@ import { Card, CardContent } from "../components/ui/card";
 import { useLitter } from "../hooks/useLitters";
 import { usePuppiesByLitter } from "../hooks/usePuppies";
 import { useDogs } from "../hooks/useDogs";
+import { useExpenses } from "../hooks/useExpenses";
+import { useIncomes } from "../hooks/useIncomes";
 
 export default function LitterDetail() {
   const { id } = useParams();
@@ -21,6 +28,8 @@ export default function LitterDetail() {
   const { data: litter, isLoading } = useLitter(id);
   const { data: puppies = [] } = usePuppiesByLitter(id);
   const { data: dogs = [] } = useDogs();
+  const { data: allExpenses = [] } = useExpenses();
+  const { data: allIncomes = [] } = useIncomes();
 
   if (isLoading) {
     return (
@@ -49,6 +58,9 @@ export default function LitterDetail() {
   const available = puppies.filter((p) => p.status === "Disponible").length;
   const reserved = puppies.filter((p) => p.status === "Réservé").length;
   const sold = puppies.filter((p) => p.status === "Vendu").length;
+
+  const litterExpenses = allExpenses.filter((e) => e.litterId === litter.id);
+  const litterIncomes = allIncomes.filter((i) => i.litterId === litter.id);
 
   return (
     <MainLayout>
@@ -111,6 +123,34 @@ export default function LitterDetail() {
           {puppies.map((puppy) => (
             <PuppyCard key={puppy.id} puppy={puppy} />
           ))}
+        </div>
+
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold">Rentabilité de la portée</h2>
+
+          <FinanceSummary expenses={litterExpenses} incomes={litterIncomes} />
+
+          <div className="flex justify-end gap-2">
+            <AddExpenseDialog
+              defaultLitterId={litter.id}
+              label="+ Dépense pour cette portée"
+            />
+
+            <AddIncomeDialog
+              defaultLitterId={litter.id}
+              label="+ Recette pour cette portée"
+            />
+          </div>
+
+          <div>
+            <h3 className="mb-2 font-semibold">Dépenses</h3>
+            <ExpensesTable expenses={litterExpenses} />
+          </div>
+
+          <div>
+            <h3 className="mb-2 font-semibold">Recettes</h3>
+            <IncomesTable incomes={litterIncomes} />
+          </div>
         </div>
       </div>
     </MainLayout>

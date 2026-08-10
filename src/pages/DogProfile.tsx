@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import DogGeneralTab from "../components/dogs/profile/DogGeneralTab";
 import DogBreedingTab from "../components/dogs/profile/DogBreedingTab";
+import DogFinanceTab from "../components/dogs/profile/DogFinanceTab";
 import EditDogDialog from "../components/dogs/EditDogDialog";
 import DeleteDogDialog from "../components/dogs/DeleteDogDialog";
 import { Button } from "../components/ui/button";
@@ -100,6 +101,7 @@ export default function DogProfile() {
             <TabsTrigger value="general">Informations</TabsTrigger>
             <TabsTrigger value="health">Santé</TabsTrigger>
             <TabsTrigger value="breeding">Reproduction</TabsTrigger>
+            <TabsTrigger value="finances">Finances</TabsTrigger>
             <TabsTrigger value="documents">Documents</TabsTrigger>
             <TabsTrigger value="photos">Photos</TabsTrigger>
           </TabsList>
@@ -110,6 +112,10 @@ export default function DogProfile() {
 
           <TabsContent value="breeding">
             <DogBreedingTab dog={dog} />
+          </TabsContent>
+
+          <TabsContent value="finances">
+            <DogFinanceTab dog={dog} />
           </TabsContent>
 
           {["health", "documents", "photos"].map((tab) => (

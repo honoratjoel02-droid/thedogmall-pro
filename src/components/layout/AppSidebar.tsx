@@ -5,6 +5,7 @@ import {
   Baby,
   Users,
   CalendarDays,
+  Wallet,
   Settings,
 } from "lucide-react";
 
@@ -17,6 +18,7 @@ const menu = [
   { icon: Baby, label: "Portées", path: "/litters" },
   { icon: Users, label: "Clients", path: "/clients" },
   { icon: CalendarDays, label: "Calendrier", path: "/calendar" },
+  { icon: Wallet, label: "Finances", path: "/finances" },
   { icon: Settings, label: "Paramètres", path: "/settings" },
 ];
 
