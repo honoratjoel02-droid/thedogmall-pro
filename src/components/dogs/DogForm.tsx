@@ -1,5 +1,5 @@
 // src/components/dogs/DogForm.tsx
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -30,14 +30,12 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
   const createDog = useCreateDog();
   const updateDog = useUpdateDog();
 
-  const [form, setForm] = useState<FormData>(DEFAULT_VALUES);
+  const [form, setForm] = useState<FormData>(() => {
+    if (!dog) return DEFAULT_VALUES;
 
-  useEffect(() => {
-    if (dog) {
-      const { id, ...rest } = dog;
-      setForm(rest);
-    }
-  }, [dog]);
+    const { id: _id, ...rest } = dog;
+    return rest;
+  });
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
