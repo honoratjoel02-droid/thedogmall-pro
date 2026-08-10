@@ -4,6 +4,7 @@ import type { Dog } from "../types/dog";
 import type { Task } from "../types/models/task";
 import type { Pregnancy } from "../types/models/pregnancy";
 import type { Puppy } from "../types/models/puppy";
+import type { HealthRecord } from "../types/models/healthRecord";
 
 export type AlertSeverity = "overdue" | "soon" | "info";
 
@@ -44,6 +45,7 @@ type ComputeAlertsParams = {
   pregnancies: Pregnancy[];
   puppies: Puppy[];
   dogs: Dog[];
+  healthRecords?: HealthRecord[];
   now?: Date;
 };
 
@@ -52,6 +54,7 @@ export function computeAlerts({
   pregnancies,
   puppies,
   dogs,
+  healthRecords = [],
   now = new Date(),
 }: ComputeAlertsParams): Alert[] {
   const alerts: Alert[] = [];
@@ -165,6 +168,24 @@ export function computeAlerts({
         link: `/litters/${puppy.litterId}`,
       });
     }
+  }
+
+  for (const record of healthRecords) {
+    if (record.done) continue;
+
+    const severity = severityFor(record.date, now);
+
+    if (severity === "info") continue;
+
+    const dog = dogs.find((d) => d.id === record.dogId);
+
+    alerts.push({
+      id: `health-${record.id}`,
+      message: `${record.type} en attente : ${dog?.name ?? record.title}`,
+      date: record.date,
+      severity,
+      link: `/dogs/${record.dogId}`,
+    });
   }
 
   return alerts.sort((a, b) => {

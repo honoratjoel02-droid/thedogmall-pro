@@ -38,6 +38,7 @@ export function createBackup(): BackupData {
       expenses: read(STORAGE_KEYS.expenses),
       incomes: read(STORAGE_KEYS.incomes),
       tasks: read(STORAGE_KEYS.tasks),
+      healthRecords: read(STORAGE_KEYS.healthRecords),
     },
   };
 }
@@ -81,6 +82,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.expenses, backup.data.expenses ?? []);
   write(STORAGE_KEYS.incomes, backup.data.incomes ?? []);
   write(STORAGE_KEYS.tasks, backup.data.tasks ?? []);
+  write(STORAGE_KEYS.healthRecords, backup.data.healthRecords ?? []);
 
   window.location.reload();
 }

@@ -4,6 +4,7 @@ import MainLayout from "../components/layout/MainLayout";
 import DogGeneralTab from "../components/dogs/profile/DogGeneralTab";
 import DogBreedingTab from "../components/dogs/profile/DogBreedingTab";
 import DogFinanceTab from "../components/dogs/profile/DogFinanceTab";
+import DogHealthTab from "../components/dogs/profile/DogHealthTab";
 import EditDogDialog from "../components/dogs/EditDogDialog";
 import DeleteDogDialog from "../components/dogs/DeleteDogDialog";
 import { Button } from "../components/ui/button";
@@ -112,6 +113,10 @@ export default function DogProfile() {
             <DogGeneralTab dog={dog} />
           </TabsContent>
 
+          <TabsContent value="health">
+            <DogHealthTab dog={dog} />
+          </TabsContent>
+
           <TabsContent value="breeding">
             <DogBreedingTab dog={dog} />
           </TabsContent>
@@ -120,7 +125,7 @@ export default function DogProfile() {
             <DogFinanceTab dog={dog} />
           </TabsContent>
 
-          {["health", "documents", "photos"].map((tab) => (
+          {["documents", "photos"].map((tab) => (
             <TabsContent key={tab} value={tab}>
               <Card>
                 <CardContent className="p-8">

@@ -8,6 +8,7 @@ import { useTasks } from "../../hooks/useTasks";
 import { usePregnancies } from "../../hooks/usePregnancies";
 import { usePuppies } from "../../hooks/usePuppies";
 import { useDogs } from "../../hooks/useDogs";
+import { useHealthRecords } from "../../hooks/useHealthRecords";
 
 import { computeAlerts } from "../../lib/alerts";
 
@@ -29,12 +30,14 @@ export default function AppHeader() {
   const { data: pregnancies = [] } = usePregnancies();
   const { data: puppies = [] } = usePuppies();
   const { data: dogs = [] } = useDogs();
+  const { data: healthRecords = [] } = useHealthRecords();
 
   const alertCount = computeAlerts({
     tasks,
     pregnancies,
     puppies,
     dogs,
+    healthRecords,
   }).length;
 
   const page =
