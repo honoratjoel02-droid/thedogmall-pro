@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import type { Puppy, PuppyStatus } from "../../../types/models/puppy";
 import { useUpdatePuppy, useDeletePuppy } from "../../../hooks/usePuppies";
+import { useClients } from "../../../hooks/useClients";
 
 import { Card, CardContent } from "../../ui/card";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
 
 import PuppyTrackingDialog from "./PuppyTrackingDialog";
 import EditPuppyDialog from "./EditPuppyDialog";
+import ClientSelect from "./ClientSelect";
 
 type Props = {
   puppy: Puppy;
@@ -28,8 +30,15 @@ const STATUS_VARIANT: Record<
 export default function PuppyCard({ puppy }: Props) {
   const updatePuppy = useUpdatePuppy();
   const deletePuppy = useDeletePuppy();
+  const { data: clients = [] } = useClients();
 
-  const [reservedFor, setReservedFor] = useState(puppy.reservedFor ?? "");
+  const [reservedForClientId, setReservedForClientId] = useState(
+    puppy.reservedForClientId ?? "",
+  );
+
+  const reservedClient = clients.find(
+    (client) => client.id === puppy.reservedForClientId,
+  );
 
   const latestWeight =
     puppy.weightHistory.length > 0
@@ -41,15 +50,19 @@ export default function PuppyCard({ puppy }: Props) {
       id: puppy.id,
       data: {
         status,
-        reservedFor: status === "Réservé" ? reservedFor : undefined,
+        reservedForClientId:
+          status === "Réservé" ? reservedForClientId || undefined : undefined,
       },
     });
   }
 
-  function handleReservedForBlur() {
-    if (puppy.status === "Réservé" && reservedFor !== (puppy.reservedFor ?? "")) {
-      updatePuppy.mutate({ id: puppy.id, data: { reservedFor } });
-    }
+  function handleClientChange(clientId: string) {
+    setReservedForClientId(clientId);
+
+    updatePuppy.mutate({
+      id: puppy.id,
+      data: { reservedForClientId: clientId || undefined },
+    });
   }
 
   return (
@@ -69,6 +82,18 @@ export default function PuppyCard({ puppy }: Props) {
           <Badge variant={STATUS_VARIANT[puppy.status]}>{puppy.status}</Badge>
         </div>
 
+        {puppy.status === "Réservé" && reservedClient && (
+          <p className="text-sm text-muted-foreground">
+            Réservé pour{" "}
+            <Link
+              to={`/clients/${reservedClient.id}`}
+              className="font-medium text-foreground underline-offset-2 hover:underline"
+            >
+              {reservedClient.firstName} {reservedClient.lastName}
+            </Link>
+          </p>
+        )}
+
         <div className="flex flex-wrap items-center gap-2">
           <select
             value={puppy.status}
@@ -84,12 +109,9 @@ export default function PuppyCard({ puppy }: Props) {
           </select>
 
           {puppy.status === "Réservé" && (
-            <Input
-              value={reservedFor}
-              onChange={(e) => setReservedFor(e.target.value)}
-              onBlur={handleReservedForBlur}
-              placeholder="Nom / contact du client"
-              className="w-48"
+            <ClientSelect
+              value={reservedForClientId}
+              onChange={handleClientChange}
             />
           )}
 

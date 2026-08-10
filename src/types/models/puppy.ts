@@ -33,7 +33,7 @@ export interface Puppy {
 
   status: PuppyStatus;
 
-  reservedFor?: string;
+  reservedForClientId?: string;
 
   weightHistory: WeightEntry[];
 
