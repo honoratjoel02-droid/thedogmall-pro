@@ -2,7 +2,7 @@ import type { BackupData } from "../types/backup";
 import { STORAGE_KEYS } from "./storage";
 
 const APP_NAME = "TheDogMall Pro";
-const VERSION = "0.3.0";
+const VERSION = "0.6.0";
 
 function read(key: string) {
   const value = localStorage.getItem(key);
@@ -31,9 +31,13 @@ export function createBackup(): BackupData {
     data: {
       dogs: read(STORAGE_KEYS.dogs),
       breedings: read(STORAGE_KEYS.breedings),
+      pregnancies: read(STORAGE_KEYS.pregnancies),
       litters: read(STORAGE_KEYS.litters),
+      puppies: read(STORAGE_KEYS.puppies),
       clients: read(STORAGE_KEYS.clients),
-      settings: read(STORAGE_KEYS.settings),
+      expenses: read(STORAGE_KEYS.expenses),
+      incomes: read(STORAGE_KEYS.incomes),
+      tasks: read(STORAGE_KEYS.tasks),
     },
   };
 }
@@ -70,9 +74,13 @@ export function restoreBackup(backup: BackupData) {
 
   write(STORAGE_KEYS.dogs, backup.data.dogs);
   write(STORAGE_KEYS.breedings, backup.data.breedings);
+  write(STORAGE_KEYS.pregnancies, backup.data.pregnancies ?? []);
   write(STORAGE_KEYS.litters, backup.data.litters);
+  write(STORAGE_KEYS.puppies, backup.data.puppies ?? []);
   write(STORAGE_KEYS.clients, backup.data.clients);
-  write(STORAGE_KEYS.settings, backup.data.settings);
+  write(STORAGE_KEYS.expenses, backup.data.expenses ?? []);
+  write(STORAGE_KEYS.incomes, backup.data.incomes ?? []);
+  write(STORAGE_KEYS.tasks, backup.data.tasks ?? []);
 
   window.location.reload();
 }

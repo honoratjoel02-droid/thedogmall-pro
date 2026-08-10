@@ -6,8 +6,12 @@ export interface BackupData {
   data: {
     dogs: unknown[];
     breedings: unknown[];
+    pregnancies: unknown[];
     litters: unknown[];
+    puppies: unknown[];
     clients: unknown[];
-    settings: Record<string, unknown>;
+    expenses: unknown[];
+    incomes: unknown[];
+    tasks: unknown[];
   };
 }

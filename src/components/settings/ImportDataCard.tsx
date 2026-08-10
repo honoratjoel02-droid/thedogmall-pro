@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Upload } from "lucide-react";
 
 import type { BackupData } from "../../types/backup";
@@ -7,9 +7,14 @@ import { restoreBackup } from "../../lib/backup";
 
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import ConfirmDialog from "../ui/ConfirmDialog";
 
 export default function ImportDataCard() {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [pendingBackup, setPendingBackup] = useState<BackupData | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [error, setError] = useState("");
 
   function openPicker() {
     inputRef.current?.click();
@@ -18,6 +23,8 @@ export default function ImportDataCard() {
   async function handleFile(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
+    event.target.value = "";
+
     if (!file) return;
 
     try {
@@ -25,17 +32,11 @@ export default function ImportDataCard() {
 
       const backup = JSON.parse(text) as BackupData;
 
-      const confirmImport = window.confirm(
-        "Cette opération remplacera toutes les données actuelles.\n\nContinuer ?",
-      );
-
-      if (!confirmImport) {
-        return;
-      }
-
-      restoreBackup(backup);
+      setError("");
+      setPendingBackup(backup);
+      setConfirmOpen(true);
     } catch {
-      alert("Le fichier sélectionné est invalide.");
+      setError("Le fichier sélectionné est invalide.");
     }
   }
 
@@ -53,6 +54,8 @@ export default function ImportDataCard() {
           Importez une sauvegarde précédemment exportée.
         </p>
 
+        {error && <p className="text-sm text-destructive">{error}</p>}
+
         <input
           ref={inputRef}
           type="file"
@@ -65,6 +68,17 @@ export default function ImportDataCard() {
           Importer une sauvegarde
         </Button>
       </CardContent>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Restaurer cette sauvegarde ?"
+        description="Cette opération remplacera toutes les données actuelles par celles du fichier importé."
+        confirmLabel="Restaurer"
+        onConfirm={() => {
+          if (pendingBackup) restoreBackup(pendingBackup);
+        }}
+      />
     </Card>
   );
 }

@@ -1,7 +1,11 @@
 export const STORAGE_KEYS = {
   dogs: "thedogmall.dogs",
   breedings: "thedogmall.breedings",
+  pregnancies: "thedogmall.pregnancies",
   litters: "thedogmall.litters",
+  puppies: "thedogmall.puppies",
   clients: "thedogmall.clients",
-  settings: "thedogmall.settings",
+  expenses: "thedogmall.expenses",
+  incomes: "thedogmall.incomes",
+  tasks: "thedogmall.tasks",
 } as const;
