@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 import type { Breeding, BreedingStatus } from "../../../types/models/breeding";
 import { useDogs } from "../../../hooks/useDogs";
@@ -29,11 +30,12 @@ export default function BreedingCard({ breeding }: BreedingCardProps) {
   const male = dogs.find((dog) => dog.id === breeding.maleId);
 
   return (
-    <Card>
-      <CardContent className="flex items-center justify-between p-6">
+    <Card className="transition-shadow hover:shadow-md">
+      <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">
-            {female?.name ?? "Femelle inconnue"} ❤️{" "}
+          <h3 className="flex items-center gap-1.5 text-lg font-semibold">
+            {female?.name ?? "Femelle inconnue"}
+            <Heart className="size-4 shrink-0 fill-primary text-primary" />
             {male?.name ?? "Mâle inconnu"}
           </h3>
 

@@ -1,3 +1,5 @@
+import { Baby } from "lucide-react";
+
 import MainLayout from "../components/layout/MainLayout";
 import AddLitterDialog from "../components/dogs/litters/AddLitterDialog";
 import LitterCard from "../components/dogs/litters/LitterCard";
@@ -14,7 +16,10 @@ export default function Litters() {
       <div className="space-y-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold sm:text-4xl">🐾 Portées</h1>
+            <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
+              <Baby className="size-8 text-primary" />
+              Portées
+            </h1>
 
             <p className="text-muted-foreground">
               Gérez les portées, les chiots et leurs réservations.

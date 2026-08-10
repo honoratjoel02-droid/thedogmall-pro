@@ -1,4 +1,6 @@
-import { Card, CardContent } from "../ui/card";
+import { Dog, Mars, Venus, HeartPulse } from "lucide-react";
+
+import StatTile from "../ui/stat-tile";
 import { useDogs } from "../../hooks/useDogs";
 
 export default function DogStats() {
@@ -7,9 +9,9 @@ export default function DogStats() {
   if (isLoading) {
     return (
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Card>
-          <CardContent className="p-6">Chargement...</CardContent>
-        </Card>
+        <div className="col-span-full flex h-24 items-center justify-center text-muted-foreground">
+          Chargement...
+        </div>
       </div>
     );
   }
@@ -22,44 +24,17 @@ export default function DogStats() {
 
   const pregnant = dogs.filter((dog) => dog.status === "Gestante").length;
 
-  const stats = [
-    {
-      title: "Total chiens",
-      value: total,
-      emoji: "🐶",
-    },
-    {
-      title: "Mâles",
-      value: males,
-      emoji: "♂️",
-    },
-    {
-      title: "Femelles",
-      value: females,
-      emoji: "♀️",
-    },
-    {
-      title: "Gestantes",
-      value: pregnant,
-      emoji: "🤰",
-    },
-  ];
-
   return (
     <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {stats.map((stat) => (
-        <Card key={stat.title}>
-          <CardContent className="flex items-center justify-between p-6">
-            <div>
-              <p className="text-sm text-muted-foreground">{stat.title}</p>
-
-              <p className="mt-2 text-3xl font-bold">{stat.value}</p>
-            </div>
-
-            <div className="text-4xl">{stat.emoji}</div>
-          </CardContent>
-        </Card>
-      ))}
+      <StatTile label="Total chiens" value={total} icon={Dog} />
+      <StatTile label="Mâles" value={males} icon={Mars} tone="neutral" />
+      <StatTile label="Femelles" value={females} icon={Venus} tone="neutral" />
+      <StatTile
+        label="Gestantes"
+        value={pregnant}
+        icon={HeartPulse}
+        tone="danger"
+      />
     </div>
   );
 }

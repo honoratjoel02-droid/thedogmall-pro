@@ -1,3 +1,5 @@
+import { Wallet } from "lucide-react";
+
 import MainLayout from "../components/layout/MainLayout";
 import FinanceSummary from "../components/finances/FinanceSummary";
 import AddExpenseDialog from "../components/finances/AddExpenseDialog";
@@ -18,7 +20,10 @@ export default function Finances() {
     <MainLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold sm:text-4xl">💰 Finances</h1>
+          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
+            <Wallet className="size-8 text-primary" />
+            Finances
+          </h1>
 
           <p className="text-muted-foreground">
             Suivez les dépenses, les recettes et la rentabilité de votre

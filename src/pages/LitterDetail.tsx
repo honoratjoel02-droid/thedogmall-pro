@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import AddPuppyDialog from "../components/dogs/litters/AddPuppyDialog";
@@ -79,8 +80,9 @@ export default function LitterDetail() {
 
         <Card>
           <CardContent className="space-y-4 p-6">
-            <h1 className="text-3xl font-bold">
-              {female?.name ?? "Femelle inconnue"} ❤️{" "}
+            <h1 className="flex flex-wrap items-center gap-2 text-3xl font-bold">
+              {female?.name ?? "Femelle inconnue"}
+              <Heart className="size-6 shrink-0 fill-primary text-primary" />
               {male?.name ?? "Mâle inconnu"}
             </h1>
 

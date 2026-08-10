@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Dog as DogIcon } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import DogGrid from "../components/dogs/DogGrid";
@@ -48,7 +49,8 @@ export default function Dogs() {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-            🐶 Gestion des chiens
+            <DogIcon className="size-8 text-primary" />
+            Gestion des chiens
           </h1>
 
           <p className="text-muted-foreground">

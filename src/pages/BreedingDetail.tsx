@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import PregnancyCard from "../components/dogs/reproduction/PregnancyCard";
@@ -112,8 +113,9 @@ export default function BreedingDetail() {
         <Card>
           <CardContent className="space-y-4 p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h1 className="text-2xl font-bold sm:text-3xl">
-                {female?.name ?? "Femelle inconnue"} ❤️{" "}
+              <h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold sm:text-3xl">
+                {female?.name ?? "Femelle inconnue"}
+                <Heart className="size-5 shrink-0 fill-primary text-primary" />
                 {male?.name ?? "Mâle inconnu"}
               </h1>
 

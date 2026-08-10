@@ -7,6 +7,7 @@ import {
   CalendarDays,
   Wallet,
   Settings,
+  PawPrint,
 } from "lucide-react";
 
 import { Link, useLocation } from "react-router-dom";
@@ -39,13 +40,17 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible="offcanvas">
       <SidebarHeader className="border-b border-sidebar-border px-4 py-5">
-        <Link to="/" className="flex flex-col">
-          <span className="flex items-center gap-2 text-xl font-bold text-orange-600">
-            🐶 TheDogMall
+        <Link to="/" className="flex items-center gap-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+            <PawPrint className="size-5" />
           </span>
 
-          <span className="text-sm text-muted-foreground">
-            Gestion d'élevage
+          <span className="flex flex-col">
+            <span className="text-lg font-bold text-primary">TheDogMall</span>
+
+            <span className="text-xs text-muted-foreground">
+              Gestion d'élevage
+            </span>
           </span>
         </Link>
       </SidebarHeader>
@@ -65,7 +70,7 @@ export default function AppSidebar() {
                     <SidebarMenuButton
                       isActive={isActive}
                       size="lg"
-                      className="data-active:bg-orange-500 data-active:text-white data-active:hover:bg-orange-500 data-active:hover:text-white hover:bg-orange-100 hover:text-orange-600"
+                      className="data-active:bg-primary data-active:text-primary-foreground data-active:shadow-sm data-active:hover:bg-primary data-active:hover:text-primary-foreground hover:bg-primary/10 hover:text-primary"
                       render={(props) => (
                         <Link {...props} to={item.path}>
                           <item.icon size={20} />

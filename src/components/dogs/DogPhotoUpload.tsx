@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { ImagePlus } from "lucide-react";
 
 import { Button } from "../ui/button";
 
@@ -55,7 +56,7 @@ export default function DogPhotoUpload({
           />
         ) : (
           <div className="text-center">
-            <div className="mb-2 text-6xl">🐶</div>
+            <ImagePlus className="mx-auto mb-2 size-10 text-muted-foreground" />
 
             <p className="text-sm text-muted-foreground">
               Aucune photo sélectionnée

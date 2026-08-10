@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
 
 import type { Client } from "../../types/models/client";
 
@@ -19,8 +20,8 @@ export default function ClientCard({ client }: Props) {
     <Card className="overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <CardContent className="p-6">
         <div className="mb-5 flex justify-center">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-muted text-5xl">
-            🧑
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <User className="size-10" />
           </div>
         </div>
 

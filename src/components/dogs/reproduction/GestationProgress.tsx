@@ -1,3 +1,5 @@
+import { HeartPulse } from "lucide-react";
+
 import {
   GESTATION_DURATION,
   gestationDay,
@@ -19,7 +21,10 @@ export default function GestationProgress({ breedingDate }: Props) {
   return (
     <div className="space-y-3 rounded-xl border bg-muted/30 p-4">
       <div className="flex items-center justify-between">
-        <span className="font-medium">🤰 Gestation</span>
+        <span className="flex items-center gap-1.5 font-medium">
+          <HeartPulse className="size-4 text-primary" />
+          Gestation
+        </span>
 
         <span className="text-sm text-muted-foreground">
           Jour {day} / {GESTATION_DURATION}

@@ -66,7 +66,7 @@ export default function PuppyCard({ puppy }: Props) {
   }
 
   return (
-    <Card>
+    <Card className="transition-shadow hover:shadow-md">
       <CardContent className="space-y-4 p-6">
         <div className="flex items-center justify-between">
           <div>

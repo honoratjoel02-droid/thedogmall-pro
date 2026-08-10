@@ -1,3 +1,5 @@
+import { Heart } from "lucide-react";
+
 import MainLayout from "../components/layout/MainLayout";
 
 import AddBreedingDialog from "../components/dogs/reproduction/AddBreedingDialog";
@@ -16,7 +18,10 @@ export default function Breeding() {
       <div className="space-y-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold sm:text-4xl">❤️ Reproduction</h1>
+            <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
+              <Heart className="size-8 text-primary" />
+              Reproduction
+            </h1>
 
             <p className="text-muted-foreground">
               Gérez les saillies, les gestations et les mises bas.

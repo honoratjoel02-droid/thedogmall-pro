@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { X } from "lucide-react";
 
 import type { CareEntry, Puppy } from "../../../types/models/puppy";
 import { useUpdatePuppy } from "../../../hooks/usePuppies";
@@ -86,9 +87,10 @@ function CareChecklist({
             <Button
               type="button"
               variant="ghost"
+              size="icon-sm"
               onClick={() => removeEntry(entry.id)}
             >
-              ✕
+              <X className="size-4" />
             </Button>
           </div>
         ))}

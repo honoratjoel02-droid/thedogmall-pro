@@ -1,3 +1,5 @@
+import { Search } from "lucide-react";
+
 import { Input } from "../ui/input";
 
 type DogFiltersProps = {
@@ -35,11 +37,16 @@ export default function DogFilters({
 }: DogFiltersProps) {
   return (
     <div className="mb-6 space-y-4 rounded-lg border p-4">
-      <Input
-        placeholder="🔍 Rechercher un chien..."
-        value={search}
-        onChange={(e) => onSearchChange(e.target.value)}
-      />
+      <div className="relative">
+        <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+
+        <Input
+          placeholder="Rechercher un chien..."
+          className="pl-8"
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
+        />
+      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <select

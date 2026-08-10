@@ -1,7 +1,9 @@
+import { PiggyBank, CreditCard, TrendingUp, TrendingDown } from "lucide-react";
+
 import type { Expense } from "../../types/models/expense";
 import type { Income } from "../../types/models/income";
 
-import { Card, CardContent } from "../ui/card";
+import StatTile from "../ui/stat-tile";
 
 type Props = {
   expenses: Expense[];
@@ -13,47 +15,35 @@ export default function FinanceSummary({ expenses, incomes }: Props) {
   const totalIncomes = incomes.reduce((sum, i) => sum + i.amount, 0);
   const balance = totalIncomes - totalExpenses;
 
-  const stats = [
-    {
-      title: "Recettes",
-      value: `+${totalIncomes.toLocaleString("fr-FR")} FCFA`,
-      emoji: "💰",
-      valueClassName: "text-emerald-600 dark:text-emerald-400",
-    },
-    {
-      title: "Dépenses",
-      value: `-${totalExpenses.toLocaleString("fr-FR")} FCFA`,
-      emoji: "💸",
-      valueClassName: "text-destructive",
-    },
-    {
-      title: "Solde",
-      value: `${balance >= 0 ? "+" : ""}${balance.toLocaleString("fr-FR")} FCFA`,
-      emoji: balance >= 0 ? "📈" : "📉",
-      valueClassName:
-        balance >= 0
-          ? "text-emerald-600 dark:text-emerald-400"
-          : "text-destructive",
-    },
-  ];
-
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      {stats.map((stat) => (
-        <Card key={stat.title}>
-          <CardContent className="flex items-center justify-between p-6">
-            <div>
-              <p className="text-sm text-muted-foreground">{stat.title}</p>
+      <StatTile
+        label="Recettes"
+        value={`+${totalIncomes.toLocaleString("fr-FR")} FCFA`}
+        icon={PiggyBank}
+        tone="success"
+        valueClassName="text-emerald-600 dark:text-emerald-400"
+      />
 
-              <p className={`mt-2 text-2xl font-bold ${stat.valueClassName}`}>
-                {stat.value}
-              </p>
-            </div>
+      <StatTile
+        label="Dépenses"
+        value={`-${totalExpenses.toLocaleString("fr-FR")} FCFA`}
+        icon={CreditCard}
+        tone="danger"
+        valueClassName="text-destructive"
+      />
 
-            <div className="text-4xl">{stat.emoji}</div>
-          </CardContent>
-        </Card>
-      ))}
+      <StatTile
+        label="Solde"
+        value={`${balance >= 0 ? "+" : ""}${balance.toLocaleString("fr-FR")} FCFA`}
+        icon={balance >= 0 ? TrendingUp : TrendingDown}
+        tone={balance >= 0 ? "success" : "danger"}
+        valueClassName={
+          balance >= 0
+            ? "text-emerald-600 dark:text-emerald-400"
+            : "text-destructive"
+        }
+      />
     </div>
   );
 }
