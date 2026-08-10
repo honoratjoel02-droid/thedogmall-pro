@@ -3,6 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { puppiesService } from "../services/puppies";
 import type { Puppy } from "../types/models/puppy";
 
+export function usePuppies() {
+  return useQuery({
+    queryKey: ["puppies"],
+    queryFn: () => puppiesService.getAll(),
+  });
+}
+
 export function usePuppiesByLitter(litterId?: string) {
   return useQuery({
     queryKey: ["puppies", "litter", litterId],
@@ -19,6 +26,8 @@ export function useCreatePuppy() {
       puppiesService.create(puppy),
 
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["puppies"] });
+
       queryClient.invalidateQueries({
         queryKey: ["puppies", "litter", data.litterId],
       });
@@ -34,6 +43,8 @@ export function useUpdatePuppy() {
       puppiesService.update(id, data),
 
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["puppies"] });
+
       if (data) {
         queryClient.invalidateQueries({
           queryKey: ["puppies", "litter", data.litterId],
@@ -51,6 +62,8 @@ export function useDeletePuppy() {
       puppiesService.delete(id),
 
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["puppies"] });
+
       queryClient.invalidateQueries({
         queryKey: ["puppies", "litter", variables.litterId],
       });

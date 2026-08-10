@@ -1,8 +1,15 @@
 import { Bell } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { SidebarTrigger } from "../ui/sidebar";
+
+import { useTasks } from "../../hooks/useTasks";
+import { usePregnancies } from "../../hooks/usePregnancies";
+import { usePuppies } from "../../hooks/usePuppies";
+import { useDogs } from "../../hooks/useDogs";
+
+import { computeAlerts } from "../../lib/alerts";
 
 const PAGE_TITLES: { match: (path: string) => boolean; title: string; subtitle: string }[] = [
   { match: (p) => p === "/", title: "Dashboard", subtitle: "Bienvenue sur TheDogMall" },
@@ -17,6 +24,18 @@ const PAGE_TITLES: { match: (path: string) => boolean; title: string; subtitle: 
 
 export default function AppHeader() {
   const { pathname } = useLocation();
+
+  const { data: tasks = [] } = useTasks();
+  const { data: pregnancies = [] } = usePregnancies();
+  const { data: puppies = [] } = usePuppies();
+  const { data: dogs = [] } = useDogs();
+
+  const alertCount = computeAlerts({
+    tasks,
+    pregnancies,
+    puppies,
+    dogs,
+  }).length;
 
   const page =
     PAGE_TITLES.find((entry) => entry.match(pathname)) ?? PAGE_TITLES[0];
@@ -38,7 +57,15 @@ export default function AppHeader() {
       </div>
 
       <div className="flex shrink-0 items-center gap-4 sm:gap-6">
-        <Bell className="cursor-pointer text-muted-foreground" size={20} />
+        <Link to="/calendar" className="relative">
+          <Bell className="text-muted-foreground transition-colors hover:text-primary" size={20} />
+
+          {alertCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+              {alertCount > 9 ? "9+" : alertCount}
+            </span>
+          )}
+        </Link>
 
         <Avatar>
           <AvatarFallback>JO</AvatarFallback>
