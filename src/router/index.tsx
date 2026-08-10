@@ -8,6 +8,7 @@ import BreedingDetail from "../pages/BreedingDetail";
 import Litters from "../pages/Litters";
 import LitterDetail from "../pages/LitterDetail";
 import Clients from "../pages/Clients";
+import ClientDetail from "../pages/ClientDetail";
 import Calendar from "../pages/Calendar";
 import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
   {
     path: "/clients",
     element: <Clients />,
+  },
+  {
+    path: "/clients/:id",
+    element: <ClientDetail />,
   },
   {
     path: "/calendar",
