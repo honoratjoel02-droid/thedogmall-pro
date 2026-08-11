@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { SidebarTrigger } from "../ui/sidebar";
+import ThemeToggle from "../theme/ThemeToggle";
 
 import { useTasks } from "../../hooks/useTasks";
 import { usePregnancies } from "../../hooks/usePregnancies";
@@ -69,6 +70,8 @@ export default function AppHeader() {
             </span>
           )}
         </Link>
+
+        <ThemeToggle />
 
         <Avatar>
           <AvatarFallback>JO</AvatarFallback>
