@@ -1,0 +1,74 @@
+import { Link } from "react-router-dom";
+
+import { useSalesByClient } from "../../hooks/useSales";
+import { usePuppies } from "../../hooks/usePuppies";
+
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+
+type Props = {
+  clientId: string;
+};
+
+export default function ClientPurchases({ clientId }: Props) {
+  const { data: sales = [], isLoading } = useSalesByClient(clientId);
+  const { data: puppies = [] } = usePuppies();
+
+  if (isLoading) {
+    return (
+      <div className="flex h-32 items-center justify-center text-muted-foreground">
+        Chargement...
+      </div>
+    );
+  }
+
+  if (sales.length === 0) {
+    return (
+      <div className="flex h-32 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
+        Aucun achat pour l'instant.
+      </div>
+    );
+  }
+
+  const sorted = [...sales].sort((a, b) => b.saleDate.localeCompare(a.saleDate));
+
+  return (
+    <div className="space-y-3">
+      {sorted.map((sale) => {
+        const puppy = puppies.find((p) => p.id === sale.puppyId);
+
+        return (
+          <Card key={sale.id}>
+            <CardContent className="flex flex-wrap items-center justify-between gap-2 p-4">
+              <div>
+                <p className="font-medium">
+                  {puppy?.identifier ?? "Chiot"}
+                </p>
+
+                <p className="text-sm text-muted-foreground">
+                  {new Date(sale.saleDate).toLocaleDateString("fr-FR")} ·{" "}
+                  {sale.price.toLocaleString("fr-FR")} FCFA
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {sale.contractSigned && (
+                  <Badge variant="secondary">Contrat signé</Badge>
+                )}
+
+                {puppy && (
+                  <Link
+                    to={`/litters/${puppy.litterId}`}
+                    className="text-sm text-primary underline-offset-2 hover:underline"
+                  >
+                    Voir la portée
+                  </Link>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}

@@ -14,5 +14,6 @@ export interface BackupData {
     incomes: unknown[];
     tasks: unknown[];
     healthRecords: unknown[];
+    sales: unknown[];
   };
 }

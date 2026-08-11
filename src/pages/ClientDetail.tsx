@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import EditClientDialog from "../components/clients/EditClientDialog";
 import DeleteClientDialog from "../components/clients/DeleteClientDialog";
+import ClientPurchases from "../components/clients/ClientPurchases";
 
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -75,6 +76,12 @@ export default function ClientDetail() {
             )}
           </CardContent>
         </Card>
+
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold">Achats</h2>
+
+          <ClientPurchases clientId={client.id} />
+        </div>
       </div>
     </MainLayout>
   );

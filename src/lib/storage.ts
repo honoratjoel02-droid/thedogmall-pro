@@ -9,4 +9,5 @@ export const STORAGE_KEYS = {
   incomes: "thedogmall.incomes",
   tasks: "thedogmall.tasks",
   healthRecords: "thedogmall.healthRecords",
+  sales: "thedogmall.sales",
 } as const;

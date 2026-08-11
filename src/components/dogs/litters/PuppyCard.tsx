@@ -12,6 +12,8 @@ import { Button } from "../../ui/button";
 import PuppyTrackingDialog from "./PuppyTrackingDialog";
 import EditPuppyDialog from "./EditPuppyDialog";
 import ClientSelect from "./ClientSelect";
+import DeclareSaleDialog from "./DeclareSaleDialog";
+import SaleDetails from "./SaleDetails";
 
 type Props = {
   puppy: Puppy;
@@ -94,25 +96,32 @@ export default function PuppyCard({ puppy }: Props) {
           </p>
         )}
 
-        <div className="flex flex-wrap items-center gap-2">
-          <select
-            value={puppy.status}
-            onChange={(e) =>
-              handleStatusChange(e.target.value as PuppyStatus)
-            }
-            className="rounded-md border bg-background px-2 py-1 text-sm"
-          >
-            <option value="Disponible">Disponible</option>
-            <option value="Réservé">Réservé</option>
-            <option value="Vendu">Vendu</option>
-            <option value="Conservé">Conservé</option>
-          </select>
+        {puppy.status === "Vendu" && <SaleDetails puppyId={puppy.id} />}
 
-          {puppy.status === "Réservé" && (
-            <ClientSelect
-              value={reservedForClientId}
-              onChange={handleClientChange}
-            />
+        <div className="flex flex-wrap items-center gap-2">
+          {puppy.status !== "Vendu" && (
+            <>
+              <select
+                value={puppy.status}
+                onChange={(e) =>
+                  handleStatusChange(e.target.value as PuppyStatus)
+                }
+                className="rounded-md border bg-background px-2 py-1 text-sm"
+              >
+                <option value="Disponible">Disponible</option>
+                <option value="Réservé">Réservé</option>
+                <option value="Conservé">Conservé</option>
+              </select>
+
+              {puppy.status === "Réservé" && (
+                <ClientSelect
+                  value={reservedForClientId}
+                  onChange={handleClientChange}
+                />
+              )}
+
+              <DeclareSaleDialog puppy={puppy} />
+            </>
           )}
 
           <PuppyTrackingDialog puppy={puppy} />
