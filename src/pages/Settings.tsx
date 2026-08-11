@@ -1,6 +1,7 @@
 import { Settings as SettingsIcon } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import KennelSettingsCard from "../components/settings/KennelSettingsCard";
 import ExportDataCard from "../components/settings/ExportDataCard";
 import ImportDataCard from "../components/settings/ImportDataCard";
 
@@ -18,9 +19,13 @@ export default function Settings() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        <ExportDataCard />
-        <ImportDataCard />
+      <div className="space-y-6">
+        <KennelSettingsCard />
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <ExportDataCard />
+          <ImportDataCard />
+        </div>
       </div>
     </MainLayout>
   );

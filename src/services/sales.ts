@@ -25,6 +25,10 @@ class SalesService {
     return [...this.sales];
   }
 
+  async getById(id: string): Promise<Sale | undefined> {
+    return this.sales.find((sale) => sale.id === id);
+  }
+
   async getByPuppyId(puppyId: string): Promise<Sale | undefined> {
     return this.sales.find((sale) => sale.puppyId === puppyId);
   }

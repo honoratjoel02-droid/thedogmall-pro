@@ -13,6 +13,14 @@ export function useSales() {
   });
 }
 
+export function useSale(id?: string) {
+  return useQuery({
+    queryKey: ["sales", id],
+    queryFn: () => salesService.getById(id!),
+    enabled: !!id,
+  });
+}
+
 export function useSaleByPuppy(puppyId?: string) {
   return useQuery({
     queryKey: ["sales", "puppy", puppyId],

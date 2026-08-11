@@ -15,5 +15,6 @@ export interface BackupData {
     tasks: unknown[];
     healthRecords: unknown[];
     sales: unknown[];
+    kennelSettings: Record<string, unknown> | null;
   };
 }

@@ -56,6 +56,14 @@ export default function ClientPurchases({ clientId }: Props) {
                   <Badge variant="secondary">Contrat signé</Badge>
                 )}
 
+                <Link
+                  to={`/contracts/${sale.id}`}
+                  target="_blank"
+                  className="text-sm text-primary underline-offset-2 hover:underline"
+                >
+                  Aperçu du contrat
+                </Link>
+
                 {puppy && (
                   <Link
                     to={`/litters/${puppy.litterId}`}

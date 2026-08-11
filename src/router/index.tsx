@@ -12,6 +12,7 @@ import ClientDetail from "../pages/ClientDetail";
 import Calendar from "../pages/Calendar";
 import Finances from "../pages/Finances";
 import Settings from "../pages/Settings";
+import SaleContract from "../pages/SaleContract";
 import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter([
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
   {
     path: "/settings",
     element: <Settings />,
+  },
+  {
+    path: "/contracts/:id",
+    element: <SaleContract />,
   },
   {
     path: "*",

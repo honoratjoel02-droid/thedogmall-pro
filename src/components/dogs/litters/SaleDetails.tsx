@@ -51,6 +51,16 @@ export default function SaleDetails({ puppyId }: Props) {
         </Badge>
       )}
 
+      <Button
+        variant="outline"
+        size="sm"
+        render={(props) => (
+          <Link {...props} to={`/contracts/${sale.id}`} target="_blank">
+            Aperçu du contrat
+          </Link>
+        )}
+      />
+
       <Button variant="ghost" size="sm" onClick={() => setOpen(true)}>
         Annuler la vente
       </Button>

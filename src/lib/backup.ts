@@ -18,6 +18,20 @@ function read(key: string) {
   }
 }
 
+function readObject(key: string) {
+  const value = localStorage.getItem(key);
+
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
 function write(key: string, value: unknown) {
   localStorage.setItem(key, JSON.stringify(value));
 }
@@ -40,6 +54,7 @@ export function createBackup(): BackupData {
       tasks: read(STORAGE_KEYS.tasks),
       healthRecords: read(STORAGE_KEYS.healthRecords),
       sales: read(STORAGE_KEYS.sales),
+      kennelSettings: readObject(STORAGE_KEYS.kennelSettings),
     },
   };
 }
@@ -85,6 +100,10 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.tasks, backup.data.tasks ?? []);
   write(STORAGE_KEYS.healthRecords, backup.data.healthRecords ?? []);
   write(STORAGE_KEYS.sales, backup.data.sales ?? []);
+
+  if (backup.data.kennelSettings) {
+    write(STORAGE_KEYS.kennelSettings, backup.data.kennelSettings);
+  }
 
   window.location.reload();
 }
