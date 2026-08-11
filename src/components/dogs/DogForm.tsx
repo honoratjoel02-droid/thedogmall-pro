@@ -23,7 +23,6 @@ const DEFAULT_VALUES: FormData = {
   birthDate: "",
   weight: 0,
   status: "Disponible",
-  photo: "",
 };
 
 export default function DogForm({ dog, onSuccess }: DogFormProps) {
@@ -130,11 +129,6 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
           <option value="Gestante">Gestante</option>
           <option value="Retraité">Retraité</option>
         </select>
-      </div>
-
-      <div>
-        <Label>Photo (URL)</Label>
-        <Input name="photo" value={form.photo ?? ""} onChange={handleChange} />
       </div>
 
       <Button type="submit" className="w-full">

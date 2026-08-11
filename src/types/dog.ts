@@ -11,5 +11,4 @@ export type Dog = {
     | "Réservé"
     | "Gestante"
     | "Retraité";
-  photo?: string;
 };

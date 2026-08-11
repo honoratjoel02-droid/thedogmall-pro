@@ -5,6 +5,8 @@ import DogGeneralTab from "../components/dogs/profile/DogGeneralTab";
 import DogBreedingTab from "../components/dogs/profile/DogBreedingTab";
 import DogFinanceTab from "../components/dogs/profile/DogFinanceTab";
 import DogHealthTab from "../components/dogs/profile/DogHealthTab";
+import DogPhotosTab from "../components/dogs/profile/DogPhotosTab";
+import DogDocumentsTab from "../components/dogs/profile/DogDocumentsTab";
 import EditDogDialog from "../components/dogs/EditDogDialog";
 import DeleteDogDialog from "../components/dogs/DeleteDogDialog";
 import { Button } from "../components/ui/button";
@@ -18,11 +20,14 @@ import {
 } from "../components/ui/tabs";
 
 import { useDog } from "../hooks/useDogs";
+import { useDogPhotosByDog } from "../hooks/useDogPhotos";
 
 export default function DogProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: dog, isLoading } = useDog(id);
+  const { data: photos = [] } = useDogPhotosByDog(dog?.id);
+  const primaryPhoto = photos[0];
 
   if (isLoading) {
     return (
@@ -68,31 +73,41 @@ export default function DogProfile() {
         </div>
 
         <Card>
-          <CardContent className="space-y-4 p-6">
-            <h1 className="text-3xl font-bold">{dog.name}</h1>
+          <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-start">
+            {primaryPhoto && (
+              <img
+                src={primaryPhoto.dataUrl}
+                alt={dog.name}
+                className="size-24 shrink-0 rounded-xl object-cover ring-1 ring-foreground/[0.06]"
+              />
+            )}
 
-            <div className="flex gap-2">
-              <Badge>{dog.sex}</Badge>
-              <Badge variant="secondary">{dog.status}</Badge>
-            </div>
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold">{dog.name}</h1>
 
-            <div className="grid gap-2 md:grid-cols-2">
-              <p>
-                <strong>Race :</strong> {dog.breed}
-              </p>
-              <p>
-                <strong>Couleur :</strong> {dog.color}
-              </p>
-              <p>
-                <strong>Poids :</strong> {dog.weight} kg
-              </p>
-              <p>
-                <strong>Âge :</strong> {years} an{years > 1 ? "s" : ""}
-              </p>
-              <p>
-                <strong>Date de naissance :</strong>{" "}
-                {birth.toLocaleDateString("fr-FR")}
-              </p>
+              <div className="flex gap-2">
+                <Badge>{dog.sex}</Badge>
+                <Badge variant="secondary">{dog.status}</Badge>
+              </div>
+
+              <div className="grid gap-2 md:grid-cols-2">
+                <p>
+                  <strong>Race :</strong> {dog.breed}
+                </p>
+                <p>
+                  <strong>Couleur :</strong> {dog.color}
+                </p>
+                <p>
+                  <strong>Poids :</strong> {dog.weight} kg
+                </p>
+                <p>
+                  <strong>Âge :</strong> {years} an{years > 1 ? "s" : ""}
+                </p>
+                <p>
+                  <strong>Date de naissance :</strong>{" "}
+                  {birth.toLocaleDateString("fr-FR")}
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -125,15 +140,13 @@ export default function DogProfile() {
             <DogFinanceTab dog={dog} />
           </TabsContent>
 
-          {["documents", "photos"].map((tab) => (
-            <TabsContent key={tab} value={tab}>
-              <Card>
-                <CardContent className="p-8">
-                  Module en cours de développement.
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
+          <TabsContent value="documents">
+            <DogDocumentsTab dog={dog} />
+          </TabsContent>
+
+          <TabsContent value="photos">
+            <DogPhotosTab dog={dog} />
+          </TabsContent>
         </Tabs>
       </div>
     </MainLayout>

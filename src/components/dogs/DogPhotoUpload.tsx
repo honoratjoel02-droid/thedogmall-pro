@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ImagePlus } from "lucide-react";
 
 import { Button } from "../ui/button";
+
+const MAX_FILE_SIZE = 3 * 1024 * 1024;
 
 type DogPhotoUploadProps = {
   value?: string;
@@ -14,6 +16,8 @@ export default function DogPhotoUpload({
 }: DogPhotoUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [error, setError] = useState("");
+
   function openFilePicker() {
     inputRef.current?.click();
   }
@@ -21,12 +25,21 @@ export default function DogPhotoUpload({
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
+    event.target.value = "";
+
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Veuillez sélectionner une image.");
+      setError("Veuillez sélectionner une image.");
       return;
     }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setError("L'image dépasse la taille maximale autorisée (3 Mo).");
+      return;
+    }
+
+    setError("");
 
     const reader = new FileReader();
 
@@ -64,6 +77,8 @@ export default function DogPhotoUpload({
           </div>
         )}
       </div>
+
+      {error && <p className="text-sm text-destructive">{error}</p>}
 
       <Button
         type="button"

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Dog as DogIcon } from "lucide-react";
 
 import type { Dog } from "../../types/dog";
+import { useDogPhotosByDog } from "../../hooks/useDogPhotos";
 
 import EditDogDialog from "./EditDogDialog";
 import DeleteDogDialog from "./DeleteDogDialog";
@@ -35,14 +36,24 @@ function getStatusVariant(status: Dog["status"]) {
 
 export default function DogCard({ dog }: DogCardProps) {
   const navigate = useNavigate();
+  const { data: photos = [] } = useDogPhotosByDog(dog.id);
+  const primaryPhoto = photos[0];
 
   return (
     <Card className="overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <CardContent className="p-6">
         <div className="mb-5 flex justify-center">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <DogIcon className="size-10" />
-          </div>
+          {primaryPhoto ? (
+            <img
+              src={primaryPhoto.dataUrl}
+              alt={dog.name}
+              className="h-24 w-24 rounded-full object-cover ring-1 ring-foreground/[0.06]"
+            />
+          ) : (
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <DogIcon className="size-10" />
+            </div>
+          )}
         </div>
 
         <div className="text-center">

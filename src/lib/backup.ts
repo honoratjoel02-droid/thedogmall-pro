@@ -55,6 +55,8 @@ export function createBackup(): BackupData {
       healthRecords: read(STORAGE_KEYS.healthRecords),
       sales: read(STORAGE_KEYS.sales),
       kennelSettings: readObject(STORAGE_KEYS.kennelSettings),
+      dogPhotos: read(STORAGE_KEYS.dogPhotos),
+      dogDocuments: read(STORAGE_KEYS.dogDocuments),
     },
   };
 }
@@ -104,6 +106,9 @@ export function restoreBackup(backup: BackupData) {
   if (backup.data.kennelSettings) {
     write(STORAGE_KEYS.kennelSettings, backup.data.kennelSettings);
   }
+
+  write(STORAGE_KEYS.dogPhotos, backup.data.dogPhotos ?? []);
+  write(STORAGE_KEYS.dogDocuments, backup.data.dogDocuments ?? []);
 
   window.location.reload();
 }
