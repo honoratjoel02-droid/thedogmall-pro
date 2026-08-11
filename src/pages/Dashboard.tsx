@@ -5,17 +5,26 @@ import MainLayout from "../components/layout/MainLayout";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import StatTile from "../components/ui/stat-tile";
+import MonthlyIncomeExpenseChart from "../components/charts/MonthlyIncomeExpenseChart";
 
 import { useDogs } from "../hooks/useDogs";
 import { useClients } from "../hooks/useClients";
 import { useBreedings } from "../hooks/useBreedings";
 import { useLitters } from "../hooks/useLitters";
+import { useExpenses } from "../hooks/useExpenses";
+import { useIncomes } from "../hooks/useIncomes";
+
+import { computeMonthlyTotals } from "../lib/financeStats";
 
 export default function Dashboard() {
   const { data: dogs = [] } = useDogs();
   const { data: clients = [] } = useClients();
   const { data: breedings = [] } = useBreedings();
   const { data: litters = [] } = useLitters();
+  const { data: expenses = [] } = useExpenses();
+  const { data: incomes = [] } = useIncomes();
+
+  const monthlyTotals = computeMonthlyTotals(expenses, incomes);
 
   const ongoingBreedings = breedings.filter(
     (b) => b.status === "En cours" || b.status === "Gestation confirmée",
@@ -56,6 +65,10 @@ export default function Dashboard() {
           icon={Baby}
           tone="success"
         />
+      </div>
+
+      <div className="mb-8">
+        <MonthlyIncomeExpenseChart data={monthlyTotals} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
