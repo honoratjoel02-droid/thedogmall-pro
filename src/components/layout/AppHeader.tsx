@@ -1,8 +1,14 @@
-import { Bell } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { SidebarTrigger } from "../ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import ThemeToggle from "../theme/ThemeToggle";
 
 import { useTasks } from "../../hooks/useTasks";
@@ -10,6 +16,7 @@ import { usePregnancies } from "../../hooks/usePregnancies";
 import { usePuppies } from "../../hooks/usePuppies";
 import { useDogs } from "../../hooks/useDogs";
 import { useHealthRecords } from "../../hooks/useHealthRecords";
+import { useAuth } from "../../hooks/useAuth";
 
 import { computeAlerts } from "../../lib/alerts";
 
@@ -26,6 +33,7 @@ const PAGE_TITLES: { match: (path: string) => boolean; title: string; subtitle: 
 
 export default function AppHeader() {
   const { pathname } = useLocation();
+  const { logout } = useAuth();
 
   const { data: tasks = [] } = useTasks();
   const { data: pregnancies = [] } = usePregnancies();
@@ -73,9 +81,24 @@ export default function AppHeader() {
 
         <ThemeToggle />
 
-        <Avatar>
-          <AvatarFallback>JO</AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={(props) => (
+              <button {...props} className="rounded-full outline-none">
+                <Avatar>
+                  <AvatarFallback>JO</AvatarFallback>
+                </Avatar>
+              </button>
+            )}
+          />
+
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={logout}>
+              <LogOut className="size-4" />
+              Se déconnecter
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

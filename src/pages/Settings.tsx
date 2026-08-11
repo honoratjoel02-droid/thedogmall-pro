@@ -4,6 +4,7 @@ import MainLayout from "../components/layout/MainLayout";
 import KennelSettingsCard from "../components/settings/KennelSettingsCard";
 import ExportDataCard from "../components/settings/ExportDataCard";
 import ImportDataCard from "../components/settings/ImportDataCard";
+import SecurityCard from "../components/settings/SecurityCard";
 
 export default function Settings() {
   return (
@@ -21,6 +22,8 @@ export default function Settings() {
 
       <div className="space-y-6">
         <KennelSettingsCard />
+
+        <SecurityCard />
 
         <div className="grid gap-6 sm:grid-cols-2">
           <ExportDataCard />

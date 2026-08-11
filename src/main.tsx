@@ -8,6 +8,8 @@ import "./index.css";
 
 import { router } from "./router";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
+import { AuthProvider } from "./components/auth/AuthProvider";
+import AuthGate from "./components/auth/AuthGate";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,9 +24,13 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthGate>
+            <RouterProvider router={router} />
+          </AuthGate>
+        </QueryClientProvider>
+      </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );
