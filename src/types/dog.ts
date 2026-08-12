@@ -11,4 +11,6 @@ export type Dog = {
     | "Réservé"
     | "Gestante"
     | "Retraité";
+  sireId?: string;
+  damId?: string;
 };

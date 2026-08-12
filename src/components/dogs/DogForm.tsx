@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-import { useCreateDog, useUpdateDog } from "../../hooks/useDogs";
+import { useCreateDog, useUpdateDog, useDogs } from "../../hooks/useDogs";
 import type { Dog } from "../../types/dog";
 
 type DogFormProps = {
@@ -23,18 +23,29 @@ const DEFAULT_VALUES: FormData = {
   birthDate: "",
   weight: 0,
   status: "Disponible",
+  sireId: "",
+  damId: "",
 };
 
 export default function DogForm({ dog, onSuccess }: DogFormProps) {
   const createDog = useCreateDog();
   const updateDog = useUpdateDog();
+  const { data: dogs = [] } = useDogs();
 
   const [form, setForm] = useState<FormData>(() => {
     if (!dog) return DEFAULT_VALUES;
 
     const { id: _id, ...rest } = dog;
-    return rest;
+    return { ...DEFAULT_VALUES, ...rest };
   });
+
+  const sireOptions = dogs.filter(
+    (candidate) => candidate.sex === "Mâle" && candidate.id !== dog?.id,
+  );
+
+  const damOptions = dogs.filter(
+    (candidate) => candidate.sex === "Femelle" && candidate.id !== dog?.id,
+  );
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -52,13 +63,19 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
 
     if (!form.name.trim() || !form.breed.trim()) return;
 
+    const payload: FormData = {
+      ...form,
+      sireId: form.sireId || undefined,
+      damId: form.damId || undefined,
+    };
+
     if (dog) {
       await updateDog.mutateAsync({
         id: dog.id,
-        data: form,
+        data: payload,
       });
     } else {
-      await createDog.mutateAsync(form);
+      await createDog.mutateAsync(payload);
       setForm(DEFAULT_VALUES);
     }
 
@@ -128,6 +145,40 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
           <option value="Réservé">Réservé</option>
           <option value="Gestante">Gestante</option>
           <option value="Retraité">Retraité</option>
+        </select>
+      </div>
+
+      <div>
+        <Label>Père</Label>
+        <select
+          className="w-full rounded-lg border p-2"
+          name="sireId"
+          value={form.sireId}
+          onChange={handleChange}
+        >
+          <option value="">Inconnu</option>
+          {sireOptions.map((sire) => (
+            <option key={sire.id} value={sire.id}>
+              {sire.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <Label>Mère</Label>
+        <select
+          className="w-full rounded-lg border p-2"
+          name="damId"
+          value={form.damId}
+          onChange={handleChange}
+        >
+          <option value="">Inconnue</option>
+          {damOptions.map((dam) => (
+            <option key={dam.id} value={dam.id}>
+              {dam.name}
+            </option>
+          ))}
         </select>
       </div>
 

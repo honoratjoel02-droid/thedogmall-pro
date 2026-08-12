@@ -1,6 +1,7 @@
 // src/components/dogs/profile/DogGeneralTab.tsx
 
 import type { Dog } from "../../../types/dog";
+import { useDogs } from "../../../hooks/useDogs";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 
 interface DogGeneralTabProps {
@@ -8,6 +9,11 @@ interface DogGeneralTabProps {
 }
 
 export default function DogGeneralTab({ dog }: DogGeneralTabProps) {
+  const { data: dogs = [] } = useDogs();
+
+  const sire = dogs.find((candidate) => candidate.id === dog.sireId);
+  const dam = dogs.find((candidate) => candidate.id === dog.damId);
+
   return (
     <Card>
       <CardHeader>
@@ -58,6 +64,18 @@ export default function DogGeneralTab({ dog }: DogGeneralTabProps) {
             <p className="text-sm text-muted-foreground">Statut</p>
 
             <p className="font-medium">{dog.status}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Père</p>
+
+            <p className="font-medium">{sire?.name ?? "Inconnu"}</p>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground">Mère</p>
+
+            <p className="font-medium">{dam?.name ?? "Inconnue"}</p>
           </div>
         </div>
       </CardContent>
