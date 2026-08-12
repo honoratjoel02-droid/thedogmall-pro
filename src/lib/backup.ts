@@ -61,6 +61,20 @@ export function createBackup(): BackupData {
   };
 }
 
+export const BACKUP_RECORDED_EVENT = "thedogmall:backup-recorded";
+
+export function getLastBackupAt(): string | null {
+  return localStorage.getItem(STORAGE_KEYS.lastBackupAt);
+}
+
+function recordBackup() {
+  const now = new Date().toISOString();
+
+  localStorage.setItem(STORAGE_KEYS.lastBackupAt, now);
+
+  window.dispatchEvent(new Event(BACKUP_RECORDED_EVENT));
+}
+
 export function downloadBackup() {
   const backup = createBackup();
 
@@ -84,6 +98,8 @@ export function downloadBackup() {
   link.remove();
 
   URL.revokeObjectURL(url);
+
+  recordBackup();
 }
 
 export function restoreBackup(backup: BackupData) {

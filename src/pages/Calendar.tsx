@@ -19,6 +19,7 @@ import { useClients } from "../hooks/useClients";
 import { useExpenses } from "../hooks/useExpenses";
 import { useIncomes } from "../hooks/useIncomes";
 import { useHealthRecords } from "../hooks/useHealthRecords";
+import { useLastBackupAt } from "../hooks/useLastBackupAt";
 
 import { computeAlerts } from "../lib/alerts";
 import { computeJournal } from "../lib/journal";
@@ -34,6 +35,7 @@ export default function Calendar() {
   const { data: expenses = [] } = useExpenses();
   const { data: incomes = [] } = useIncomes();
   const { data: healthRecords = [] } = useHealthRecords();
+  const lastBackupAt = useLastBackupAt();
 
   const alerts = computeAlerts({
     tasks,
@@ -41,6 +43,7 @@ export default function Calendar() {
     puppies,
     dogs,
     healthRecords,
+    lastBackupAt,
   });
 
   const journal = computeJournal({

@@ -17,6 +17,7 @@ export interface Alert {
 }
 
 const SOON_WINDOW_DAYS = 7;
+const BACKUP_REMINDER_DAYS = 14;
 
 function daysUntil(dateIso: string, now: Date): number {
   const date = new Date(dateIso);
@@ -46,6 +47,7 @@ type ComputeAlertsParams = {
   puppies: Puppy[];
   dogs: Dog[];
   healthRecords?: HealthRecord[];
+  lastBackupAt?: string | null;
   now?: Date;
 };
 
@@ -55,6 +57,7 @@ export function computeAlerts({
   puppies,
   dogs,
   healthRecords = [],
+  lastBackupAt,
   now = new Date(),
 }: ComputeAlertsParams): Alert[] {
   const alerts: Alert[] = [];
@@ -186,6 +189,29 @@ export function computeAlerts({
       severity,
       link: `/dogs/${record.dogId}`,
     });
+  }
+
+  if (lastBackupAt !== undefined) {
+    const dueDate = lastBackupAt
+      ? new Date(
+          new Date(lastBackupAt).getTime() +
+            BACKUP_REMINDER_DAYS * 24 * 60 * 60 * 1000,
+        ).toISOString()
+      : now.toISOString();
+
+    const severity = severityFor(dueDate, now);
+
+    if (severity !== "info") {
+      alerts.push({
+        id: "backup-reminder",
+        message: lastBackupAt
+          ? "Sauvegarde recommandée : plus de 14 jours depuis la dernière"
+          : "Aucune sauvegarde n'a encore été effectuée",
+        date: dueDate,
+        severity,
+        link: "/settings",
+      });
+    }
   }
 
   return alerts.sort((a, b) => {

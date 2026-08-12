@@ -14,6 +14,7 @@ import { usePregnancies } from "../../hooks/usePregnancies";
 import { usePuppies } from "../../hooks/usePuppies";
 import { useDogs } from "../../hooks/useDogs";
 import { useHealthRecords } from "../../hooks/useHealthRecords";
+import { useLastBackupAt } from "../../hooks/useLastBackupAt";
 
 import { computeAlerts } from "../../lib/alerts";
 
@@ -42,8 +43,16 @@ export default function AlertsDropdown() {
   const { data: puppies = [] } = usePuppies();
   const { data: dogs = [] } = useDogs();
   const { data: healthRecords = [] } = useHealthRecords();
+  const lastBackupAt = useLastBackupAt();
 
-  const alerts = computeAlerts({ tasks, pregnancies, puppies, dogs, healthRecords });
+  const alerts = computeAlerts({
+    tasks,
+    pregnancies,
+    puppies,
+    dogs,
+    healthRecords,
+    lastBackupAt,
+  });
   const visibleAlerts = alerts.slice(0, MAX_VISIBLE_ALERTS);
 
   return (
