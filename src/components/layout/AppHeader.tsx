@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import ThemeToggle from "../theme/ThemeToggle";
+import GlobalSearchDialog from "../search/GlobalSearchDialog";
 
 import { useTasks } from "../../hooks/useTasks";
 import { usePregnancies } from "../../hooks/usePregnancies";
@@ -69,6 +70,8 @@ export default function AppHeader() {
       </div>
 
       <div className="flex shrink-0 items-center gap-4 sm:gap-6">
+        <GlobalSearchDialog />
+
         <Link to="/calendar" className="relative">
           <Bell className="text-muted-foreground transition-colors hover:text-primary" size={20} />
 
