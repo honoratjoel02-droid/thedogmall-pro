@@ -1,75 +1,82 @@
+import { lazy, Suspense, type ReactNode } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import Dashboard from "../pages/Dashboard";
-import Dogs from "../pages/Dogs";
-import DogProfile from "../pages/DogProfile";
-import Breeding from "../pages/Breeding";
-import BreedingDetail from "../pages/BreedingDetail";
-import Litters from "../pages/Litters";
-import LitterDetail from "../pages/LitterDetail";
-import Clients from "../pages/Clients";
-import ClientDetail from "../pages/ClientDetail";
-import Calendar from "../pages/Calendar";
-import Finances from "../pages/Finances";
-import Settings from "../pages/Settings";
-import SaleContract from "../pages/SaleContract";
-import NotFound from "../pages/NotFound";
+import PageLoader from "../components/layout/PageLoader";
+
+const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Dogs = lazy(() => import("../pages/Dogs"));
+const DogProfile = lazy(() => import("../pages/DogProfile"));
+const Breeding = lazy(() => import("../pages/Breeding"));
+const BreedingDetail = lazy(() => import("../pages/BreedingDetail"));
+const Litters = lazy(() => import("../pages/Litters"));
+const LitterDetail = lazy(() => import("../pages/LitterDetail"));
+const Clients = lazy(() => import("../pages/Clients"));
+const ClientDetail = lazy(() => import("../pages/ClientDetail"));
+const Calendar = lazy(() => import("../pages/Calendar"));
+const Finances = lazy(() => import("../pages/Finances"));
+const Settings = lazy(() => import("../pages/Settings"));
+const SaleContract = lazy(() => import("../pages/SaleContract"));
+const NotFound = lazy(() => import("../pages/NotFound"));
+
+function withSuspense(element: ReactNode) {
+  return <Suspense fallback={<PageLoader />}>{element}</Suspense>;
+}
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: withSuspense(<Dashboard />),
   },
   {
     path: "/dogs",
-    element: <Dogs />,
+    element: withSuspense(<Dogs />),
   },
   {
     path: "/dogs/:id",
-    element: <DogProfile />,
+    element: withSuspense(<DogProfile />),
   },
   {
     path: "/breeding",
-    element: <Breeding />,
+    element: withSuspense(<Breeding />),
   },
   {
     path: "/breeding/:id",
-    element: <BreedingDetail />,
+    element: withSuspense(<BreedingDetail />),
   },
   {
     path: "/litters",
-    element: <Litters />,
+    element: withSuspense(<Litters />),
   },
   {
     path: "/litters/:id",
-    element: <LitterDetail />,
+    element: withSuspense(<LitterDetail />),
   },
   {
     path: "/clients",
-    element: <Clients />,
+    element: withSuspense(<Clients />),
   },
   {
     path: "/clients/:id",
-    element: <ClientDetail />,
+    element: withSuspense(<ClientDetail />),
   },
   {
     path: "/calendar",
-    element: <Calendar />,
+    element: withSuspense(<Calendar />),
   },
   {
     path: "/finances",
-    element: <Finances />,
+    element: withSuspense(<Finances />),
   },
   {
     path: "/settings",
-    element: <Settings />,
+    element: withSuspense(<Settings />),
   },
   {
     path: "/contracts/:id",
-    element: <SaleContract />,
+    element: withSuspense(<SaleContract />),
   },
   {
     path: "*",
-    element: <NotFound />,
+    element: withSuspense(<NotFound />),
   },
 ]);

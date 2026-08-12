@@ -33,4 +33,12 @@ export default defineConfig([
       'react-refresh/only-export-components': 'off',
     },
   },
+  {
+    // route config: lazy-loaded page references live alongside the
+    // exported router, not a Fast Refresh concern.
+    files: ['src/router/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])
