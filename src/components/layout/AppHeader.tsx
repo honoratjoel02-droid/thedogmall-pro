@@ -23,6 +23,7 @@ const PAGE_TITLES: { match: (path: string) => boolean; title: string; subtitle: 
   { match: (p) => p.startsWith("/clients"), title: "Clients", subtitle: "Suivi de la clientèle" },
   { match: (p) => p.startsWith("/calendar"), title: "Calendrier", subtitle: "Tâches et rappels" },
   { match: (p) => p.startsWith("/finances"), title: "Finances", subtitle: "Dépenses, recettes et rentabilité" },
+  { match: (p) => p.startsWith("/statistics"), title: "Statistiques", subtitle: "Indicateurs de performance de l'élevage" },
   { match: (p) => p.startsWith("/settings"), title: "Paramètres", subtitle: "Configuration de l'application" },
 ];
 

@@ -6,6 +6,7 @@ import {
   Users,
   CalendarDays,
   Wallet,
+  BarChart3,
   Settings,
   PawPrint,
 } from "lucide-react";
@@ -31,6 +32,7 @@ const menu = [
   { icon: Users, label: "Clients", path: "/clients" },
   { icon: CalendarDays, label: "Calendrier", path: "/calendar" },
   { icon: Wallet, label: "Finances", path: "/finances" },
+  { icon: BarChart3, label: "Statistiques", path: "/statistics" },
   { icon: Settings, label: "Paramètres", path: "/settings" },
 ];
 

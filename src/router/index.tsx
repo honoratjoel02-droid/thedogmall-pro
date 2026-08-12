@@ -15,6 +15,7 @@ const ClientDetail = lazy(() => import("../pages/ClientDetail"));
 const Calendar = lazy(() => import("../pages/Calendar"));
 const Finances = lazy(() => import("../pages/Finances"));
 const Settings = lazy(() => import("../pages/Settings"));
+const Statistics = lazy(() => import("../pages/Statistics"));
 const SaleContract = lazy(() => import("../pages/SaleContract"));
 const PedigreeCertificate = lazy(() => import("../pages/PedigreeCertificate"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
   {
     path: "/settings",
     element: withSuspense(<Settings />),
+  },
+  {
+    path: "/statistics",
+    element: withSuspense(<Statistics />),
   },
   {
     path: "/contracts/:id",
