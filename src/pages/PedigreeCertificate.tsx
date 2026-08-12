@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Printer } from "lucide-react";
+import { Download, Loader2, Printer } from "lucide-react";
 
 import { Button } from "../components/ui/button";
 
@@ -8,6 +8,7 @@ import { useDog, useDogs } from "../hooks/useDogs";
 import { useKennelSettings } from "../hooks/useKennelSettings";
 
 import { buildPedigreeTree, type PedigreeNode } from "../lib/pedigree";
+import { exportElementToPdf } from "../lib/pdf";
 import type { Dog } from "../types/dog";
 
 const ANCESTOR_GENERATIONS = 4;
@@ -58,6 +59,8 @@ function CertificateBranch({ node, depth }: { node: PedigreeNode; depth: number 
 export default function PedigreeCertificate() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const { data: dog, isLoading } = useDog(id);
   const { data: dogs = [] } = useDogs();
@@ -92,6 +95,17 @@ export default function PedigreeCertificate() {
     year: "numeric",
   });
 
+  async function handleDownloadPdf() {
+    if (!contentRef.current || !dog || isExporting) return;
+
+    setIsExporting(true);
+    try {
+      await exportElementToPdf(contentRef.current, `pedigree-${dog.name}.pdf`);
+    } finally {
+      setIsExporting(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-muted/30 py-8 print:bg-white print:py-0">
       <div className="mx-auto mb-6 flex max-w-[210mm] items-center justify-between px-4 print:hidden">
@@ -102,13 +116,27 @@ export default function PedigreeCertificate() {
           ← Retour à la fiche
         </Link>
 
-        <Button onClick={() => window.print()}>
-          <Printer className="mr-1.5 size-4" />
-          Imprimer / Exporter en PDF
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleDownloadPdf} disabled={isExporting}>
+            {isExporting ? (
+              <Loader2 className="mr-1.5 size-4 animate-spin" />
+            ) : (
+              <Download className="mr-1.5 size-4" />
+            )}
+            Télécharger en PDF
+          </Button>
+
+          <Button onClick={() => window.print()}>
+            <Printer className="mr-1.5 size-4" />
+            Imprimer
+          </Button>
+        </div>
       </div>
 
-      <div className="mx-auto max-w-[210mm] rounded-xl border border-neutral-200 bg-white p-12 font-serif text-[13px] leading-relaxed text-neutral-900 shadow-sm print:max-w-none print:rounded-none print:border-0 print:p-[15mm] print:shadow-none">
+      <div
+        ref={contentRef}
+        className="mx-auto max-w-[210mm] rounded-xl border border-neutral-200 bg-white p-12 font-serif text-[13px] leading-relaxed text-neutral-900 shadow-sm print:max-w-none print:rounded-none print:border-0 print:p-[15mm] print:shadow-none"
+      >
         <header className="mb-8 flex items-start justify-between border-b-2 border-neutral-900 pb-4">
           <div>
             <p className="text-lg font-bold">{kennel?.name || "Élevage"}</p>
