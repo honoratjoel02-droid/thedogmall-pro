@@ -16,6 +16,7 @@ const Calendar = lazy(() => import("../pages/Calendar"));
 const Finances = lazy(() => import("../pages/Finances"));
 const Settings = lazy(() => import("../pages/Settings"));
 const SaleContract = lazy(() => import("../pages/SaleContract"));
+const PedigreeCertificate = lazy(() => import("../pages/PedigreeCertificate"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 function withSuspense(element: ReactNode) {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
   {
     path: "/contracts/:id",
     element: withSuspense(<SaleContract />),
+  },
+  {
+    path: "/pedigree/:id",
+    element: withSuspense(<PedigreeCertificate />),
   },
   {
     path: "*",

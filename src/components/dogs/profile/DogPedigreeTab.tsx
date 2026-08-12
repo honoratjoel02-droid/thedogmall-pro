@@ -2,13 +2,15 @@
 
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { Printer } from "lucide-react";
 
 import type { Dog } from "../../../types/dog";
 import { useDogs } from "../../../hooks/useDogs";
 import { buildPedigreeTree, getDescendants, type PedigreeNode } from "../../../lib/pedigree";
 
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Badge } from "../../ui/badge";
+import { Button } from "../../ui/button";
 
 interface DogPedigreeTabProps {
   dog: Dog;
@@ -73,6 +75,19 @@ export default function DogPedigreeTab({ dog }: DogPedigreeTabProps) {
       <Card>
         <CardHeader>
           <CardTitle>Ascendance</CardTitle>
+
+          <CardAction>
+            <Button
+              variant="outline"
+              size="sm"
+              render={(props) => (
+                <Link {...props} to={`/pedigree/${dog.id}`} target="_blank">
+                  <Printer className="size-3.5" />
+                  Imprimer le pedigree
+                </Link>
+              )}
+            />
+          </CardAction>
         </CardHeader>
 
         <CardContent>
