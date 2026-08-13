@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
+import WeightGrowthChart from "../../charts/WeightGrowthChart";
 
 type Props = {
   puppy: Puppy;
@@ -169,6 +170,8 @@ export default function PuppyTrackingDialog({ puppy }: Props) {
           </TabsList>
 
           <TabsContent value="weight" className="space-y-4">
+            <WeightGrowthChart entries={puppy.weightHistory} />
+
             <div className="space-y-2">
               {puppy.weightHistory.length === 0 && (
                 <p className="text-sm text-muted-foreground">
