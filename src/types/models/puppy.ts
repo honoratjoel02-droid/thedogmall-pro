@@ -1,12 +1,10 @@
 // src/types/models/puppy.ts
 
+import type { WeightEntry } from "./weightEntry";
+
 export type PuppyStatus = "Disponible" | "Réservé" | "Vendu" | "Conservé";
 
-export interface WeightEntry {
-  date: string;
-
-  weightGrams: number;
-}
+export type { WeightEntry };
 
 export interface CareEntry {
   id: string;

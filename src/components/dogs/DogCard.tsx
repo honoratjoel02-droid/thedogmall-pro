@@ -3,6 +3,7 @@ import { Dog as DogIcon } from "lucide-react";
 
 import type { Dog } from "../../types/dog";
 import { useDogPhotosByDog } from "../../hooks/useDogPhotos";
+import { getCurrentWeightKg } from "../../lib/weight";
 
 import EditDogDialog from "./EditDogDialog";
 import DeleteDogDialog from "./DeleteDogDialog";
@@ -70,7 +71,7 @@ export default function DogCard({ dog }: DogCardProps) {
 
           <div className="flex justify-between">
             <span className="text-muted-foreground">Poids</span>
-            <span className="font-medium">{dog.weight} kg</span>
+            <span className="font-medium">{getCurrentWeightKg(dog)} kg</span>
           </div>
 
           <div className="flex justify-between">

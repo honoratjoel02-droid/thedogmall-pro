@@ -22,6 +22,7 @@ const DEFAULT_VALUES: FormData = {
   color: "",
   birthDate: "",
   weight: 0,
+  weightHistory: [],
   status: "Disponible",
   sireId: "",
   damId: "",

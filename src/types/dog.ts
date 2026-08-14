@@ -1,3 +1,5 @@
+import type { WeightEntry } from "./models/weightEntry";
+
 export type Dog = {
   id: string;
   name: string;
@@ -6,6 +8,7 @@ export type Dog = {
   color: string;
   birthDate: string;
   weight: number;
+  weightHistory: WeightEntry[];
   status:
     | "Disponible"
     | "Réservé"

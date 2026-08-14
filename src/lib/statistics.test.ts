@@ -144,9 +144,9 @@ describe("computeAveragePuppyPrice", () => {
 describe("computeDogsByStatus", () => {
   it("counts and ranks dogs by status, descending", () => {
     const dogs: Dog[] = [
-      { id: "1", name: "A", sex: "Mâle", breed: "B", color: "C", birthDate: "", weight: 1, status: "Disponible" },
-      { id: "2", name: "B", sex: "Mâle", breed: "B", color: "C", birthDate: "", weight: 1, status: "Disponible" },
-      { id: "3", name: "C", sex: "Femelle", breed: "B", color: "C", birthDate: "", weight: 1, status: "Réservé" },
+      { id: "1", name: "A", sex: "Mâle", breed: "B", color: "C", birthDate: "", weight: 1, weightHistory: [], status: "Disponible" },
+      { id: "2", name: "B", sex: "Mâle", breed: "B", color: "C", birthDate: "", weight: 1, weightHistory: [], status: "Disponible" },
+      { id: "3", name: "C", sex: "Femelle", breed: "B", color: "C", birthDate: "", weight: 1, weightHistory: [], status: "Réservé" },
     ];
 
     expect(computeDogsByStatus(dogs)).toEqual([

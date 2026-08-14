@@ -11,6 +11,7 @@ function makeDog(overrides: Partial<Dog> & { id: string }): Dog {
     color: "Noir",
     birthDate: "2020-01-01",
     weight: 20,
+    weightHistory: [],
     status: "Disponible",
     ...overrides,
   };

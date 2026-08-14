@@ -9,6 +9,7 @@ import { useKennelSettings } from "../hooks/useKennelSettings";
 
 import { buildPedigreeTree, type PedigreeNode } from "../lib/pedigree";
 import { exportElementToPdf } from "../lib/pdf";
+import { getCurrentWeightKg } from "../lib/weight";
 import type { Dog } from "../types/dog";
 
 const ANCESTOR_GENERATIONS = 4;
@@ -178,7 +179,7 @@ export default function PedigreeCertificate() {
                   "Date de naissance",
                   new Date(dog.birthDate).toLocaleDateString("fr-FR"),
                 ],
-                ["Poids", `${dog.weight} kg`],
+                ["Poids", `${getCurrentWeightKg(dog)} kg`],
               ].map(([label, value]) => (
                 <tr key={label} className="border-b border-neutral-200">
                   <td className="w-1/3 py-1 text-neutral-600">{label}</td>

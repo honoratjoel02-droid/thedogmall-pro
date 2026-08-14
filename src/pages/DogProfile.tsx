@@ -22,6 +22,7 @@ import {
 
 import { useDog } from "../hooks/useDogs";
 import { useDogPhotosByDog } from "../hooks/useDogPhotos";
+import { getCurrentWeightKg } from "../lib/weight";
 
 export default function DogProfile() {
   const { id } = useParams();
@@ -99,7 +100,7 @@ export default function DogProfile() {
                   <strong>Couleur :</strong> {dog.color}
                 </p>
                 <p>
-                  <strong>Poids :</strong> {dog.weight} kg
+                  <strong>Poids :</strong> {getCurrentWeightKg(dog)} kg
                 </p>
                 <p>
                   <strong>Âge :</strong> {years} an{years > 1 ? "s" : ""}

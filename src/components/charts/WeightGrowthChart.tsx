@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import type { WeightEntry } from "../../types/models/puppy";
+import type { WeightEntry } from "../../types/models/weightEntry";
 
 import ChartCard from "./ChartCard";
 import {
@@ -14,6 +14,8 @@ import {
 
 type Props = {
   entries: WeightEntry[];
+  title?: string;
+  ariaLabel?: string;
 };
 
 type Hover = {
@@ -51,7 +53,11 @@ function formatShortDate(date: string): string {
   });
 }
 
-export default function WeightGrowthChart({ entries }: Props) {
+export default function WeightGrowthChart({
+  entries,
+  title = "Courbe de croissance",
+  ariaLabel = "Courbe de croissance du chiot",
+}: Props) {
   const [hover, setHover] = useState<Hover | null>(null);
 
   const tableView = (
@@ -76,7 +82,7 @@ export default function WeightGrowthChart({ entries }: Props) {
 
   if (entries.length < 2) {
     return (
-      <ChartCard title="Courbe de croissance" table={tableView}>
+      <ChartCard title={title} table={tableView}>
         <div className="flex h-24 items-center justify-center text-center text-sm text-muted-foreground">
           Ajoutez au moins deux pesées pour afficher la courbe.
         </div>
@@ -111,14 +117,14 @@ export default function WeightGrowthChart({ entries }: Props) {
   const hitBandWidth = plotWidth / (entries.length - 1 || 1);
 
   return (
-    <ChartCard title="Courbe de croissance" table={tableView}>
+    <ChartCard title={title} table={tableView}>
       <div className="relative overflow-x-auto">
         <svg
           viewBox={`0 0 ${width} ${HEIGHT}`}
           width="100%"
           height={HEIGHT}
           role="img"
-          aria-label="Courbe de croissance du chiot"
+          aria-label={ariaLabel}
           style={{ minWidth: width }}
         >
           {ticks.map((tick) => {

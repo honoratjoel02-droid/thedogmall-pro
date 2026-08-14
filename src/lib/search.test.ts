@@ -7,9 +7,9 @@ import type { Litter } from "../types/models/litter";
 import type { Breeding } from "../types/models/breeding";
 
 const dogs: Dog[] = [
-  { id: "maya", name: "Maya", sex: "Femelle", breed: "Berger Australien", color: "Noir", birthDate: "2022-01-01", weight: 20, status: "Disponible" },
-  { id: "max", name: "Max", sex: "Mâle", breed: "Berger Australien", color: "Noir", birthDate: "2021-01-01", weight: 25, status: "Disponible" },
-  { id: "lea", name: "Léa", sex: "Femelle", breed: "Labrador", color: "Blond", birthDate: "2023-01-01", weight: 22, status: "Réservé" },
+  { id: "maya", name: "Maya", sex: "Femelle", breed: "Berger Australien", color: "Noir", birthDate: "2022-01-01", weight: 20, weightHistory: [], status: "Disponible" },
+  { id: "max", name: "Max", sex: "Mâle", breed: "Berger Australien", color: "Noir", birthDate: "2021-01-01", weight: 25, weightHistory: [], status: "Disponible" },
+  { id: "lea", name: "Léa", sex: "Femelle", breed: "Labrador", color: "Blond", birthDate: "2023-01-01", weight: 22, weightHistory: [], status: "Réservé" },
 ];
 
 const clients: Client[] = [

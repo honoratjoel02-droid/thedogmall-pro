@@ -9,6 +9,7 @@ export const mockDogs: Dog[] = [
     color: "Crème",
     birthDate: "2023-03-12",
     weight: 24,
+    weightHistory: [],
     status: "Gestante",
   },
   {
@@ -19,6 +20,7 @@ export const mockDogs: Dog[] = [
     color: "Rouge",
     birthDate: "2022-09-01",
     weight: 27,
+    weightHistory: [],
     status: "Disponible",
   },
   {
@@ -29,6 +31,7 @@ export const mockDogs: Dog[] = [
     color: "Noir",
     birthDate: "2021-11-18",
     weight: 23,
+    weightHistory: [],
     status: "Réservé",
   },
 ];
