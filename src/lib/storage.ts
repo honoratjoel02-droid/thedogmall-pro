@@ -11,6 +11,7 @@ export const STORAGE_KEYS = {
   healthRecords: "thedogmall.healthRecords",
   heatCycles: "thedogmall.heatCycles",
   sales: "thedogmall.sales",
+  waitlist: "thedogmall.waitlist",
   kennelSettings: "thedogmall.kennelSettings",
   dogPhotos: "thedogmall.dogPhotos",
   dogDocuments: "thedogmall.dogDocuments",
