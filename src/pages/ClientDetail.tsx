@@ -4,17 +4,22 @@ import MainLayout from "../components/layout/MainLayout";
 import EditClientDialog from "../components/clients/EditClientDialog";
 import DeleteClientDialog from "../components/clients/DeleteClientDialog";
 import ClientPurchases from "../components/clients/ClientPurchases";
+import AddClientInteractionDialog from "../components/clients/AddClientInteractionDialog";
+import ClientInteractionList from "../components/clients/ClientInteractionList";
 
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 
 import { useClient } from "../hooks/useClients";
+import { useClientInteractionsByClient } from "../hooks/useClientInteractions";
 
 export default function ClientDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const { data: client, isLoading } = useClient(id);
+  const { data: interactions = [], isLoading: loadingInteractions } =
+    useClientInteractionsByClient(id);
 
   if (isLoading) {
     return (
@@ -76,6 +81,19 @@ export default function ClientDetail() {
             )}
           </CardContent>
         </Card>
+
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-2xl font-semibold">Historique des échanges</h2>
+
+            <AddClientInteractionDialog clientId={client.id} />
+          </div>
+
+          <ClientInteractionList
+            interactions={interactions}
+            isLoading={loadingInteractions}
+          />
+        </div>
 
         <div className="space-y-4">
           <h2 className="text-2xl font-semibold">Achats</h2>

@@ -56,6 +56,7 @@ export function createBackup(): BackupData {
       heatCycles: read(STORAGE_KEYS.heatCycles),
       sales: read(STORAGE_KEYS.sales),
       waitlist: read(STORAGE_KEYS.waitlist),
+      clientInteractions: read(STORAGE_KEYS.clientInteractions),
       kennelSettings: readObject(STORAGE_KEYS.kennelSettings),
       dogPhotos: read(STORAGE_KEYS.dogPhotos),
       dogDocuments: read(STORAGE_KEYS.dogDocuments),
@@ -122,6 +123,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.heatCycles, backup.data.heatCycles ?? []);
   write(STORAGE_KEYS.sales, backup.data.sales ?? []);
   write(STORAGE_KEYS.waitlist, backup.data.waitlist ?? []);
+  write(STORAGE_KEYS.clientInteractions, backup.data.clientInteractions ?? []);
 
   if (backup.data.kennelSettings) {
     write(STORAGE_KEYS.kennelSettings, backup.data.kennelSettings);
