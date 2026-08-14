@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Download, Heart } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import AddPuppyDialog from "../components/dogs/litters/AddPuppyDialog";
@@ -21,6 +21,11 @@ import { usePuppiesByLitter } from "../hooks/usePuppies";
 import { useDogs } from "../hooks/useDogs";
 import { useExpenses } from "../hooks/useExpenses";
 import { useIncomes } from "../hooks/useIncomes";
+import { useClients } from "../hooks/useClients";
+import { useSales } from "../hooks/useSales";
+
+import { downloadCsv, toCsv } from "../lib/csv";
+import type { Puppy } from "../types/models/puppy";
 
 export default function LitterDetail() {
   const { id } = useParams();
@@ -31,6 +36,8 @@ export default function LitterDetail() {
   const { data: dogs = [] } = useDogs();
   const { data: allExpenses = [] } = useExpenses();
   const { data: allIncomes = [] } = useIncomes();
+  const { data: clients = [] } = useClients();
+  const { data: sales = [] } = useSales();
 
   if (isLoading) {
     return (
@@ -62,6 +69,39 @@ export default function LitterDetail() {
 
   const litterExpenses = allExpenses.filter((e) => e.litterId === litter.id);
   const litterIncomes = allIncomes.filter((i) => i.litterId === litter.id);
+  const litterId = litter.id;
+
+  function handleExportPuppies() {
+    const columns = [
+      { header: "Identifiant", accessor: (p: Puppy) => p.identifier },
+      { header: "Sexe", accessor: (p: Puppy) => p.sex },
+      { header: "Couleur", accessor: (p: Puppy) => p.color },
+      { header: "Statut", accessor: (p: Puppy) => p.status },
+      {
+        header: "Poids actuel (g)",
+        accessor: (p: Puppy) =>
+          p.weightHistory.length > 0
+            ? p.weightHistory[p.weightHistory.length - 1].weightGrams
+            : p.birthWeightGrams,
+      },
+      {
+        header: "Client",
+        accessor: (p: Puppy) => {
+          const clientId =
+            sales.find((s) => s.puppyId === p.id)?.clientId ??
+            p.reservedForClientId;
+          const client = clients.find((c) => c.id === clientId);
+          return client ? `${client.firstName} ${client.lastName}` : "";
+        },
+      },
+      {
+        header: "Prix de vente (FCFA)",
+        accessor: (p: Puppy) => sales.find((s) => s.puppyId === p.id)?.price,
+      },
+    ];
+
+    downloadCsv(`chiots-portee-${litterId}.csv`, toCsv(puppies, columns));
+  }
 
   return (
     <MainLayout>
@@ -110,7 +150,18 @@ export default function LitterDetail() {
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-2xl font-semibold">Chiots</h2>
 
-          <AddPuppyDialog litterId={litter.id} />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              onClick={handleExportPuppies}
+              disabled={puppies.length === 0}
+            >
+              <Download className="mr-1.5 size-4" />
+              Exporter en CSV
+            </Button>
+
+            <AddPuppyDialog litterId={litter.id} />
+          </div>
         </div>
 
         {puppies.length === 0 && (

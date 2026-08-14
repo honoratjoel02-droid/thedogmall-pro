@@ -1,15 +1,18 @@
-import { BarChart3, Percent, Wallet, Baby, Tag } from "lucide-react";
+import { BarChart3, Download, Percent, Wallet, Baby, Tag } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import StatTile from "../components/ui/stat-tile";
 import BreakdownBarChart from "../components/statistics/BreakdownBarChart";
 import BreedingOutcomeCard from "../components/statistics/BreedingOutcomeCard";
 
+import { Button } from "../components/ui/button";
+
 import { useBreedings } from "../hooks/useBreedings";
 import { useLitters } from "../hooks/useLitters";
 import { useSales } from "../hooks/useSales";
 import { useDogs } from "../hooks/useDogs";
 import { useClients } from "../hooks/useClients";
+import { usePuppies } from "../hooks/usePuppies";
 
 import {
   computeAverageIncomePerLitter,
@@ -20,6 +23,11 @@ import {
   computeDogsByStatus,
   computeTopClients,
 } from "../lib/statistics";
+import { downloadCsv, toCsv } from "../lib/csv";
+import { getBalanceDue, getTotalPaid } from "../lib/payments";
+import type { Sale } from "../types/models/sale";
+import type { Client } from "../types/models/client";
+import type { Puppy } from "../types/models/puppy";
 
 function formatFCFA(value: number): string {
   return `${value.toLocaleString("fr-FR")} FCFA`;
@@ -31,6 +39,7 @@ export default function Statistics() {
   const { data: sales = [] } = useSales();
   const { data: dogs = [] } = useDogs();
   const { data: clients = [] } = useClients();
+  const { data: puppies = [] } = usePuppies();
 
   const successRate = computeBreedingSuccessRate(breedings);
   const outcomeBreakdown = computeBreedingOutcomeBreakdown(breedings);
@@ -40,17 +49,60 @@ export default function Statistics() {
   const dogsByStatus = computeDogsByStatus(dogs);
   const topClients = computeTopClients(clients, sales);
 
+  function handleExportSales() {
+    const clientsById = new Map<string, Client>(clients.map((c) => [c.id, c]));
+    const puppiesById = new Map<string, Puppy>(puppies.map((p) => [p.id, p]));
+
+    const columns = [
+      {
+        header: "Chiot",
+        accessor: (s: Sale) => puppiesById.get(s.puppyId)?.identifier ?? "",
+      },
+      {
+        header: "Client",
+        accessor: (s: Sale) => {
+          const client = clientsById.get(s.clientId);
+          return client ? `${client.firstName} ${client.lastName}` : "";
+        },
+      },
+      {
+        header: "Date de vente",
+        accessor: (s: Sale) => new Date(s.saleDate).toLocaleDateString("fr-FR"),
+      },
+      { header: "Prix (FCFA)", accessor: (s: Sale) => s.price },
+      { header: "Payé (FCFA)", accessor: (s: Sale) => getTotalPaid(s) },
+      { header: "Solde dû (FCFA)", accessor: (s: Sale) => getBalanceDue(s) },
+      {
+        header: "Contrat signé",
+        accessor: (s: Sale) => (s.contractSigned ? "Oui" : "Non"),
+      },
+    ];
+
+    downloadCsv("ventes.csv", toCsv(sales, columns));
+  }
+
   return (
     <MainLayout>
-      <div className="mb-8">
-        <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-          <BarChart3 className="size-8 text-primary" />
-          Statistiques
-        </h1>
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
+            <BarChart3 className="size-8 text-primary" />
+            Statistiques
+          </h1>
 
-        <p className="text-muted-foreground">
-          Indicateurs de performance de l'élevage.
-        </p>
+          <p className="text-muted-foreground">
+            Indicateurs de performance de l'élevage.
+          </p>
+        </div>
+
+        <Button
+          variant="outline"
+          onClick={handleExportSales}
+          disabled={sales.length === 0}
+        >
+          <Download className="mr-1.5 size-4" />
+          Exporter les ventes en CSV
+        </Button>
       </div>
 
       <div className="space-y-6">
