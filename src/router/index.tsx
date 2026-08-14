@@ -18,6 +18,7 @@ const Settings = lazy(() => import("../pages/Settings"));
 const Statistics = lazy(() => import("../pages/Statistics"));
 const SaleContract = lazy(() => import("../pages/SaleContract"));
 const PedigreeCertificate = lazy(() => import("../pages/PedigreeCertificate"));
+const HealthRecordCertificate = lazy(() => import("../pages/HealthRecordCertificate"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 function withSuspense(element: ReactNode) {
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
   {
     path: "/pedigree/:id",
     element: withSuspense(<PedigreeCertificate />),
+  },
+  {
+    path: "/health-record/:id",
+    element: withSuspense(<HealthRecordCertificate />),
   },
   {
     path: "*",
