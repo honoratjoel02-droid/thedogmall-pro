@@ -14,6 +14,7 @@ export interface BackupData {
     incomes: unknown[];
     tasks: unknown[];
     healthRecords: unknown[];
+    heatCycles: unknown[];
     sales: unknown[];
     kennelSettings: Record<string, unknown> | null;
     dogPhotos: unknown[];

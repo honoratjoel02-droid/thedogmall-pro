@@ -5,6 +5,8 @@ import type { Task } from "../types/models/task";
 import type { Pregnancy } from "../types/models/pregnancy";
 import type { Puppy } from "../types/models/puppy";
 import type { HealthRecord } from "../types/models/healthRecord";
+import type { HeatCycle } from "../types/models/heatCycle";
+import { predictNextHeat } from "./heatCycle";
 
 export type AlertSeverity = "overdue" | "soon" | "info";
 
@@ -47,6 +49,7 @@ type ComputeAlertsParams = {
   puppies: Puppy[];
   dogs: Dog[];
   healthRecords?: HealthRecord[];
+  heatCycles?: HeatCycle[];
   lastBackupAt?: string | null;
   now?: Date;
 };
@@ -57,6 +60,7 @@ export function computeAlerts({
   puppies,
   dogs,
   healthRecords = [],
+  heatCycles = [],
   lastBackupAt,
   now = new Date(),
 }: ComputeAlertsParams): Alert[] {
@@ -188,6 +192,35 @@ export function computeAlerts({
       date: record.date,
       severity,
       link: `/dogs/${record.dogId}`,
+    });
+  }
+
+  const cyclesByDog = new Map<string, HeatCycle[]>();
+
+  for (const cycle of heatCycles) {
+    const list = cyclesByDog.get(cycle.dogId) ?? [];
+
+    list.push(cycle);
+    cyclesByDog.set(cycle.dogId, list);
+  }
+
+  for (const [dogId, cycles] of cyclesByDog) {
+    const prediction = predictNextHeat(cycles);
+
+    if (!prediction) continue;
+
+    const severity = severityFor(prediction.predictedDate, now);
+
+    if (severity === "info") continue;
+
+    const dog = dogs.find((d) => d.id === dogId);
+
+    alerts.push({
+      id: `heat-${dogId}`,
+      message: `Chaleur prévue pour ${dog?.name ?? "une femelle"}`,
+      date: prediction.predictedDate,
+      severity,
+      link: `/dogs/${dogId}`,
     });
   }
 
