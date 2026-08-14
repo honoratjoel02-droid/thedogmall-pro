@@ -68,6 +68,7 @@ export default function PuppyForm({
       weightHistory: [],
       vaccinations: [],
       dewormings: [],
+      socialization: [],
       notes: notes || undefined,
     });
 

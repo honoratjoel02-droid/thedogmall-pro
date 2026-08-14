@@ -167,6 +167,7 @@ export default function PuppyTrackingDialog({ puppy }: Props) {
             <TabsTrigger value="weight">Poids</TabsTrigger>
             <TabsTrigger value="vaccinations">Vaccins</TabsTrigger>
             <TabsTrigger value="dewormings">Vermifuges</TabsTrigger>
+            <TabsTrigger value="socialization">Socialisation</TabsTrigger>
           </TabsList>
 
           <TabsContent value="weight" className="space-y-4">
@@ -229,6 +230,15 @@ export default function PuppyTrackingDialog({ puppy }: Props) {
               entries={puppy.dewormings}
               onChange={(dewormings) =>
                 updatePuppy.mutate({ id: puppy.id, data: { dewormings } })
+              }
+            />
+          </TabsContent>
+
+          <TabsContent value="socialization">
+            <CareChecklist
+              entries={puppy.socialization}
+              onChange={(socialization) =>
+                updatePuppy.mutate({ id: puppy.id, data: { socialization } })
               }
             />
           </TabsContent>

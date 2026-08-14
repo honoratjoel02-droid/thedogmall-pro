@@ -9,6 +9,7 @@ import DeleteLitterDialog from "../components/dogs/litters/DeleteLitterDialog";
 import AddWaitlistEntryDialog from "../components/dogs/litters/AddWaitlistEntryDialog";
 import WaitlistList from "../components/dogs/litters/WaitlistList";
 import ApplyVaccinationScheduleDialog from "../components/dogs/litters/ApplyVaccinationScheduleDialog";
+import ApplySocializationChecklistDialog from "../components/dogs/litters/ApplySocializationChecklistDialog";
 import LitterPhotoGallery from "../components/dogs/litters/LitterPhotoGallery";
 import AddLitterPhotoDialog from "../components/dogs/litters/AddLitterPhotoDialog";
 import FinanceSummary from "../components/finances/FinanceSummary";
@@ -186,6 +187,11 @@ export default function LitterDetail() {
 
           <div className="flex flex-wrap gap-2">
             <ApplyVaccinationScheduleDialog
+              puppies={puppies}
+              birthDate={litter.birthDate}
+            />
+
+            <ApplySocializationChecklistDialog
               puppies={puppies}
               birthDate={litter.birthDate}
             />

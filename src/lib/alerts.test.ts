@@ -145,6 +145,7 @@ describe("computeAlerts — puppies", () => {
     weightHistory: [],
     vaccinations: [],
     dewormings: [],
+    socialization: [],
     createdAt: NOW.toISOString(),
     updatedAt: NOW.toISOString(),
   };

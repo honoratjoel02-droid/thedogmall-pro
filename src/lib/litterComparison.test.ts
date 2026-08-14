@@ -31,6 +31,7 @@ function makePuppy(overrides: Partial<Puppy> & { litterId: string }): Puppy {
     weightHistory: overrides.weightHistory ?? [],
     vaccinations: overrides.vaccinations ?? [],
     dewormings: overrides.dewormings ?? [],
+    socialization: overrides.socialization ?? [],
     birthWeightGrams: overrides.birthWeightGrams,
     reservedForClientId: overrides.reservedForClientId,
     notes: overrides.notes,

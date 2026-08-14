@@ -39,6 +39,8 @@ export interface Puppy {
 
   dewormings: CareEntry[];
 
+  socialization: CareEntry[];
+
   notes?: string;
 
   createdAt: string;
