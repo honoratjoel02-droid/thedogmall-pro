@@ -1,10 +1,12 @@
-import { Baby } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Baby, GitCompare } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import AddLitterDialog from "../components/dogs/litters/AddLitterDialog";
 import LitterCard from "../components/dogs/litters/LitterCard";
 
 import { Card, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 
 import { useLitters } from "../hooks/useLitters";
 
@@ -26,7 +28,19 @@ export default function Litters() {
             </p>
           </div>
 
-          <AddLitterDialog />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              render={(props) => (
+                <Link {...props} to="/litters/compare">
+                  <GitCompare className="mr-1.5 size-4" />
+                  Comparer les portées
+                </Link>
+              )}
+            />
+
+            <AddLitterDialog />
+          </div>
         </div>
 
         {isLoading && (

@@ -9,6 +9,7 @@ const DogProfile = lazy(() => import("../pages/DogProfile"));
 const Breeding = lazy(() => import("../pages/Breeding"));
 const BreedingDetail = lazy(() => import("../pages/BreedingDetail"));
 const Litters = lazy(() => import("../pages/Litters"));
+const LitterComparator = lazy(() => import("../pages/LitterComparator"));
 const LitterDetail = lazy(() => import("../pages/LitterDetail"));
 const Clients = lazy(() => import("../pages/Clients"));
 const ClientDetail = lazy(() => import("../pages/ClientDetail"));
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
   {
     path: "/litters",
     element: withSuspense(<Litters />),
+  },
+  {
+    path: "/litters/compare",
+    element: withSuspense(<LitterComparator />),
   },
   {
     path: "/litters/:id",
