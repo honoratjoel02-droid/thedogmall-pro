@@ -8,6 +8,7 @@ import EditLitterDialog from "../components/dogs/litters/EditLitterDialog";
 import DeleteLitterDialog from "../components/dogs/litters/DeleteLitterDialog";
 import AddWaitlistEntryDialog from "../components/dogs/litters/AddWaitlistEntryDialog";
 import WaitlistList from "../components/dogs/litters/WaitlistList";
+import ApplyVaccinationScheduleDialog from "../components/dogs/litters/ApplyVaccinationScheduleDialog";
 import FinanceSummary from "../components/finances/FinanceSummary";
 import ExpensesTable from "../components/finances/ExpensesTable";
 import IncomesTable from "../components/finances/IncomesTable";
@@ -169,6 +170,11 @@ export default function LitterDetail() {
           <h2 className="text-2xl font-semibold">Chiots</h2>
 
           <div className="flex flex-wrap gap-2">
+            <ApplyVaccinationScheduleDialog
+              puppies={puppies}
+              birthDate={litter.birthDate}
+            />
+
             <Button
               variant="outline"
               onClick={handleExportPuppies}
