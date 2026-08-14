@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import DogSelect from "./DogSelect";
+import InbreedingEstimate from "./InbreedingEstimate";
 
 import { useCreateBreeding } from "../../../hooks/useBreedings";
 import { breedingSchema } from "../../../schemas/breeding";
@@ -97,6 +98,10 @@ export default function BreedingForm({ onSuccess }: BreedingFormProps) {
           <p className="text-sm text-destructive">{errors.maleId}</p>
         )}
       </div>
+
+      {femaleId && maleId && femaleId !== maleId && (
+        <InbreedingEstimate sireId={maleId} damId={femaleId} />
+      )}
 
       <div className="space-y-2">
         <Label htmlFor="breedingDate">Date de la saillie</Label>
