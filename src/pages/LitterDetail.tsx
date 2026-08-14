@@ -9,6 +9,8 @@ import DeleteLitterDialog from "../components/dogs/litters/DeleteLitterDialog";
 import AddWaitlistEntryDialog from "../components/dogs/litters/AddWaitlistEntryDialog";
 import WaitlistList from "../components/dogs/litters/WaitlistList";
 import ApplyVaccinationScheduleDialog from "../components/dogs/litters/ApplyVaccinationScheduleDialog";
+import LitterPhotoGallery from "../components/dogs/litters/LitterPhotoGallery";
+import AddLitterPhotoDialog from "../components/dogs/litters/AddLitterPhotoDialog";
 import FinanceSummary from "../components/finances/FinanceSummary";
 import ExpensesTable from "../components/finances/ExpensesTable";
 import IncomesTable from "../components/finances/IncomesTable";
@@ -27,6 +29,7 @@ import { useIncomes } from "../hooks/useIncomes";
 import { useClients } from "../hooks/useClients";
 import { useSales } from "../hooks/useSales";
 import { useWaitlistByLitter } from "../hooks/useWaitlist";
+import { useLitterPhotosByLitter } from "../hooks/useLitterPhotos";
 
 import { downloadCsv, toCsv } from "../lib/csv";
 import type { Puppy } from "../types/models/puppy";
@@ -44,6 +47,8 @@ export default function LitterDetail() {
   const { data: sales = [] } = useSales();
   const { data: waitlistEntries = [], isLoading: loadingWaitlist } =
     useWaitlistByLitter(id);
+  const { data: litterPhotos = [], isLoading: loadingPhotos } =
+    useLitterPhotosByLitter(id);
 
   if (isLoading) {
     return (
@@ -152,6 +157,16 @@ export default function LitterDetail() {
             )}
           </CardContent>
         </Card>
+
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-2xl font-semibold">Galerie photos</h2>
+
+            <AddLitterPhotoDialog litterId={litter.id} />
+          </div>
+
+          <LitterPhotoGallery photos={litterPhotos} isLoading={loadingPhotos} />
+        </div>
 
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">

@@ -21,5 +21,6 @@ export interface BackupData {
     kennelSettings: Record<string, unknown> | null;
     dogPhotos: unknown[];
     dogDocuments: unknown[];
+    litterPhotos: unknown[];
   };
 }
