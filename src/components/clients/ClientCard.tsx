@@ -6,6 +6,7 @@ import type { Client } from "../../types/models/client";
 import EditClientDialog from "./EditClientDialog";
 import DeleteClientDialog from "./DeleteClientDialog";
 
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 
@@ -32,6 +33,16 @@ export default function ClientCard({ client }: Props) {
 
           {client.email && (
             <p className="text-sm text-muted-foreground">{client.email}</p>
+          )}
+
+          {client.tags && client.tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap justify-center gap-1.5">
+              {client.tags.map((tag) => (
+                <Badge key={tag} variant="outline">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           )}
         </div>
 

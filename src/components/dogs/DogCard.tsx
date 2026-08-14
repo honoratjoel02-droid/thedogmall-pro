@@ -83,8 +83,14 @@ export default function DogCard({ dog }: DogCardProps) {
           </div>
         </div>
 
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex flex-wrap justify-center gap-1.5">
           <Badge variant={getStatusVariant(dog.status)}>{dog.status}</Badge>
+
+          {dog.tags?.map((tag) => (
+            <Badge key={tag} variant="outline">
+              {tag}
+            </Badge>
+          ))}
         </div>
 
         <div className="mt-6 flex gap-2">

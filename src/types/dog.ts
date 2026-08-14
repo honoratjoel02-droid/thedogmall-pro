@@ -16,4 +16,5 @@ export type Dog = {
     | "Retraité";
   sireId?: string;
   damId?: string;
+  tags?: string[];
 };

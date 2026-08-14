@@ -15,6 +15,8 @@ export interface Client {
 
   notes?: string;
 
+  tags?: string[];
+
   createdAt: string;
 
   updatedAt: string;

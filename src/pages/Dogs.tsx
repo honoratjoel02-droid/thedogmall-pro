@@ -16,9 +16,14 @@ export default function Dogs() {
   const [breed, setBreed] = useState("");
   const [sex, setSex] = useState("");
   const [status, setStatus] = useState("");
+  const [tag, setTag] = useState("");
 
   const breeds = useMemo(() => {
     return [...new Set(dogs.map((dog) => dog.breed))].sort();
+  }, [dogs]);
+
+  const tags = useMemo(() => {
+    return [...new Set(dogs.flatMap((dog) => dog.tags ?? []))].sort();
   }, [dogs]);
 
   const filteredDogs = useMemo(() => {
@@ -33,15 +38,18 @@ export default function Dogs() {
 
       const matchesStatus = status === "" || dog.status === status;
 
-      return matchesSearch && matchesBreed && matchesSex && matchesStatus;
+      const matchesTag = tag === "" || (dog.tags ?? []).includes(tag);
+
+      return matchesSearch && matchesBreed && matchesSex && matchesStatus && matchesTag;
     });
-  }, [dogs, search, breed, sex, status]);
+  }, [dogs, search, breed, sex, status, tag]);
 
   function resetFilters() {
     setSearch("");
     setBreed("");
     setSex("");
     setStatus("");
+    setTag("");
   }
 
   return (
@@ -72,7 +80,10 @@ export default function Dogs() {
         onSexChange={setSex}
         status={status}
         onStatusChange={setStatus}
+        tag={tag}
+        onTagChange={setTag}
         breeds={breeds}
+        tags={tags}
         resultsCount={filteredDogs.length}
         onReset={resetFilters}
       />

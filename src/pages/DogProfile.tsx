@@ -87,9 +87,15 @@ export default function DogProfile() {
             <div className="space-y-4">
               <h1 className="text-3xl font-bold">{dog.name}</h1>
 
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Badge>{dog.sex}</Badge>
                 <Badge variant="secondary">{dog.status}</Badge>
+
+                {dog.tags?.map((tag) => (
+                  <Badge key={tag} variant="outline">
+                    {tag}
+                  </Badge>
+                ))}
               </div>
 
               <div className="grid gap-2 md:grid-cols-2">

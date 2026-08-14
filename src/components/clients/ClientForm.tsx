@@ -6,6 +6,7 @@ import { useCreateClient, useUpdateClient } from "../../hooks/useClients";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import TagInput from "../ui/TagInput";
 
 type ClientFormProps = {
   client?: Client;
@@ -22,6 +23,7 @@ export default function ClientForm({ client, onSuccess }: ClientFormProps) {
   const [phone, setPhone] = useState(client?.phone ?? "");
   const [address, setAddress] = useState(client?.address ?? "");
   const [notes, setNotes] = useState(client?.notes ?? "");
+  const [tags, setTags] = useState<string[]>(client?.tags ?? []);
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -41,6 +43,7 @@ export default function ClientForm({ client, onSuccess }: ClientFormProps) {
       phone: phone || undefined,
       address: address || undefined,
       notes: notes || undefined,
+      tags,
     };
 
     if (client) {
@@ -54,6 +57,7 @@ export default function ClientForm({ client, onSuccess }: ClientFormProps) {
       setPhone("");
       setAddress("");
       setNotes("");
+      setTags([]);
     }
 
     onSuccess?.();
@@ -132,6 +136,12 @@ export default function ClientForm({ client, onSuccess }: ClientFormProps) {
           className="w-full rounded-md border bg-background px-3 py-2"
           placeholder="Préférences, historique de contact..."
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="tags">Étiquettes</Label>
+
+        <TagInput value={tags} onChange={setTags} placeholder="Ex : VIP, Fidèle..." />
       </div>
 
       <div className="flex justify-end">

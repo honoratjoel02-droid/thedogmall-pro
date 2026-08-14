@@ -15,7 +15,11 @@ type DogFiltersProps = {
   status: string;
   onStatusChange: (value: string) => void;
 
+  tag: string;
+  onTagChange: (value: string) => void;
+
   breeds: string[];
+  tags: string[];
 
   resultsCount: number;
 
@@ -31,7 +35,10 @@ export default function DogFilters({
   onSexChange,
   status,
   onStatusChange,
+  tag,
+  onTagChange,
   breeds,
+  tags,
   resultsCount,
   onReset,
 }: DogFiltersProps) {
@@ -48,7 +55,7 @@ export default function DogFilters({
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <select
           className="rounded-md border bg-background px-3 py-2"
           value={breed}
@@ -83,6 +90,20 @@ export default function DogFilters({
           <option value="Réservé">Réservé</option>
           <option value="Gestante">Gestante</option>
           <option value="Retraité">Retraité</option>
+        </select>
+
+        <select
+          className="rounded-md border bg-background px-3 py-2"
+          value={tag}
+          onChange={(e) => onTagChange(e.target.value)}
+        >
+          <option value="">Toutes les étiquettes</option>
+
+          {tags.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
         </select>
       </div>
 

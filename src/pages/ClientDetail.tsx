@@ -7,6 +7,7 @@ import ClientPurchases from "../components/clients/ClientPurchases";
 import AddClientInteractionDialog from "../components/clients/AddClientInteractionDialog";
 import ClientInteractionList from "../components/clients/ClientInteractionList";
 
+import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 
@@ -61,6 +62,16 @@ export default function ClientDetail() {
             <h1 className="text-3xl font-bold">
               {client.firstName} {client.lastName}
             </h1>
+
+            {client.tags && client.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {client.tags.map((tag) => (
+                  <Badge key={tag} variant="outline">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
 
             <div className="grid gap-2 md:grid-cols-2">
               <p>

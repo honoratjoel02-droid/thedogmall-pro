@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import TagInput from "../ui/TagInput";
 
 import { useCreateDog, useUpdateDog, useDogs } from "../../hooks/useDogs";
 import type { Dog } from "../../types/dog";
@@ -40,6 +41,8 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
     return { ...DEFAULT_VALUES, ...rest };
   });
 
+  const [tags, setTags] = useState<string[]>(dog?.tags ?? []);
+
   const sireOptions = dogs.filter(
     (candidate) => candidate.sex === "Mâle" && candidate.id !== dog?.id,
   );
@@ -68,6 +71,7 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
       ...form,
       sireId: form.sireId || undefined,
       damId: form.damId || undefined,
+      tags,
     };
 
     if (dog) {
@@ -78,6 +82,7 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
     } else {
       await createDog.mutateAsync(payload);
       setForm(DEFAULT_VALUES);
+      setTags([]);
     }
 
     onSuccess?.();
@@ -181,6 +186,11 @@ export default function DogForm({ dog, onSuccess }: DogFormProps) {
             </option>
           ))}
         </select>
+      </div>
+
+      <div>
+        <Label>Étiquettes</Label>
+        <TagInput value={tags} onChange={setTags} placeholder="Ex : Champion, Porteur sain..." />
       </div>
 
       <Button type="submit" className="w-full">
