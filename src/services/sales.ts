@@ -56,6 +56,24 @@ class SalesService {
     return newSale;
   }
 
+  async update(id: string, data: Partial<Sale>): Promise<Sale | undefined> {
+    const index = this.sales.findIndex((sale) => sale.id === id);
+
+    if (index === -1) {
+      return undefined;
+    }
+
+    this.sales[index] = {
+      ...this.sales[index],
+      ...data,
+      updatedAt: new Date().toISOString(),
+    };
+
+    this.save();
+
+    return this.sales[index];
+  }
+
   async delete(id: string): Promise<void> {
     this.sales = this.sales.filter((sale) => sale.id !== id);
 

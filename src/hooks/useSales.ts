@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { salesService } from "../services/sales";
 import { puppiesService } from "../services/puppies";
 import { incomesService } from "../services/incomes";
-import type { Sale } from "../types/models/sale";
+import type { Payment, Sale } from "../types/models/sale";
 import type { Puppy } from "../types/models/puppy";
 
 export function useSales() {
@@ -43,6 +43,7 @@ type DeclareSaleInput = {
   price: number;
   saleDate: string;
   contractSigned: boolean;
+  depositAmount?: number;
   notes?: string;
 };
 
@@ -56,15 +57,27 @@ export function useDeclareSale() {
       price,
       saleDate,
       contractSigned,
+      depositAmount,
       notes,
     }: DeclareSaleInput) => {
-      const income = await incomesService.create({
-        title: `Vente ${puppy.identifier}`,
-        amount: price,
-        category: "Vente de chiot",
-        incomeDate: saleDate,
-        litterId: puppy.litterId,
-      });
+      const payments: Payment[] = [];
+
+      if (depositAmount && depositAmount > 0) {
+        const income = await incomesService.create({
+          title: `Vente ${puppy.identifier} (acompte)`,
+          amount: depositAmount,
+          category: "Vente de chiot",
+          incomeDate: saleDate,
+          litterId: puppy.litterId,
+        });
+
+        payments.push({
+          id: crypto.randomUUID(),
+          amount: depositAmount,
+          date: saleDate,
+          incomeId: income.id,
+        });
+      }
 
       const sale = await salesService.create({
         puppyId: puppy.id,
@@ -73,7 +86,7 @@ export function useDeclareSale() {
         price,
         saleDate,
         contractSigned,
-        incomeId: income.id,
+        payments,
         notes,
       });
 
@@ -96,6 +109,94 @@ export function useDeclareSale() {
   });
 }
 
+type AddPaymentInput = {
+  sale: Sale;
+  puppyIdentifier: string;
+  amount: number;
+  date: string;
+  notes?: string;
+};
+
+export function useAddPayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      sale,
+      puppyIdentifier,
+      amount,
+      date,
+      notes,
+    }: AddPaymentInput) => {
+      const income = await incomesService.create({
+        title: `Vente ${puppyIdentifier} (paiement)`,
+        amount,
+        category: "Vente de chiot",
+        incomeDate: date,
+        litterId: sale.litterId,
+      });
+
+      const payment: Payment = {
+        id: crypto.randomUUID(),
+        amount,
+        date,
+        notes,
+        incomeId: income.id,
+      };
+
+      return salesService.update(sale.id, {
+        payments: [...sale.payments, payment],
+      });
+    },
+
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+      queryClient.invalidateQueries({ queryKey: ["incomes"] });
+
+      if (updated) {
+        queryClient.invalidateQueries({
+          queryKey: ["sales", "puppy", updated.puppyId],
+        });
+      }
+    },
+  });
+}
+
+export function useDeletePayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      sale,
+      paymentId,
+    }: {
+      sale: Sale;
+      paymentId: string;
+    }) => {
+      const payment = sale.payments.find((p) => p.id === paymentId);
+
+      if (payment?.incomeId) {
+        await incomesService.delete(payment.incomeId);
+      }
+
+      return salesService.update(sale.id, {
+        payments: sale.payments.filter((p) => p.id !== paymentId),
+      });
+    },
+
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+      queryClient.invalidateQueries({ queryKey: ["incomes"] });
+
+      if (updated) {
+        queryClient.invalidateQueries({
+          queryKey: ["sales", "puppy", updated.puppyId],
+        });
+      }
+    },
+  });
+}
+
 export function useRevertSale() {
   const queryClient = useQueryClient();
 
@@ -103,8 +204,10 @@ export function useRevertSale() {
     mutationFn: async (sale: Sale) => {
       await salesService.delete(sale.id);
 
-      if (sale.incomeId) {
-        await incomesService.delete(sale.incomeId);
+      for (const payment of sale.payments) {
+        if (payment.incomeId) {
+          await incomesService.delete(payment.incomeId);
+        }
       }
 
       await puppiesService.update(sale.puppyId, {

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { useSalesByClient } from "../../hooks/useSales";
 import { usePuppies } from "../../hooks/usePuppies";
+import { getBalanceDue, isFullyPaid } from "../../lib/payments";
 
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -54,6 +55,12 @@ export default function ClientPurchases({ clientId }: Props) {
               <div className="flex items-center gap-2">
                 {sale.contractSigned && (
                   <Badge variant="secondary">Contrat signé</Badge>
+                )}
+
+                {!isFullyPaid(sale) && (
+                  <Badge variant="outline" className="border-amber-500 text-amber-600">
+                    Solde dû : {getBalanceDue(sale).toLocaleString("fr-FR")} FCFA
+                  </Badge>
                 )}
 
                 <Link

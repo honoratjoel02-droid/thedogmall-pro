@@ -19,6 +19,7 @@ export default function DeclareSaleForm({ puppy, onSuccess }: Props) {
 
   const [clientId, setClientId] = useState(puppy.reservedForClientId ?? "");
   const [price, setPrice] = useState("");
+  const [depositAmount, setDepositAmount] = useState("");
   const [saleDate, setSaleDate] = useState(
     new Date().toISOString().slice(0, 10),
   );
@@ -39,6 +40,11 @@ export default function DeclareSaleForm({ puppy, onSuccess }: Props) {
       return;
     }
 
+    if (depositAmount && Number(depositAmount) > Number(price)) {
+      setError("L'acompte ne peut pas dépasser le prix de vente.");
+      return;
+    }
+
     setError("");
 
     await declareSale.mutateAsync({
@@ -47,6 +53,7 @@ export default function DeclareSaleForm({ puppy, onSuccess }: Props) {
       price: Number(price),
       saleDate: new Date(saleDate).toISOString(),
       contractSigned,
+      depositAmount: depositAmount ? Number(depositAmount) : undefined,
       notes: notes || undefined,
     });
 
@@ -102,6 +109,25 @@ export default function DeclareSaleForm({ puppy, onSuccess }: Props) {
         </div>
       </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="depositAmount">
+          Acompte versé ce jour (FCFA, optionnel)
+        </Label>
+
+        <Input
+          id="depositAmount"
+          type="number"
+          min={0}
+          step="1"
+          value={depositAmount}
+          onChange={(e) => setDepositAmount(e.target.value)}
+        />
+
+        <p className="text-xs text-muted-foreground">
+          Laissez à 0 si le prix sera réglé en plusieurs fois après la vente.
+        </p>
+      </div>
+
       <label className="flex items-center gap-2 text-sm">
         <input
           type="checkbox"
@@ -125,8 +151,9 @@ export default function DeclareSaleForm({ puppy, onSuccess }: Props) {
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Cette action marque le chiot comme vendu et enregistre
-        automatiquement une recette dans le module Finances.
+        Cette action marque le chiot comme vendu. Chaque paiement (acompte
+        puis versements suivants) enregistre automatiquement une recette
+        dans le module Finances.
       </p>
 
       <div className="flex justify-end">

@@ -11,6 +11,7 @@ import { useDogs } from "../hooks/useDogs";
 import { useClient } from "../hooks/useClients";
 import { useKennelSettings } from "../hooks/useKennelSettings";
 import { exportElementToPdf } from "../lib/pdf";
+import { getBalanceDue, getTotalPaid, isFullyPaid } from "../lib/payments";
 
 export default function SaleContract() {
   const { id } = useParams();
@@ -57,6 +58,9 @@ export default function SaleContract() {
 
   const clientName = client ? `${client.firstName} ${client.lastName}` : "—";
   const priceWords = sale.price.toLocaleString("fr-FR");
+  const totalPaid = getTotalPaid(sale);
+  const balanceDue = getBalanceDue(sale);
+  const fullyPaid = isFullyPaid(sale);
 
   async function handleDownloadPdf() {
     if (!contentRef.current || !sale || isExporting) return;
@@ -212,11 +216,27 @@ export default function SaleContract() {
             <h2 className="mb-1 font-bold">
               Article 3 — Prix et modalités de paiement
             </h2>
+            {fullyPaid ? (
+              <p>
+                La présente cession est consentie et acceptée moyennant le
+                prix de <strong>{priceWords} FCFA</strong>, que l'Acquéreur a
+                payé intégralement à l'Éleveur, ce dont ce dernier lui donne
+                quittance.
+              </p>
+            ) : (
+              <p>
+                La présente cession est consentie et acceptée moyennant le
+                prix de <strong>{priceWords} FCFA</strong>. L'Acquéreur a
+                versé à ce jour un acompte de{" "}
+                <strong>{totalPaid.toLocaleString("fr-FR")} FCFA</strong>, le
+                solde de{" "}
+                <strong>{balanceDue.toLocaleString("fr-FR")} FCFA</strong>{" "}
+                restant dû devant être réglé selon les modalités convenues
+                entre les parties.
+              </p>
+            )}
             <p>
-              La présente cession est consentie et acceptée moyennant le
-              prix de <strong>{priceWords} FCFA</strong>, que l'Acquéreur a
-              payé comptant à l'Éleveur ce jour, ce dont ce dernier lui
-              donne quittance. Date de règlement :{" "}
+              Date de la cession :{" "}
               {new Date(sale.saleDate).toLocaleDateString("fr-FR")}.
             </p>
           </article>

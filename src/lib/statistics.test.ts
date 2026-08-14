@@ -94,6 +94,7 @@ function makeSale(id: string, litterId: string, clientId: string, price: number)
     price,
     saleDate: "2026-01-01",
     contractSigned: true,
+    payments: [],
     createdAt: "",
     updatedAt: "",
   };

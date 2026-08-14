@@ -1,5 +1,17 @@
 // src/types/models/sale.ts
 
+export interface Payment {
+  id: string;
+
+  amount: number;
+
+  date: string;
+
+  notes?: string;
+
+  incomeId?: string;
+}
+
 export interface Sale {
   id: string;
 
@@ -15,7 +27,7 @@ export interface Sale {
 
   contractSigned: boolean;
 
-  incomeId?: string;
+  payments: Payment[];
 
   notes?: string;
 
