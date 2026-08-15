@@ -23,5 +23,6 @@ export interface BackupData {
     dogDocuments: unknown[];
     litterPhotos: unknown[];
     geneticTests: unknown[];
+    annualGoals: unknown[];
   };
 }

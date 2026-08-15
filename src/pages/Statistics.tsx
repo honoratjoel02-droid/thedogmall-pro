@@ -4,12 +4,14 @@ import MainLayout from "../components/layout/MainLayout";
 import StatTile from "../components/ui/stat-tile";
 import BreakdownBarChart from "../components/statistics/BreakdownBarChart";
 import BreedingOutcomeCard from "../components/statistics/BreedingOutcomeCard";
+import AnnualGoalsSection from "../components/statistics/AnnualGoalsSection";
 
 import { Button } from "../components/ui/button";
 
 import { useBreedings } from "../hooks/useBreedings";
 import { useLitters } from "../hooks/useLitters";
 import { useSales } from "../hooks/useSales";
+import { useIncomes } from "../hooks/useIncomes";
 import { useDogs } from "../hooks/useDogs";
 import { useClients } from "../hooks/useClients";
 import { usePuppies } from "../hooks/usePuppies";
@@ -37,6 +39,7 @@ export default function Statistics() {
   const { data: breedings = [] } = useBreedings();
   const { data: litters = [] } = useLitters();
   const { data: sales = [] } = useSales();
+  const { data: incomes = [] } = useIncomes();
   const { data: dogs = [] } = useDogs();
   const { data: clients = [] } = useClients();
   const { data: puppies = [] } = usePuppies();
@@ -106,6 +109,8 @@ export default function Statistics() {
       </div>
 
       <div className="space-y-6">
+        <AnnualGoalsSection litters={litters} incomes={incomes} sales={sales} />
+
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatTile
             label="Taux de réussite"
