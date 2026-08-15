@@ -20,6 +20,7 @@ import { useExpenses } from "../hooks/useExpenses";
 import { useIncomes } from "../hooks/useIncomes";
 import { useHealthRecords } from "../hooks/useHealthRecords";
 import { useHeatCycles } from "../hooks/useHeatCycles";
+import { useRenewalReminders } from "../hooks/useRenewalReminders";
 import { useLastBackupAt } from "../hooks/useLastBackupAt";
 
 import { computeAlerts } from "../lib/alerts";
@@ -37,6 +38,7 @@ export default function Calendar() {
   const { data: incomes = [] } = useIncomes();
   const { data: healthRecords = [] } = useHealthRecords();
   const { data: heatCycles = [] } = useHeatCycles();
+  const { data: renewalReminders = [] } = useRenewalReminders();
   const lastBackupAt = useLastBackupAt();
 
   const alerts = computeAlerts({
@@ -46,6 +48,7 @@ export default function Calendar() {
     dogs,
     healthRecords,
     heatCycles,
+    renewalReminders,
     lastBackupAt,
   });
 

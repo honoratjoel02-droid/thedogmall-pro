@@ -63,6 +63,7 @@ export function createBackup(): BackupData {
       litterPhotos: read(STORAGE_KEYS.litterPhotos),
       geneticTests: read(STORAGE_KEYS.geneticTests),
       annualGoals: read(STORAGE_KEYS.annualGoals),
+      renewalReminders: read(STORAGE_KEYS.renewalReminders),
     },
   };
 }
@@ -137,6 +138,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.litterPhotos, backup.data.litterPhotos ?? []);
   write(STORAGE_KEYS.geneticTests, backup.data.geneticTests ?? []);
   write(STORAGE_KEYS.annualGoals, backup.data.annualGoals ?? []);
+  write(STORAGE_KEYS.renewalReminders, backup.data.renewalReminders ?? []);
 
   window.location.reload();
 }

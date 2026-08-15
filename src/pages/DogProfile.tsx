@@ -6,6 +6,7 @@ import DogBreedingTab from "../components/dogs/profile/DogBreedingTab";
 import DogFinanceTab from "../components/dogs/profile/DogFinanceTab";
 import DogHealthTab from "../components/dogs/profile/DogHealthTab";
 import DogGeneticTestsTab from "../components/dogs/profile/DogGeneticTestsTab";
+import DogRenewalRemindersTab from "../components/dogs/profile/DogRenewalRemindersTab";
 import DogPedigreeTab from "../components/dogs/profile/DogPedigreeTab";
 import DogPhotosTab from "../components/dogs/profile/DogPhotosTab";
 import DogDocumentsTab from "../components/dogs/profile/DogDocumentsTab";
@@ -127,6 +128,7 @@ export default function DogProfile() {
               <TabsTrigger value="general">Informations</TabsTrigger>
               <TabsTrigger value="health">Santé</TabsTrigger>
               <TabsTrigger value="genetics">Tests génétiques</TabsTrigger>
+              <TabsTrigger value="renewals">Rappels</TabsTrigger>
               <TabsTrigger value="pedigree">Pedigree</TabsTrigger>
               <TabsTrigger value="breeding">Reproduction</TabsTrigger>
               <TabsTrigger value="finances">Finances</TabsTrigger>
@@ -145,6 +147,10 @@ export default function DogProfile() {
 
           <TabsContent value="genetics">
             <DogGeneticTestsTab dog={dog} />
+          </TabsContent>
+
+          <TabsContent value="renewals">
+            <DogRenewalRemindersTab dog={dog} />
           </TabsContent>
 
           <TabsContent value="pedigree">

@@ -6,6 +6,7 @@ import type { Pregnancy } from "../types/models/pregnancy";
 import type { Puppy } from "../types/models/puppy";
 import type { Dog } from "../types/dog";
 import type { HealthRecord } from "../types/models/healthRecord";
+import type { RenewalReminder } from "../types/models/renewalReminder";
 
 const NOW = new Date("2026-01-15T12:00:00Z");
 
@@ -216,6 +217,62 @@ describe("computeAlerts — health records", () => {
     });
 
     expect(alerts[0].message).toBe("Vaccination en attente : Rappel annuel");
+  });
+});
+
+describe("computeAlerts — renewal reminders", () => {
+  const baseReminder: RenewalReminder = {
+    id: "r1",
+    dogId: "d1",
+    type: "Assurance",
+    label: "Assurance Fido",
+    dueDate: isoDaysFromNow(-2),
+    createdAt: NOW.toISOString(),
+    updatedAt: NOW.toISOString(),
+  };
+
+  it("flags an overdue renewal reminder and resolves the dog name", () => {
+    const dog = makeDog({ id: "d1", name: "Fido" });
+
+    const alerts = computeAlerts({
+      tasks: [],
+      pregnancies: [],
+      puppies: [],
+      dogs: [dog],
+      renewalReminders: [baseReminder],
+      now: NOW,
+    });
+
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0].message).toBe("Assurance à renouveler : Fido");
+    expect(alerts[0].severity).toBe("overdue");
+    expect(alerts[0].link).toBe("/dogs/d1");
+  });
+
+  it("falls back to the reminder label when the dog is missing", () => {
+    const alerts = computeAlerts({
+      tasks: [],
+      pregnancies: [],
+      puppies: [],
+      dogs: [],
+      renewalReminders: [baseReminder],
+      now: NOW,
+    });
+
+    expect(alerts[0].message).toBe("Assurance à renouveler : Assurance Fido");
+  });
+
+  it("ignores reminders due far in the future", () => {
+    const alerts = computeAlerts({
+      tasks: [],
+      pregnancies: [],
+      puppies: [],
+      dogs: [],
+      renewalReminders: [{ ...baseReminder, dueDate: isoDaysFromNow(60) }],
+      now: NOW,
+    });
+
+    expect(alerts).toHaveLength(0);
   });
 });
 

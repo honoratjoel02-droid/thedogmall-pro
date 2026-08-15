@@ -6,6 +6,7 @@ import type { Pregnancy } from "../types/models/pregnancy";
 import type { Puppy } from "../types/models/puppy";
 import type { HealthRecord } from "../types/models/healthRecord";
 import type { HeatCycle } from "../types/models/heatCycle";
+import type { RenewalReminder } from "../types/models/renewalReminder";
 import { predictNextHeat } from "./heatCycle";
 
 export type AlertSeverity = "overdue" | "soon" | "info";
@@ -50,6 +51,7 @@ type ComputeAlertsParams = {
   dogs: Dog[];
   healthRecords?: HealthRecord[];
   heatCycles?: HeatCycle[];
+  renewalReminders?: RenewalReminder[];
   lastBackupAt?: string | null;
   now?: Date;
 };
@@ -61,6 +63,7 @@ export function computeAlerts({
   dogs,
   healthRecords = [],
   heatCycles = [],
+  renewalReminders = [],
   lastBackupAt,
   now = new Date(),
 }: ComputeAlertsParams): Alert[] {
@@ -192,6 +195,22 @@ export function computeAlerts({
       date: record.date,
       severity,
       link: `/dogs/${record.dogId}`,
+    });
+  }
+
+  for (const reminder of renewalReminders) {
+    const severity = severityFor(reminder.dueDate, now);
+
+    if (severity === "info") continue;
+
+    const dog = dogs.find((d) => d.id === reminder.dogId);
+
+    alerts.push({
+      id: `renewal-${reminder.id}`,
+      message: `${reminder.type} à renouveler : ${dog?.name ?? reminder.label}`,
+      date: reminder.dueDate,
+      severity,
+      link: `/dogs/${reminder.dogId}`,
     });
   }
 
