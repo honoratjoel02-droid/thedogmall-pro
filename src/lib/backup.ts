@@ -64,6 +64,7 @@ export function createBackup(): BackupData {
       geneticTests: read(STORAGE_KEYS.geneticTests),
       annualGoals: read(STORAGE_KEYS.annualGoals),
       renewalReminders: read(STORAGE_KEYS.renewalReminders),
+      kennelNotes: read(STORAGE_KEYS.kennelNotes),
     },
   };
 }
@@ -139,6 +140,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.geneticTests, backup.data.geneticTests ?? []);
   write(STORAGE_KEYS.annualGoals, backup.data.annualGoals ?? []);
   write(STORAGE_KEYS.renewalReminders, backup.data.renewalReminders ?? []);
+  write(STORAGE_KEYS.kennelNotes, backup.data.kennelNotes ?? []);
 
   window.location.reload();
 }

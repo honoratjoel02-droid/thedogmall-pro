@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CalendarDays } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
@@ -5,6 +6,8 @@ import AddTaskDialog from "../components/calendar/AddTaskDialog";
 import TaskList from "../components/calendar/TaskList";
 import AlertsList from "../components/calendar/AlertsList";
 import JournalList from "../components/calendar/JournalList";
+import AddKennelNoteDialog from "../components/calendar/AddKennelNoteDialog";
+import KennelNoteList from "../components/calendar/KennelNoteList";
 
 import { Badge } from "../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
@@ -21,12 +24,15 @@ import { useIncomes } from "../hooks/useIncomes";
 import { useHealthRecords } from "../hooks/useHealthRecords";
 import { useHeatCycles } from "../hooks/useHeatCycles";
 import { useRenewalReminders } from "../hooks/useRenewalReminders";
+import { useKennelNotes } from "../hooks/useKennelNotes";
 import { useLastBackupAt } from "../hooks/useLastBackupAt";
 
 import { computeAlerts } from "../lib/alerts";
 import { computeJournal } from "../lib/journal";
 
 export default function Calendar() {
+  const [activeTab, setActiveTab] = useState("alerts");
+
   const { data: tasks = [], isLoading: loadingTasks } = useTasks();
   const { data: pregnancies = [] } = usePregnancies();
   const { data: puppies = [] } = usePuppies();
@@ -39,6 +45,7 @@ export default function Calendar() {
   const { data: healthRecords = [] } = useHealthRecords();
   const { data: heatCycles = [] } = useHeatCycles();
   const { data: renewalReminders = [] } = useRenewalReminders();
+  const { data: kennelNotes = [], isLoading: loadingNotes } = useKennelNotes();
   const lastBackupAt = useLastBackupAt();
 
   const alerts = computeAlerts({
@@ -72,11 +79,11 @@ export default function Calendar() {
           </h1>
 
           <p className="text-muted-foreground">
-            Alertes, tâches et journal d'élevage.
+            Alertes, tâches, journal et notes d'élevage.
           </p>
         </div>
 
-        <Tabs defaultValue="alerts">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as string)}>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="overflow-x-auto">
               <TabsList>
@@ -90,10 +97,12 @@ export default function Calendar() {
                 </TabsTrigger>
                 <TabsTrigger value="tasks">Tâches</TabsTrigger>
                 <TabsTrigger value="journal">Journal</TabsTrigger>
+                <TabsTrigger value="notes">Notes</TabsTrigger>
               </TabsList>
             </div>
 
-            <AddTaskDialog />
+            {activeTab === "tasks" && <AddTaskDialog />}
+            {activeTab === "notes" && <AddKennelNoteDialog />}
           </div>
 
           <TabsContent value="alerts">
@@ -106,6 +115,10 @@ export default function Calendar() {
 
           <TabsContent value="journal">
             <JournalList entries={journal} />
+          </TabsContent>
+
+          <TabsContent value="notes">
+            <KennelNoteList notes={kennelNotes} isLoading={loadingNotes} />
           </TabsContent>
         </Tabs>
       </div>

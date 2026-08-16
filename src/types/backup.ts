@@ -25,5 +25,6 @@ export interface BackupData {
     geneticTests: unknown[];
     annualGoals: unknown[];
     renewalReminders: unknown[];
+    kennelNotes: unknown[];
   };
 }
