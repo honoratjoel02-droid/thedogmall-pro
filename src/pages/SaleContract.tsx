@@ -10,8 +10,10 @@ import { useLitter } from "../hooks/useLitters";
 import { useDogs } from "../hooks/useDogs";
 import { useClient } from "../hooks/useClients";
 import { useKennelSettings } from "../hooks/useKennelSettings";
+import { useContractTemplates } from "../hooks/useContractTemplates";
 import { exportElementToPdf } from "../lib/pdf";
 import { getBalanceDue, getTotalPaid, isFullyPaid } from "../lib/payments";
+import { DEFAULT_CLAUSES } from "../lib/contractClauses";
 
 export default function SaleContract() {
   const { id } = useParams();
@@ -25,6 +27,7 @@ export default function SaleContract() {
   const { data: litter } = useLitter(sale?.litterId);
   const { data: dogs = [] } = useDogs();
   const { data: kennel } = useKennelSettings();
+  const { data: contractTemplates = [] } = useContractTemplates();
 
   if (loadingSale) {
     return (
@@ -61,6 +64,9 @@ export default function SaleContract() {
   const totalPaid = getTotalPaid(sale);
   const balanceDue = getBalanceDue(sale);
   const fullyPaid = isFullyPaid(sale);
+
+  const activeTemplate = contractTemplates.find((t) => t.isDefault);
+  const clauses = activeTemplate?.clauses ?? DEFAULT_CLAUSES;
 
   async function handleDownloadPdf() {
     if (!contentRef.current || !sale || isExporting) return;
@@ -241,59 +247,14 @@ export default function SaleContract() {
             </p>
           </article>
 
-          <article>
-            <h2 className="mb-1 font-bold">
-              Article 4 — État de santé et garanties
-            </h2>
-            <p>
-              L'Éleveur déclare que l'animal cédé est, à sa connaissance et
-              à la date des présentes, en bon état de santé apparent.
-              L'Acquéreur est informé qu'il dispose, conformément aux
-              dispositions applicables en matière de vices rédhibitoires,
-              d'un délai légal pour faire constater par un vétérinaire de
-              son choix tout vice caché affectant l'animal.
-            </p>
-          </article>
-
-          <article>
-            <h2 className="mb-1 font-bold">
-              Article 5 — Obligations de l'Acquéreur
-            </h2>
-            <p>L'Acquéreur s'engage à :</p>
-            <ul className="ml-5 list-disc space-y-0.5">
-              <li>
-                assurer à l'animal des conditions de vie, de soins,
-                d'alimentation et d'exercice conformes à ses besoins
-                physiologiques et comportementaux ;
-              </li>
-              <li>
-                faire suivre à l'animal le calendrier de vaccination et de
-                vermifugation recommandé par un vétérinaire ;
-              </li>
-              <li>
-                ne pas céder l'animal à un tiers sans en informer
-                préalablement l'Éleveur.
-              </li>
-            </ul>
-          </article>
-
-          <article>
-            <h2 className="mb-1 font-bold">Article 6 — Documents remis</h2>
-            <p>
-              Sont remis à l'Acquéreur à la signature des présentes : le
-              carnet de santé de l'animal, ainsi que tout document utile à
-              son identification et à son suivi vétérinaire.
-            </p>
-          </article>
-
-          <article>
-            <h2 className="mb-1 font-bold">Article 7 — Litiges</h2>
-            <p>
-              Tout litige relatif à l'interprétation ou à l'exécution du
-              présent contrat sera, à défaut d'accord amiable entre les
-              parties, soumis aux juridictions compétentes.
-            </p>
-          </article>
+          {clauses.map((clause, index) => (
+            <article key={clause.id}>
+              <h2 className="mb-1 font-bold">
+                Article {index + 4} — {clause.title}
+              </h2>
+              <p className="whitespace-pre-wrap">{clause.content}</p>
+            </article>
+          ))}
 
           {sale.notes && (
             <article>

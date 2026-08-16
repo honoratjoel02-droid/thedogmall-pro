@@ -65,6 +65,7 @@ export function createBackup(): BackupData {
       annualGoals: read(STORAGE_KEYS.annualGoals),
       renewalReminders: read(STORAGE_KEYS.renewalReminders),
       kennelNotes: read(STORAGE_KEYS.kennelNotes),
+      contractTemplates: read(STORAGE_KEYS.contractTemplates),
     },
   };
 }
@@ -141,6 +142,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.annualGoals, backup.data.annualGoals ?? []);
   write(STORAGE_KEYS.renewalReminders, backup.data.renewalReminders ?? []);
   write(STORAGE_KEYS.kennelNotes, backup.data.kennelNotes ?? []);
+  write(STORAGE_KEYS.contractTemplates, backup.data.contractTemplates ?? []);
 
   window.location.reload();
 }

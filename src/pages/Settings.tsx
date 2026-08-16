@@ -2,6 +2,7 @@ import { Settings as SettingsIcon } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import KennelSettingsCard from "../components/settings/KennelSettingsCard";
+import ContractTemplatesCard from "../components/settings/ContractTemplatesCard";
 import ExportDataCard from "../components/settings/ExportDataCard";
 import ImportDataCard from "../components/settings/ImportDataCard";
 import SecurityCard from "../components/settings/SecurityCard";
@@ -22,6 +23,8 @@ export default function Settings() {
 
       <div className="space-y-6">
         <KennelSettingsCard />
+
+        <ContractTemplatesCard />
 
         <SecurityCard />
 

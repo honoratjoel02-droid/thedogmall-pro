@@ -26,5 +26,6 @@ export interface BackupData {
     annualGoals: unknown[];
     renewalReminders: unknown[];
     kennelNotes: unknown[];
+    contractTemplates: unknown[];
   };
 }
