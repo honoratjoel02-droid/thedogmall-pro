@@ -24,6 +24,7 @@ import { useIncomes } from "../hooks/useIncomes";
 import { useHealthRecords } from "../hooks/useHealthRecords";
 import { useHeatCycles } from "../hooks/useHeatCycles";
 import { useRenewalReminders } from "../hooks/useRenewalReminders";
+import { useRecurringExpenses } from "../hooks/useRecurringExpenses";
 import { useKennelNotes } from "../hooks/useKennelNotes";
 import { useLastBackupAt } from "../hooks/useLastBackupAt";
 
@@ -45,6 +46,7 @@ export default function Calendar() {
   const { data: healthRecords = [] } = useHealthRecords();
   const { data: heatCycles = [] } = useHeatCycles();
   const { data: renewalReminders = [] } = useRenewalReminders();
+  const { data: recurringExpenses = [] } = useRecurringExpenses();
   const { data: kennelNotes = [], isLoading: loadingNotes } = useKennelNotes();
   const lastBackupAt = useLastBackupAt();
 
@@ -56,6 +58,7 @@ export default function Calendar() {
     healthRecords,
     heatCycles,
     renewalReminders,
+    recurringExpenses,
     lastBackupAt,
   });
 

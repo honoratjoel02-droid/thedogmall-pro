@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { Download, Wallet } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import FinanceSummary from "../components/finances/FinanceSummary";
 import AddExpenseDialog from "../components/finances/AddExpenseDialog";
 import AddIncomeDialog from "../components/finances/AddIncomeDialog";
+import AddRecurringExpenseDialog from "../components/finances/AddRecurringExpenseDialog";
 import ExpensesTable from "../components/finances/ExpensesTable";
 import IncomesTable from "../components/finances/IncomesTable";
+import RecurringExpenseList from "../components/finances/RecurringExpenseList";
 import MonthlyIncomeExpenseChart from "../components/charts/MonthlyIncomeExpenseChart";
 import CategoryBreakdownChart from "../components/charts/CategoryBreakdownChart";
 
@@ -14,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 
 import { useExpenses } from "../hooks/useExpenses";
 import { useIncomes } from "../hooks/useIncomes";
+import { useRecurringExpenses } from "../hooks/useRecurringExpenses";
 
 import { computeMonthlyTotals, computeExpensesByCategory } from "../lib/financeStats";
 import { downloadCsv, toCsv } from "../lib/csv";
@@ -43,8 +47,12 @@ const INCOME_COLUMNS = [
 ];
 
 export default function Finances() {
+  const [activeTab, setActiveTab] = useState("expenses");
+
   const { data: expenses = [], isLoading: loadingExpenses } = useExpenses();
   const { data: incomes = [], isLoading: loadingIncomes } = useIncomes();
+  const { data: recurringExpenses = [], isLoading: loadingRecurring } =
+    useRecurringExpenses();
 
   const monthlyTotals = computeMonthlyTotals(expenses, incomes);
   const categoryTotals = computeExpensesByCategory(expenses);
@@ -79,16 +87,18 @@ export default function Finances() {
           <CategoryBreakdownChart data={categoryTotals} />
         </div>
 
-        <Tabs defaultValue="expenses">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as string)}>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <TabsList>
               <TabsTrigger value="expenses">Dépenses</TabsTrigger>
               <TabsTrigger value="incomes">Recettes</TabsTrigger>
+              <TabsTrigger value="recurring">Récurrentes</TabsTrigger>
             </TabsList>
 
             <div className="flex flex-wrap gap-2">
-              <AddExpenseDialog />
-              <AddIncomeDialog />
+              {activeTab === "expenses" && <AddExpenseDialog />}
+              {activeTab === "incomes" && <AddIncomeDialog />}
+              {activeTab === "recurring" && <AddRecurringExpenseDialog />}
             </div>
           </div>
 
@@ -122,6 +132,18 @@ export default function Finances() {
             </div>
 
             <IncomesTable incomes={incomes} isLoading={loadingIncomes} />
+          </TabsContent>
+
+          <TabsContent value="recurring" className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Enregistrer le paiement crée automatiquement une dépense
+              ponctuelle et avance l'échéance selon la fréquence.
+            </p>
+
+            <RecurringExpenseList
+              items={recurringExpenses}
+              isLoading={loadingRecurring}
+            />
           </TabsContent>
         </Tabs>
       </div>

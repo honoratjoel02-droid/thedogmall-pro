@@ -66,6 +66,7 @@ export function createBackup(): BackupData {
       renewalReminders: read(STORAGE_KEYS.renewalReminders),
       kennelNotes: read(STORAGE_KEYS.kennelNotes),
       contractTemplates: read(STORAGE_KEYS.contractTemplates),
+      recurringExpenses: read(STORAGE_KEYS.recurringExpenses),
     },
   };
 }
@@ -143,6 +144,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.renewalReminders, backup.data.renewalReminders ?? []);
   write(STORAGE_KEYS.kennelNotes, backup.data.kennelNotes ?? []);
   write(STORAGE_KEYS.contractTemplates, backup.data.contractTemplates ?? []);
+  write(STORAGE_KEYS.recurringExpenses, backup.data.recurringExpenses ?? []);
 
   window.location.reload();
 }

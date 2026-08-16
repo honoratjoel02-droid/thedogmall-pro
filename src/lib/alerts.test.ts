@@ -7,6 +7,7 @@ import type { Puppy } from "../types/models/puppy";
 import type { Dog } from "../types/dog";
 import type { HealthRecord } from "../types/models/healthRecord";
 import type { RenewalReminder } from "../types/models/renewalReminder";
+import type { RecurringExpense } from "../types/models/recurringExpense";
 
 const NOW = new Date("2026-01-15T12:00:00Z");
 
@@ -269,6 +270,64 @@ describe("computeAlerts — renewal reminders", () => {
       puppies: [],
       dogs: [],
       renewalReminders: [{ ...baseReminder, dueDate: isoDaysFromNow(60) }],
+      now: NOW,
+    });
+
+    expect(alerts).toHaveLength(0);
+  });
+});
+
+describe("computeAlerts — recurring expenses", () => {
+  const baseRecurring: RecurringExpense = {
+    id: "r1",
+    title: "Croquettes",
+    amount: 30000,
+    category: "Alimentation",
+    frequency: "Mensuel",
+    nextDueDate: isoDaysFromNow(-1),
+    active: true,
+    createdAt: NOW.toISOString(),
+    updatedAt: NOW.toISOString(),
+  };
+
+  it("flags an overdue active recurring expense", () => {
+    const alerts = computeAlerts({
+      tasks: [],
+      pregnancies: [],
+      puppies: [],
+      dogs: [],
+      recurringExpenses: [baseRecurring],
+      now: NOW,
+    });
+
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0].message).toBe(
+      "Dépense récurrente à régler : Croquettes",
+    );
+    expect(alerts[0].severity).toBe("overdue");
+    expect(alerts[0].link).toBe("/finances");
+  });
+
+  it("ignores inactive recurring expenses even if overdue", () => {
+    const alerts = computeAlerts({
+      tasks: [],
+      pregnancies: [],
+      puppies: [],
+      dogs: [],
+      recurringExpenses: [{ ...baseRecurring, active: false }],
+      now: NOW,
+    });
+
+    expect(alerts).toHaveLength(0);
+  });
+
+  it("ignores recurring expenses due far in the future", () => {
+    const alerts = computeAlerts({
+      tasks: [],
+      pregnancies: [],
+      puppies: [],
+      dogs: [],
+      recurringExpenses: [{ ...baseRecurring, nextDueDate: isoDaysFromNow(60) }],
       now: NOW,
     });
 

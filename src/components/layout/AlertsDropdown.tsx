@@ -16,6 +16,7 @@ import { useDogs } from "../../hooks/useDogs";
 import { useHealthRecords } from "../../hooks/useHealthRecords";
 import { useHeatCycles } from "../../hooks/useHeatCycles";
 import { useRenewalReminders } from "../../hooks/useRenewalReminders";
+import { useRecurringExpenses } from "../../hooks/useRecurringExpenses";
 import { useLastBackupAt } from "../../hooks/useLastBackupAt";
 
 import { computeAlerts } from "../../lib/alerts";
@@ -47,6 +48,7 @@ export default function AlertsDropdown() {
   const { data: healthRecords = [] } = useHealthRecords();
   const { data: heatCycles = [] } = useHeatCycles();
   const { data: renewalReminders = [] } = useRenewalReminders();
+  const { data: recurringExpenses = [] } = useRecurringExpenses();
   const lastBackupAt = useLastBackupAt();
 
   const alerts = computeAlerts({
@@ -57,6 +59,7 @@ export default function AlertsDropdown() {
     healthRecords,
     heatCycles,
     renewalReminders,
+    recurringExpenses,
     lastBackupAt,
   });
   const visibleAlerts = alerts.slice(0, MAX_VISIBLE_ALERTS);

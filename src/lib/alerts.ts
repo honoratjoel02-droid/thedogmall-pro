@@ -7,6 +7,7 @@ import type { Puppy } from "../types/models/puppy";
 import type { HealthRecord } from "../types/models/healthRecord";
 import type { HeatCycle } from "../types/models/heatCycle";
 import type { RenewalReminder } from "../types/models/renewalReminder";
+import type { RecurringExpense } from "../types/models/recurringExpense";
 import { predictNextHeat } from "./heatCycle";
 
 export type AlertSeverity = "overdue" | "soon" | "info";
@@ -52,6 +53,7 @@ type ComputeAlertsParams = {
   healthRecords?: HealthRecord[];
   heatCycles?: HeatCycle[];
   renewalReminders?: RenewalReminder[];
+  recurringExpenses?: RecurringExpense[];
   lastBackupAt?: string | null;
   now?: Date;
 };
@@ -64,6 +66,7 @@ export function computeAlerts({
   healthRecords = [],
   heatCycles = [],
   renewalReminders = [],
+  recurringExpenses = [],
   lastBackupAt,
   now = new Date(),
 }: ComputeAlertsParams): Alert[] {
@@ -211,6 +214,22 @@ export function computeAlerts({
       date: reminder.dueDate,
       severity,
       link: `/dogs/${reminder.dogId}`,
+    });
+  }
+
+  for (const item of recurringExpenses) {
+    if (!item.active) continue;
+
+    const severity = severityFor(item.nextDueDate, now);
+
+    if (severity === "info") continue;
+
+    alerts.push({
+      id: `recurring-expense-${item.id}`,
+      message: `Dépense récurrente à régler : ${item.title}`,
+      date: item.nextDueDate,
+      severity,
+      link: "/finances",
     });
   }
 
