@@ -24,5 +24,6 @@ export const STORAGE_KEYS = {
   contractTemplates: "thedogmall.contractTemplates",
   recurringExpenses: "thedogmall.recurringExpenses",
   dogTitles: "thedogmall.dogTitles",
+  feedingLogs: "thedogmall.feedingLogs",
   lastBackupAt: "thedogmall.lastBackupAt",
 } as const;

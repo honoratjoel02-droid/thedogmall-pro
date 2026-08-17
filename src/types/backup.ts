@@ -29,5 +29,6 @@ export interface BackupData {
     contractTemplates: unknown[];
     recurringExpenses: unknown[];
     dogTitles: unknown[];
+    feedingLogs: unknown[];
   };
 }

@@ -68,6 +68,7 @@ export function createBackup(): BackupData {
       contractTemplates: read(STORAGE_KEYS.contractTemplates),
       recurringExpenses: read(STORAGE_KEYS.recurringExpenses),
       dogTitles: read(STORAGE_KEYS.dogTitles),
+      feedingLogs: read(STORAGE_KEYS.feedingLogs),
     },
   };
 }
@@ -147,6 +148,7 @@ export function restoreBackup(backup: BackupData) {
   write(STORAGE_KEYS.contractTemplates, backup.data.contractTemplates ?? []);
   write(STORAGE_KEYS.recurringExpenses, backup.data.recurringExpenses ?? []);
   write(STORAGE_KEYS.dogTitles, backup.data.dogTitles ?? []);
+  write(STORAGE_KEYS.feedingLogs, backup.data.feedingLogs ?? []);
 
   window.location.reload();
 }
