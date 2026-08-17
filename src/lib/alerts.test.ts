@@ -101,6 +101,7 @@ describe("computeAlerts — pregnancies", () => {
     femaleId: "f1",
     expectedBirthDate: isoDaysFromNow(30),
     status: "En cours",
+    whelpingChecklist: [],
     createdAt: NOW.toISOString(),
     updatedAt: NOW.toISOString(),
   };

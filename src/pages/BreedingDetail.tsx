@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import PregnancyCard from "../components/dogs/reproduction/PregnancyCard";
+import WhelpingChecklist from "../components/dogs/reproduction/WhelpingChecklist";
 
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -85,6 +86,7 @@ export default function BreedingDetail() {
         ).toISOString(),
         xrayDate: calculateXRayDate(breeding!.breedingDate).toISOString(),
         status: "En cours",
+        whelpingChecklist: [],
       });
 
       await updateBreeding.mutateAsync({
@@ -161,6 +163,12 @@ export default function BreedingDetail() {
         </Card>
 
         {pregnancy && <PregnancyCard pregnancy={pregnancy} />}
+
+        {pregnancy &&
+          (pregnancy.status === "En cours" ||
+            pregnancy.status === "Confirmée") && (
+            <WhelpingChecklist pregnancy={pregnancy} />
+          )}
 
         {breeding.status === "Terminée" && (
           <Card>

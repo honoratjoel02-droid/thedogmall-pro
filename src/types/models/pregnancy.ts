@@ -1,5 +1,7 @@
 // src/types/models/pregnancy.ts
 
+import type { CareEntry } from "./puppy";
+
 export type PregnancyStatus =
   | "En cours"
   | "Confirmée"
@@ -26,6 +28,8 @@ export interface Pregnancy {
   puppyCountEstimate?: number;
 
   status: PregnancyStatus;
+
+  whelpingChecklist: CareEntry[];
 
   notes?: string;
 
