@@ -6,82 +6,93 @@ TheDogMall Pro est un logiciel professionnel de gestion d'élevage multi-races.
 
 L'objectif est d'accompagner les éleveurs dans la gestion quotidienne de leur activité, depuis la naissance des chiots jusqu'au suivi financier de l'élevage.
 
----
-
-# Version 0.1 (En cours)
-
-- [x] Architecture React
-- [x] Navigation
-- [x] Dashboard
-- [x] Gestion des chiens
-- [x] Cartes des chiens
-- [x] Profil d'un chien
-- [ ] Recherche
-- [ ] Filtres
-- [ ] Modification
-- [ ] Suppression
+> Ce document reflète l'état réel du projet. Il est mis à jour au fil du développement plutôt que rédigé à l'avance : chaque case cochée correspond à une fonctionnalité déjà implémentée et testée.
 
 ---
 
-# Version 0.2
+## Fonctionnalités implémentées
 
-Module Reproduction
+### Chiens
 
-- Chaleurs
-- Saillies
-- Gestations
-- Échographies
-- Radiographies
-- Mise bas
+- [x] Fiche chien complète (infos générales, statut, tags)
+- [x] Cartes / grille des chiens, recherche globale, filtres
+- [x] Modification, suppression
+- [x] Suivi du poids (historique + graphique)
+- [x] Suivi de l'alimentation (régime, quantité, historique)
+- [x] Suivi santé (vaccins, vermifuges, traitements, consultations)
+- [x] Tests génétiques par chien
+- [x] Titres et récompenses (expositions, championnats)
+- [x] Rappels de renouvellement (puce, assurance, LOF...)
+- [x] Pedigree (arbre généalogique + certificat imprimable)
+
+### Reproduction
+
+- [x] Chaleurs (historique + prédiction de la prochaine)
+- [x] Saillies (naturelle / insémination)
+- [x] Calcul du coefficient de consanguinité (COI) entre reproducteurs
+- [x] Vérification de compatibilité génétique entre reproducteurs
+- [x] Gestations (échographie, radiographie, statut)
+- [x] Checklist de mise bas (préparation avant la date prévue)
+
+### Portées et chiots
+
+- [x] Gestion des chiots par portée
+- [x] Suivi du poids par chiot (courbe de croissance)
+- [x] Calendrier de vaccination et de vermifuge (application groupée sur la portée)
+- [x] Checklist de socialisation
+- [x] Réservations et liste d'attente, conversion en réservation
+- [x] Comparateur de portées
+- [x] Photos de portée
+
+### Clients
+
+- [x] CRM (fiches clients, historique)
+- [x] Historique d'interactions
+- [x] Contrats de vente et modèles de contrats personnalisables
+- [x] Paiements et suivi du solde dû
+- [x] Historique d'achats par client
+
+### Finances
+
+- [x] Dépenses (ponctuelles et récurrentes)
+- [x] Recettes (ventes, saillies, autres)
+- [x] Rentabilité par portée
+- [x] Statistiques (taux de réussite reproduction, prix moyen, top clients...)
+- [x] Export CSV
+
+### Calendrier et suivi
+
+- [x] Alertes centralisées (santé, chaleurs, renouvellements, sauvegarde...)
+- [x] Tâches
+- [x] Journal d'élevage automatique
+- [x] Notes récapitulatives de kennel
+- [x] Objectifs d'élevage annuels
+
+### Documents et administration
+
+- [x] Photos et documents par chien
+- [x] Sauvegarde et restauration complètes (export/import JSON)
+- [x] Paramètres du kennel (identité, coordonnées)
+- [x] Protection par mot de passe local
 
 ---
 
-# Version 0.3
+## Idées pour la suite
 
-Portées
+Fonctionnalités identifiées comme manquantes mais pas encore développées, par ordre d'utilité :
 
-- Gestion des chiots
-- Suivi du poids
-- Vaccinations
-- Vermifuges
-- Réservations
-
----
-
-# Version 0.4
-
-Clients
-
-- CRM
-- Contrats
-- Paiements
-- Historique
+1. **Test d'évaluation comportementale des chiots** — grille d'aptitude/tempérament (type Volhard) à remplir avant placement
+2. **Échéancier de paiement** — planifier acompte + solde à échéance, avec alerte de retard (aujourd'hui les paiements sont ponctuels)
+3. **Comparateur de reproducteurs** — comparer plusieurs mâles candidats pour une femelle donnée (COI + compatibilité génétique + titres côte à côte)
+4. **Saillies extérieures (stud service)** — actuellement toute saillie suppose que les deux chiens appartiennent au cheptel
+5. **Co-propriété de chien** — pas de notion de copropriétaire sur une fiche chien
+6. **Gestion de stock** — nourriture, produits vétérinaires, consommables
+7. **Suivi post-vente** — retour client, satisfaction, mises à jour de santé après le départ du chiot
 
 ---
 
-# Version 0.5
+## Hors périmètre (choix assumés)
 
-Finances
-
-- Dépenses
-- Recettes
-- Rentabilité
-- Coût par chien
-- Coût par portée
-
----
-
-# Version 0.6
-
-Calendrier intelligent
-
-- Alertes
-- Notifications
-- Tâches
-- Journal d'élevage
-
----
-
-# Version 1.0
-
-Première version commercialisable.
+- Pas de backend / synchronisation multi-appareils : l'application fonctionne entièrement en local (localStorage), avec sauvegarde/restauration manuelle par fichier
+- Pas de notifications push ou email (pas de serveur)
+- Pas de multi-utilisateurs avec rôles/permissions
