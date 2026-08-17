@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import DogSelect from "./DogSelect";
 import InbreedingEstimate from "./InbreedingEstimate";
+import GeneticCompatibilityCheck from "./GeneticCompatibilityCheck";
 
 import { useCreateBreeding } from "../../../hooks/useBreedings";
 import { breedingSchema } from "../../../schemas/breeding";
@@ -100,7 +101,10 @@ export default function BreedingForm({ onSuccess }: BreedingFormProps) {
       </div>
 
       {femaleId && maleId && femaleId !== maleId && (
-        <InbreedingEstimate sireId={maleId} damId={femaleId} />
+        <div className="space-y-3">
+          <InbreedingEstimate sireId={maleId} damId={femaleId} />
+          <GeneticCompatibilityCheck sireId={maleId} damId={femaleId} />
+        </div>
       )}
 
       <div className="space-y-2">
