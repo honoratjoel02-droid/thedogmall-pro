@@ -28,5 +28,6 @@ export interface BackupData {
     kennelNotes: unknown[];
     contractTemplates: unknown[];
     recurringExpenses: unknown[];
+    dogTitles: unknown[];
   };
 }
