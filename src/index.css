@@ -134,3 +134,17 @@
     @apply font-sans;
     }
 }
+
+/* Keep content clear of notches / status bars / home indicators in the native app shell */
+header {
+  padding-top: max(0px, env(safe-area-inset-top));
+}
+
+main {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+[data-slot="sidebar-inner"] {
+  padding-top: max(0px, env(safe-area-inset-top));
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
+}

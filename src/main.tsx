@@ -10,6 +10,7 @@ import { router } from "./router";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { AuthProvider } from "./components/auth/AuthProvider";
 import AuthGate from "./components/auth/AuthGate";
+import NativeAppBridge from "./components/native/NativeAppBridge";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,7 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
+      <NativeAppBridge />
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <AuthGate>

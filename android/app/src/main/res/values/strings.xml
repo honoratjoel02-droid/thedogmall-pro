@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TheDogMall Pro</string>
+    <string name="title_activity_main">TheDogMall Pro</string>
+    <string name="package_name">com.thedogmall.pro</string>
+    <string name="custom_url_scheme">com.thedogmall.pro</string>
+</resources>
