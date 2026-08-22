@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Download, Wallet } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
 import FinanceSummary from "../components/finances/FinanceSummary";
 import AddExpenseDialog from "../components/finances/AddExpenseDialog";
 import AddIncomeDialog from "../components/finances/AddIncomeDialog";
@@ -68,17 +69,11 @@ export default function Finances() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-            <Wallet className="size-8 text-primary" />
-            Finances
-          </h1>
-
-          <p className="text-muted-foreground">
-            Suivez les dépenses, les recettes et la rentabilité de votre
-            élevage.
-          </p>
-        </div>
+        <PageHeader
+          icon={Wallet}
+          title="Finances"
+          description="Suivez les dépenses, les recettes et la rentabilité de votre élevage."
+        />
 
         <FinanceSummary expenses={expenses} incomes={incomes} />
 

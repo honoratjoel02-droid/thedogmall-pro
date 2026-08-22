@@ -30,7 +30,7 @@ export default function BreedingCard({ breeding }: BreedingCardProps) {
   const male = dogs.find((dog) => dog.id === breeding.maleId);
 
   return (
-    <Card className="transition-shadow hover:shadow-md">
+    <Card variant="interactive">
       <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
           <h3 className="flex items-center gap-1.5 text-lg font-semibold">

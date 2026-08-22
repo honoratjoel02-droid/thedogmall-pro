@@ -1,7 +1,11 @@
+import { Award } from "lucide-react";
+
 import type { DogTitle, DogTitleCategory } from "../../../types/models/dogTitle";
 
 import { Badge } from "../../ui/badge";
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditDogTitleDialog from "./EditDogTitleDialog";
 import DeleteDogTitleDialog from "./DeleteDogTitleDialog";
@@ -22,19 +26,11 @@ const CATEGORY_VARIANT: Record<
 
 export default function DogTitleList({ titles, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (titles.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun titre ou récompense enregistré.
-      </div>
-    );
+    return <EmptyState icon={Award} label="Aucun titre ou récompense enregistré." />;
   }
 
   const sorted = [...titles].sort((a, b) => b.eventDate.localeCompare(a.eventDate));

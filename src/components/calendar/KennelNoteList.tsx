@@ -1,4 +1,9 @@
+import { NotebookPen } from "lucide-react";
+
 import type { KennelNote } from "../../types/models/kennelNote";
+
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 import EditKennelNoteDialog from "./EditKennelNoteDialog";
 import DeleteKennelNoteDialog from "./DeleteKennelNoteDialog";
@@ -10,19 +15,11 @@ type Props = {
 
 export default function KennelNoteList({ notes, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (notes.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune note d'élevage enregistrée.
-      </div>
-    );
+    return <EmptyState icon={NotebookPen} label="Aucune note d'élevage enregistrée." />;
   }
 
   const sorted = [...notes].sort((a, b) => b.date.localeCompare(a.date));

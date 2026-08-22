@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import LoadingState from "../ui/loading-state";
 
 export default function KennelSettingsCard() {
   const { data: settings, isLoading } = useKennelSettings();
@@ -17,8 +18,8 @@ export default function KennelSettingsCard() {
   if (isLoading || !settings) {
     return (
       <Card>
-        <CardContent className="p-6 text-muted-foreground">
-          Chargement...
+        <CardContent className="p-6">
+          <LoadingState rows={2} />
         </CardContent>
       </Card>
     );

@@ -74,11 +74,11 @@ export default function GlobalSearchDialog() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-lg border border-input px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+        className="flex items-center gap-2 rounded-lg border border-primary-foreground/40 bg-primary-foreground/10 px-2.5 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/20"
       >
-        <Search size={16} />
+        <Search size={16} strokeWidth={2.25} />
         <span className="hidden sm:inline">Rechercher…</span>
-        <kbd className="hidden rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium sm:inline">
+        <kbd className="hidden rounded border border-primary-foreground/40 bg-primary-foreground/15 px-1.5 py-0.5 text-[10px] font-medium sm:inline">
           Ctrl K
         </kbd>
       </button>

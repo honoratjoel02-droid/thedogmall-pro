@@ -1,3 +1,5 @@
+import { Bell } from "lucide-react";
+
 import type { RenewalReminder } from "../../../types/models/renewalReminder";
 import { advanceDueDate } from "../../../lib/renewals";
 import { useUpdateRenewalReminder } from "../../../hooks/useRenewalReminders";
@@ -5,6 +7,8 @@ import { useUpdateRenewalReminder } from "../../../hooks/useRenewalReminders";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditRenewalReminderDialog from "./EditRenewalReminderDialog";
 import DeleteRenewalReminderDialog from "./DeleteRenewalReminderDialog";
@@ -34,19 +38,11 @@ export default function RenewalReminderList({
   const updateReminder = useUpdateRenewalReminder();
 
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (reminders.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun rappel de renouvellement enregistré.
-      </div>
-    );
+    return <EmptyState icon={Bell} label="Aucun rappel de renouvellement enregistré." />;
   }
 
   const sorted = [...reminders].sort((a, b) =>

@@ -1,6 +1,10 @@
+import { UtensilsCrossed } from "lucide-react";
+
 import type { FeedingLog } from "../../../types/models/feedingLog";
 
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditFeedingLogDialog from "./EditFeedingLogDialog";
 import DeleteFeedingLogDialog from "./DeleteFeedingLogDialog";
@@ -12,19 +16,11 @@ type Props = {
 
 export default function FeedingLogList({ logs, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (logs.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun régime alimentaire enregistré.
-      </div>
-    );
+    return <EmptyState icon={UtensilsCrossed} label="Aucun régime alimentaire enregistré." />;
   }
 
   const sorted = [...logs].sort((a, b) => b.date.localeCompare(a.date));

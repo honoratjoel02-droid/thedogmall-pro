@@ -1,9 +1,12 @@
+import { Target } from "lucide-react";
+
 import type { Litter } from "../../types/models/litter";
 import type { Income } from "../../types/models/income";
 import type { Sale } from "../../types/models/sale";
 import { useAnnualGoals } from "../../hooks/useAnnualGoals";
 
-import { Card, CardContent } from "../ui/card";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 import AnnualGoalCard from "./AnnualGoalCard";
 import AddAnnualGoalDialog from "./AddAnnualGoalDialog";
@@ -27,19 +30,13 @@ export default function AnnualGoalsSection({ litters, incomes, sales }: Props) {
         <AddAnnualGoalDialog />
       </div>
 
-      {isLoading && (
-        <div className="flex h-32 items-center justify-center text-muted-foreground">
-          Chargement...
-        </div>
-      )}
+      {isLoading && <LoadingState rows={2} />}
 
       {!isLoading && sorted.length === 0 && (
-        <Card>
-          <CardContent className="p-8 text-center text-muted-foreground">
-            Aucun objectif défini. Ajoutez une cible annuelle pour suivre la
-            progression de l'élevage.
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={Target}
+          label="Aucun objectif défini. Ajoutez une cible annuelle pour suivre la progression de l'élevage."
+        />
       )}
 
       {sorted.length > 0 && (

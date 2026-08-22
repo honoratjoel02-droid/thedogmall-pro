@@ -41,7 +41,7 @@ export default function DogCard({ dog }: DogCardProps) {
   const primaryPhoto = photos[0];
 
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <Card variant="interactive">
       <CardContent className="p-6">
         <div className="mb-5 flex justify-center">
           {primaryPhoto ? (

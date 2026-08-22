@@ -10,6 +10,7 @@ import ClientInteractionList from "../components/clients/ClientInteractionList";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
+import LoadingState from "../components/ui/loading-state";
 
 import { useClient } from "../hooks/useClients";
 import { useClientInteractionsByClient } from "../hooks/useClientInteractions";
@@ -25,9 +26,7 @@ export default function ClientDetail() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="flex h-96 items-center justify-center">
-          Chargement...
-        </div>
+        <LoadingState rows={4} />
       </MainLayout>
     );
   }

@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { LayoutDashboard, Dog, Users, Heart, Baby } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
-import { Card, CardContent } from "../components/ui/card";
+import PageHeader from "../components/layout/PageHeader";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import StatTile from "../components/ui/stat-tile";
 import MonthlyIncomeExpenseChart from "../components/charts/MonthlyIncomeExpenseChart";
@@ -40,30 +41,35 @@ export default function Dashboard() {
 
   return (
     <MainLayout>
-      <h1 className="mb-8 flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-        <LayoutDashboard className="size-8 text-primary" />
-        Tableau de bord
-      </h1>
+      <div className="mb-8">
+        <PageHeader
+          icon={LayoutDashboard}
+          title="Tableau de bord"
+        />
+      </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatTile label="Chiens" value={dogs.length} icon={Dog} />
+        <StatTile label="Chiens" value={dogs.length} icon={Dog} to="/dogs" />
         <StatTile
           label="Clients"
           value={clients.length}
           icon={Users}
           tone="neutral"
+          to="/clients"
         />
         <StatTile
           label="Gestations en cours"
           value={ongoingBreedings}
           icon={Heart}
           tone="danger"
+          to="/breeding"
         />
         <StatTile
           label="Portées"
           value={litters.length}
           icon={Baby}
           tone="success"
+          to="/litters"
         />
       </div>
 
@@ -73,10 +79,10 @@ export default function Dashboard() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
-          <CardContent className="p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Dernières portées</h2>
+          <CardHeader className="flex flex-row items-center justify-between border-b">
+            <CardTitle>Dernières portées</CardTitle>
 
+            <CardAction>
               <Button
                 variant="ghost"
                 size="sm"
@@ -86,8 +92,10 @@ export default function Dashboard() {
                   </Link>
                 )}
               />
-            </div>
+            </CardAction>
+          </CardHeader>
 
+          <CardContent className="pt-4">
             {recentLitters.length === 0 ? (
               <p className="py-6 text-center text-sm text-muted-foreground">
                 Aucune portée enregistrée pour l'instant.
@@ -125,10 +133,10 @@ export default function Dashboard() {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Derniers clients</h2>
+          <CardHeader className="flex flex-row items-center justify-between border-b">
+            <CardTitle>Derniers clients</CardTitle>
 
+            <CardAction>
               <Button
                 variant="ghost"
                 size="sm"
@@ -138,8 +146,10 @@ export default function Dashboard() {
                   </Link>
                 )}
               />
-            </div>
+            </CardAction>
+          </CardHeader>
 
+          <CardContent className="pt-4">
             {recentClients.length === 0 ? (
               <p className="py-6 text-center text-sm text-muted-foreground">
                 Aucun client enregistré pour l'instant.

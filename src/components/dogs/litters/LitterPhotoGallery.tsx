@@ -1,9 +1,11 @@
-import { Trash2 } from "lucide-react";
+import { Image as ImageIcon, Trash2 } from "lucide-react";
 
 import type { LitterPhoto } from "../../../types/models/litterPhoto";
 import { useDeleteLitterPhoto } from "../../../hooks/useLitterPhotos";
 
 import { Button } from "../../ui/button";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 type Props = {
   photos: LitterPhoto[];
@@ -14,18 +16,12 @@ export default function LitterPhotoGallery({ photos, isLoading = false }: Props)
   const deletePhoto = useDeleteLitterPhoto();
 
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (photos.length === 0) {
     return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune photo enregistrée pour cette portée.
-      </div>
+      <EmptyState icon={ImageIcon} label="Aucune photo enregistrée pour cette portée." />
     );
   }
 

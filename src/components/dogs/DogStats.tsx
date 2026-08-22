@@ -1,6 +1,7 @@
-import { Dog, Mars, Venus, HeartPulse } from "lucide-react";
+import { Mars, Venus, HeartPulse } from "lucide-react";
 
 import StatTile from "../ui/stat-tile";
+import LoadingState from "../ui/loading-state";
 import { useDogs } from "../../hooks/useDogs";
 
 export default function DogStats() {
@@ -8,15 +9,11 @@ export default function DogStats() {
 
   if (isLoading) {
     return (
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="col-span-full flex h-24 items-center justify-center text-muted-foreground">
-          Chargement...
-        </div>
+      <div className="mb-8 grid gap-4 sm:grid-cols-3">
+        <LoadingState rows={1} rowClassName="h-24" className="col-span-full" />
       </div>
     );
   }
-
-  const total = dogs.length;
 
   const males = dogs.filter((dog) => dog.sex === "Mâle").length;
 
@@ -25,8 +22,7 @@ export default function DogStats() {
   const pregnant = dogs.filter((dog) => dog.status === "Gestante").length;
 
   return (
-    <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      <StatTile label="Total chiens" value={total} icon={Dog} />
+    <div className="mb-8 grid gap-4 sm:grid-cols-3">
       <StatTile label="Mâles" value={males} icon={Mars} tone="neutral" />
       <StatTile label="Femelles" value={females} icon={Venus} tone="neutral" />
       <StatTile

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Users } from "lucide-react";
 
 import type { WaitlistEntry } from "../../../types/models/waitlistEntry";
 import { useClients } from "../../../hooks/useClients";
@@ -8,6 +8,8 @@ import { useUpdateWaitlistEntry } from "../../../hooks/useWaitlist";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditWaitlistEntryDialog from "./EditWaitlistEntryDialog";
 import DeleteWaitlistEntryDialog from "./DeleteWaitlistEntryDialog";
@@ -32,18 +34,12 @@ export default function WaitlistList({ entries, isLoading = false }: Props) {
   const updateEntry = useUpdateWaitlistEntry();
 
   if (isLoading) {
-    return (
-      <div className="flex h-24 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={2} />;
   }
 
   if (entries.length === 0) {
     return (
-      <div className="flex h-24 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun client en liste d'attente pour cette portée.
-      </div>
+      <EmptyState icon={Users} label="Aucun client en liste d'attente pour cette portée." />
     );
   }
 

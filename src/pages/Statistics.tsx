@@ -1,6 +1,7 @@
 import { BarChart3, Download, Percent, Wallet, Baby, Tag } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
 import StatTile from "../components/ui/stat-tile";
 import BreakdownBarChart from "../components/statistics/BreakdownBarChart";
 import BreedingOutcomeCard from "../components/statistics/BreedingOutcomeCard";
@@ -86,26 +87,22 @@ export default function Statistics() {
 
   return (
     <MainLayout>
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-            <BarChart3 className="size-8 text-primary" />
-            Statistiques
-          </h1>
-
-          <p className="text-muted-foreground">
-            Indicateurs de performance de l'élevage.
-          </p>
-        </div>
-
-        <Button
-          variant="outline"
-          onClick={handleExportSales}
-          disabled={sales.length === 0}
-        >
-          <Download className="mr-1.5 size-4" />
-          Exporter les ventes en CSV
-        </Button>
+      <div className="mb-8">
+        <PageHeader
+          icon={BarChart3}
+          title="Statistiques"
+          description="Indicateurs de performance de l'élevage."
+          actions={
+            <Button
+              variant="outline"
+              onClick={handleExportSales}
+              disabled={sales.length === 0}
+            >
+              <Download className="mr-1.5 size-4" />
+              Exporter les ventes en CSV
+            </Button>
+          }
+        />
       </div>
 
       <div className="space-y-6">

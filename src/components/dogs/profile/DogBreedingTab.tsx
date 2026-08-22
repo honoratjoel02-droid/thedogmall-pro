@@ -10,6 +10,8 @@ import { useHeatCyclesByDog } from "../../../hooks/useHeatCycles";
 import { Card, CardContent } from "../../ui/card";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import NextHeatEstimate from "../reproduction/NextHeatEstimate";
 import AddHeatCycleDialog from "../reproduction/AddHeatCycleDialog";
@@ -59,17 +61,9 @@ export default function DogBreedingTab({ dog }: DogBreedingTabProps) {
         <h3 className="font-semibold">Saillies</h3>
 
         {isLoading ? (
-          <Card>
-            <CardContent className="p-8 text-muted-foreground">
-              Chargement...
-            </CardContent>
-          </Card>
+          <LoadingState rows={2} />
         ) : dogBreedings.length === 0 ? (
-          <Card>
-            <CardContent className="p-8 text-center text-muted-foreground">
-              Aucune saillie enregistrée pour {dog.name}.
-            </CardContent>
-          </Card>
+          <EmptyState label={`Aucune saillie enregistrée pour ${dog.name}.`} />
         ) : (
           <div className="space-y-4">
             {dogBreedings.map((breeding) => (

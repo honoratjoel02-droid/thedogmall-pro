@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Download, Search, Users } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
 import AddClientDialog from "../components/clients/AddClientDialog";
 import ClientGrid from "../components/clients/ClientGrid";
 
@@ -48,30 +49,26 @@ export default function Clients() {
 
   return (
     <MainLayout>
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-            <Users className="size-8 text-primary" />
-            Clients
-          </h1>
+      <div className="mb-8">
+        <PageHeader
+          icon={Users}
+          title="Clients"
+          description="Gérez les clients de votre élevage."
+          actions={
+            <>
+              <Button
+                variant="outline"
+                onClick={handleExport}
+                disabled={filteredClients.length === 0}
+              >
+                <Download className="mr-1.5 size-4" />
+                Exporter en CSV
+              </Button>
 
-          <p className="text-muted-foreground">
-            Gérez les clients de votre élevage.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="outline"
-            onClick={handleExport}
-            disabled={filteredClients.length === 0}
-          >
-            <Download className="mr-1.5 size-4" />
-            Exporter en CSV
-          </Button>
-
-          <AddClientDialog />
-        </div>
+              <AddClientDialog />
+            </>
+          }
+        />
       </div>
 
       <div className="mb-6 space-y-4 rounded-lg border p-4">

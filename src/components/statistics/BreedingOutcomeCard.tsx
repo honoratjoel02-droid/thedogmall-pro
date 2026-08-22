@@ -13,7 +13,7 @@ const ROWS = [
     key: "successful" as const,
     label: "Réussies",
     icon: CheckCircle2,
-    classes: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    classes: "bg-success/10 text-success",
   },
   {
     key: "failed" as const,

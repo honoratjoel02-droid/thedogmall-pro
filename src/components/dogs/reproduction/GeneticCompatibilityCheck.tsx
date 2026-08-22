@@ -79,8 +79,8 @@ export default function GeneticCompatibilityCheck({ sireId, damId }: Props) {
             }
           : {
               icon: CheckCircle2,
-              text: "text-emerald-600 dark:text-emerald-400",
-              bg: "bg-emerald-500/10 border-emerald-500/30",
+              text: "text-success",
+              bg: "bg-success/10 border-success/30",
             };
 
   const Icon = tone.icon;

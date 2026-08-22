@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import { AlertTriangle, Clock } from "lucide-react";
+import { AlertTriangle, Clock, CheckCircle2 } from "lucide-react";
 
 import type { Alert } from "../../lib/alerts";
 
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 type Props = {
   alerts: Alert[];
@@ -28,19 +30,11 @@ const SEVERITY_STYLES = {
 
 export default function AlertsList({ alerts, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (alerts.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune alerte pour le moment. Tout est à jour !
-      </div>
-    );
+    return <EmptyState icon={CheckCircle2} label="Aucune alerte pour le moment. Tout est à jour !" />;
   }
 
   return (

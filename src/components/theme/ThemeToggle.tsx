@@ -26,7 +26,7 @@ export default function ThemeToggle() {
       <DropdownMenuTrigger
         render={(props) => (
           <Button {...props} variant="ghost" size="icon-sm">
-            <ActiveIcon className="size-4" />
+            <ActiveIcon className="size-4" strokeWidth={2.25} />
             <span className="sr-only">Changer de thème</span>
           </Button>
         )}

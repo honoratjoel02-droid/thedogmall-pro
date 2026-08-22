@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
 
 import { useSalesByClient } from "../../hooks/useSales";
 import { usePuppies } from "../../hooks/usePuppies";
@@ -6,6 +7,8 @@ import { getBalanceDue, isFullyPaid } from "../../lib/payments";
 
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 type Props = {
   clientId: string;
@@ -16,19 +19,11 @@ export default function ClientPurchases({ clientId }: Props) {
   const { data: puppies = [] } = usePuppies();
 
   if (isLoading) {
-    return (
-      <div className="flex h-32 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={2} />;
   }
 
   if (sales.length === 0) {
-    return (
-      <div className="flex h-32 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun achat pour l'instant.
-      </div>
-    );
+    return <EmptyState icon={ShoppingBag} label="Aucun achat pour l'instant." />;
   }
 
   const sorted = [...sales].sort((a, b) => b.saleDate.localeCompare(a.saleDate));

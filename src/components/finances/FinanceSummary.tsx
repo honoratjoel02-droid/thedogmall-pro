@@ -22,7 +22,7 @@ export default function FinanceSummary({ expenses, incomes }: Props) {
         value={`+${totalIncomes.toLocaleString("fr-FR")} FCFA`}
         icon={PiggyBank}
         tone="success"
-        valueClassName="text-emerald-600 dark:text-emerald-400"
+        valueClassName="text-success"
       />
 
       <StatTile
@@ -38,11 +38,7 @@ export default function FinanceSummary({ expenses, incomes }: Props) {
         value={`${balance >= 0 ? "+" : ""}${balance.toLocaleString("fr-FR")} FCFA`}
         icon={balance >= 0 ? TrendingUp : TrendingDown}
         tone={balance >= 0 ? "success" : "danger"}
-        valueClassName={
-          balance >= 0
-            ? "text-emerald-600 dark:text-emerald-400"
-            : "text-destructive"
-        }
+        valueClassName={balance >= 0 ? "text-success" : "text-destructive"}
       />
     </div>
   );

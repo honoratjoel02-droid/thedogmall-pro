@@ -15,6 +15,7 @@ import {
 } from "../../ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import WeightGrowthChart from "../../charts/WeightGrowthChart";
+import TemperamentTestPanel from "./TemperamentTestPanel";
 
 type Props = {
   puppy: Puppy;
@@ -168,6 +169,7 @@ export default function PuppyTrackingDialog({ puppy }: Props) {
             <TabsTrigger value="vaccinations">Vaccins</TabsTrigger>
             <TabsTrigger value="dewormings">Vermifuges</TabsTrigger>
             <TabsTrigger value="socialization">Socialisation</TabsTrigger>
+            <TabsTrigger value="temperament">Tempérament</TabsTrigger>
           </TabsList>
 
           <TabsContent value="weight" className="space-y-4">
@@ -241,6 +243,10 @@ export default function PuppyTrackingDialog({ puppy }: Props) {
                 updatePuppy.mutate({ id: puppy.id, data: { socialization } })
               }
             />
+          </TabsContent>
+
+          <TabsContent value="temperament">
+            <TemperamentTestPanel puppy={puppy} />
           </TabsContent>
         </Tabs>
       </DialogContent>

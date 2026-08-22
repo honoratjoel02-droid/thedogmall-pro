@@ -70,7 +70,8 @@ export default function AlertsDropdown() {
         render={(props) => (
           <button {...props} className="relative outline-none">
             <Bell
-              className="text-muted-foreground transition-colors hover:text-primary"
+              className="text-primary-foreground transition-opacity hover:opacity-80"
+              strokeWidth={2.25}
               size={20}
             />
 
@@ -83,7 +84,7 @@ export default function AlertsDropdown() {
         )}
       />
 
-      <DropdownMenuContent align="end" className="w-80">
+      <DropdownMenuContent align="end" className="w-80 max-w-[calc(100vw-2rem)]">
         <p className="px-1.5 py-1 text-xs font-medium text-muted-foreground">
           Alertes
         </p>

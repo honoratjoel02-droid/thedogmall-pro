@@ -1,7 +1,11 @@
+import { MessageSquare } from "lucide-react";
+
 import type { ClientInteraction } from "../../types/models/clientInteraction";
 
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 import EditClientInteractionDialog from "./EditClientInteractionDialog";
 import DeleteClientInteractionDialog from "./DeleteClientInteractionDialog";
@@ -16,18 +20,12 @@ export default function ClientInteractionList({
   isLoading = false,
 }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-24 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={2} />;
   }
 
   if (interactions.length === 0) {
     return (
-      <div className="flex h-24 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun échange enregistré pour ce client.
-      </div>
+      <EmptyState icon={MessageSquare} label="Aucun échange enregistré pour ce client." />
     );
   }
 

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 import type { JournalEntry } from "../../lib/journal";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 type Props = {
   entries: JournalEntry[];
@@ -9,19 +11,11 @@ type Props = {
 
 export default function JournalList({ entries, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (entries.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun événement enregistré pour l'instant.
-      </div>
-    );
+    return <EmptyState label="Aucun événement enregistré pour l'instant." />;
   }
 
   return (

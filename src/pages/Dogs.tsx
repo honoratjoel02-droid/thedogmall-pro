@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Dog as DogIcon } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
 import DogGrid from "../components/dogs/DogGrid";
 import DogStats from "../components/dogs/DogStats";
 import AddDogDialog from "../components/dogs/AddDogDialog";
@@ -54,19 +55,13 @@ export default function Dogs() {
 
   return (
     <MainLayout>
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-            <DogIcon className="size-8 text-primary" />
-            Gestion des chiens
-          </h1>
-
-          <p className="text-muted-foreground">
-            Gérez tous les chiens de votre élevage.
-          </p>
-        </div>
-
-        <AddDogDialog />
+      <div className="mb-8">
+        <PageHeader
+          icon={DogIcon}
+          title="Gestion des chiens"
+          description="Gérez tous les chiens de votre élevage."
+          actions={<AddDogDialog />}
+        />
       </div>
 
       <DogStats />

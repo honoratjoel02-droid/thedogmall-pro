@@ -138,7 +138,7 @@ function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
+          "group/sidebar-wrapper flex h-svh w-full has-data-[variant=inset]:bg-sidebar",
           className
         )}
         {...props}
@@ -191,6 +191,8 @@ function Sidebar({
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+              paddingTop: "env(safe-area-inset-top)",
+              paddingBottom: "env(safe-area-inset-bottom)",
             } as React.CSSProperties
           }
           side={side}
@@ -272,7 +274,7 @@ function SidebarTrigger({
       {...props}
     >
       <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">Afficher/masquer le menu</span>
     </Button>
   )
 }

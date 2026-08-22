@@ -9,6 +9,7 @@ import WhelpingChecklist from "../components/dogs/reproduction/WhelpingChecklist
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
+import LoadingState from "../components/ui/loading-state";
 
 import { useBreeding, useUpdateBreeding } from "../hooks/useBreedings";
 import { useDogs } from "../hooks/useDogs";
@@ -50,9 +51,7 @@ export default function BreedingDetail() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="flex h-96 items-center justify-center">
-          Chargement...
-        </div>
+        <LoadingState rows={4} />
       </MainLayout>
     );
   }

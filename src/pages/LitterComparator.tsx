@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { GitCompare, Heart } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
 
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
@@ -105,28 +106,21 @@ export default function LitterComparator() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-              <GitCompare className="size-8 text-primary" />
-              Comparateur de portées
-            </h1>
-
-            <p className="text-muted-foreground">
-              Sélectionnez jusqu'à {MAX_SELECTION} portées pour comparer leurs
-              performances.
-            </p>
-          </div>
-
-          <Button
-            variant="outline"
-            render={(props) => (
-              <Link {...props} to="/litters">
-                ← Retour aux portées
-              </Link>
-            )}
-          />
-        </div>
+        <PageHeader
+          icon={GitCompare}
+          title="Comparateur de portées"
+          description={`Sélectionnez jusqu'à ${MAX_SELECTION} portées pour comparer leurs performances.`}
+          actions={
+            <Button
+              variant="outline"
+              render={(props) => (
+                <Link {...props} to="/litters">
+                  ← Retour aux portées
+                </Link>
+              )}
+            />
+          }
+        />
 
         <Card>
           <CardContent className="p-6">

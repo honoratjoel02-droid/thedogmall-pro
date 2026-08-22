@@ -1,4 +1,8 @@
+import { Dog as DogIcon } from "lucide-react";
+
 import DogCard from "./DogCard";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 import type { Dog } from "../../types/dog";
 
 type DogGridProps = {
@@ -8,17 +12,11 @@ type DogGridProps = {
 
 export default function DogGrid({ dogs, isLoading = false }: DogGridProps) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center">Chargement...</div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (dogs.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun chien enregistré.
-      </div>
-    );
+    return <EmptyState icon={DogIcon} label="Aucun chien enregistré." />;
   }
 
   return (

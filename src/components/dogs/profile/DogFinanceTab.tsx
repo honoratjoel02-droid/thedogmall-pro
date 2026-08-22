@@ -8,7 +8,7 @@ import IncomesTable from "../../finances/IncomesTable";
 import AddExpenseDialog from "../../finances/AddExpenseDialog";
 import AddIncomeDialog from "../../finances/AddIncomeDialog";
 
-import { Card, CardContent } from "../../ui/card";
+import LoadingState from "../../ui/loading-state";
 
 interface DogFinanceTabProps {
   dog: Dog;
@@ -19,13 +19,7 @@ export default function DogFinanceTab({ dog }: DogFinanceTabProps) {
   const { data: incomes = [], isLoading: loadingIncomes } = useIncomes();
 
   if (loadingExpenses || loadingIncomes) {
-    return (
-      <Card>
-        <CardContent className="p-8 text-muted-foreground">
-          Chargement...
-        </CardContent>
-      </Card>
-    );
+    return <LoadingState rows={3} />;
   }
 
   const dogExpenses = expenses.filter((e) => e.dogId === dog.id);

@@ -34,14 +34,14 @@ function ProgressRow({
     <div>
       <div className="mb-1 flex items-center justify-between text-sm">
         <span className="text-foreground">{label}</span>
-        <span className={`font-medium ${reached ? "text-emerald-600 dark:text-emerald-400" : "text-foreground"}`}>
+        <span className={`font-medium ${reached ? "text-success" : "text-foreground"}`}>
           {formatValue(actual)} / {formatValue(target)}
         </span>
       </div>
 
       <div className="h-2.5 overflow-hidden rounded-full bg-muted">
         <div
-          className={`h-full rounded-full ${reached ? "bg-emerald-500" : "bg-primary"}`}
+          className={`h-full rounded-full ${reached ? "bg-success" : "bg-primary"}`}
           style={{ width: `${Math.max(pct, actual > 0 ? 2 : 0)}%` }}
         />
       </div>

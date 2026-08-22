@@ -16,6 +16,22 @@ export interface CareEntry {
   done: boolean;
 }
 
+export interface TemperamentTestItem {
+  id: string;
+
+  label: string;
+
+  score: number;
+}
+
+export interface TemperamentTest {
+  date: string;
+
+  items: TemperamentTestItem[];
+
+  notes?: string;
+}
+
 export interface Puppy {
   id: string;
 
@@ -40,6 +56,8 @@ export interface Puppy {
   dewormings: CareEntry[];
 
   socialization: CareEntry[];
+
+  temperamentTest?: TemperamentTest;
 
   notes?: string;
 

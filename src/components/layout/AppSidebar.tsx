@@ -25,7 +25,7 @@ import {
 } from "../ui/sidebar";
 
 const menu = [
-  { icon: Home, label: "Dashboard", path: "/" },
+  { icon: Home, label: "Tableau de bord", path: "/" },
   { icon: Dog, label: "Chiens", path: "/dogs" },
   { icon: Heart, label: "Gestations", path: "/breeding" },
   { icon: Baby, label: "Portées", path: "/litters" },
@@ -41,14 +41,14 @@ export default function AppSidebar() {
 
   return (
     <Sidebar collapsible="offcanvas">
-      <SidebarHeader className="border-b border-sidebar-border px-4 py-5">
-        <Link to="/" className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <PawPrint className="size-5" />
+      <SidebarHeader className="border-b border-sidebar-border px-4 py-4">
+        <Link to="/" className="flex items-center gap-2.5">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <PawPrint className="size-4.5" />
           </span>
 
           <span className="flex flex-col">
-            <span className="text-lg font-bold text-primary">TheDogMall</span>
+            <span className="text-sm font-semibold tracking-tight text-foreground">TheDogMall</span>
 
             <span className="text-xs text-muted-foreground">
               Gestion d'élevage
@@ -72,10 +72,10 @@ export default function AppSidebar() {
                     <SidebarMenuButton
                       isActive={isActive}
                       size="lg"
-                      className="data-active:bg-primary data-active:text-primary-foreground data-active:shadow-sm data-active:hover:bg-primary data-active:hover:text-primary-foreground hover:bg-primary/10 hover:text-primary"
+                      className="border-l-2 border-transparent data-active:border-primary data-active:bg-primary/10 data-active:font-medium data-active:text-primary data-active:hover:bg-primary/10 data-active:hover:text-primary hover:bg-muted hover:text-foreground"
                       render={(props) => (
                         <Link {...props} to={item.path}>
-                          <item.icon size={20} />
+                          <item.icon size={18} />
                           <span>{item.label}</span>
                         </Link>
                       )}

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Download, Heart } from "lucide-react";
+import { Download, Heart, PawPrint } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
 import AddPuppyDialog from "../components/dogs/litters/AddPuppyDialog";
@@ -20,7 +20,9 @@ import AddIncomeDialog from "../components/finances/AddIncomeDialog";
 
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
-import { Card, CardContent } from "../components/ui/card";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import EmptyState from "../components/ui/empty-state";
+import LoadingState from "../components/ui/loading-state";
 
 import { useLitter } from "../hooks/useLitters";
 import { usePuppiesByLitter } from "../hooks/usePuppies";
@@ -54,9 +56,7 @@ export default function LitterDetail() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="flex h-96 items-center justify-center">
-          Chargement...
-        </div>
+        <LoadingState rows={4} />
       </MainLayout>
     );
   }
@@ -131,13 +131,15 @@ export default function LitterDetail() {
         </div>
 
         <Card>
-          <CardContent className="space-y-4 p-6">
-            <h1 className="flex flex-wrap items-center gap-2 text-3xl font-bold">
+          <CardHeader>
+            <CardTitle className="flex flex-wrap items-center gap-2 text-2xl">
               {female?.name ?? "Femelle inconnue"}
-              <Heart className="size-6 shrink-0 fill-primary text-primary" />
+              <Heart className="size-5 shrink-0 fill-primary text-primary" />
               {male?.name ?? "Mâle inconnu"}
-            </h1>
+            </CardTitle>
+          </CardHeader>
 
+          <CardContent className="space-y-4">
             <p className="text-muted-foreground">
               Née le {new Date(litter.birthDate).toLocaleDateString("fr-FR")}
             </p>
@@ -159,97 +161,107 @@ export default function LitterDetail() {
           </CardContent>
         </Card>
 
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-2xl font-semibold">Galerie photos</h2>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between border-b">
+            <CardTitle>Galerie photos</CardTitle>
 
-            <AddLitterPhotoDialog litterId={litter.id} />
-          </div>
+            <CardAction>
+              <AddLitterPhotoDialog litterId={litter.id} />
+            </CardAction>
+          </CardHeader>
 
-          <LitterPhotoGallery photos={litterPhotos} isLoading={loadingPhotos} />
-        </div>
+          <CardContent className="pt-4">
+            <LitterPhotoGallery photos={litterPhotos} isLoading={loadingPhotos} />
+          </CardContent>
+        </Card>
 
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-2xl font-semibold">Liste d'attente</h2>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between border-b">
+            <CardTitle>Liste d'attente</CardTitle>
 
-            <AddWaitlistEntryDialog
-              litterId={litter.id}
-              nextPosition={waitlistEntries.length}
-            />
-          </div>
+            <CardAction>
+              <AddWaitlistEntryDialog
+                litterId={litter.id}
+                nextPosition={waitlistEntries.length}
+              />
+            </CardAction>
+          </CardHeader>
 
-          <WaitlistList entries={waitlistEntries} isLoading={loadingWaitlist} />
-        </div>
+          <CardContent className="pt-4">
+            <WaitlistList entries={waitlistEntries} isLoading={loadingWaitlist} />
+          </CardContent>
+        </Card>
 
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-2xl font-semibold">Chiots</h2>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between border-b">
+            <CardTitle>Chiots</CardTitle>
 
-          <div className="flex flex-wrap gap-2">
-            <ApplyVaccinationScheduleDialog
-              puppies={puppies}
-              birthDate={litter.birthDate}
-            />
+            <CardAction>
+              <div className="flex flex-wrap gap-2">
+                <ApplyVaccinationScheduleDialog
+                  puppies={puppies}
+                  birthDate={litter.birthDate}
+                />
 
-            <ApplySocializationChecklistDialog
-              puppies={puppies}
-              birthDate={litter.birthDate}
-            />
+                <ApplySocializationChecklistDialog
+                  puppies={puppies}
+                  birthDate={litter.birthDate}
+                />
 
-            <Button
-              variant="outline"
-              onClick={handleExportPuppies}
-              disabled={puppies.length === 0}
-            >
-              <Download className="mr-1.5 size-4" />
-              Exporter en CSV
-            </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleExportPuppies}
+                  disabled={puppies.length === 0}
+                >
+                  <Download className="mr-1.5 size-4" />
+                  Exporter en CSV
+                </Button>
 
-            <AddPuppyDialog litterId={litter.id} />
-          </div>
-        </div>
+                <AddPuppyDialog litterId={litter.id} />
+              </div>
+            </CardAction>
+          </CardHeader>
 
-        {puppies.length === 0 && (
-          <Card>
-            <CardContent className="p-8 text-center text-muted-foreground">
-              Aucun chiot enregistré pour cette portée.
-            </CardContent>
-          </Card>
-        )}
+          <CardContent className="space-y-4 pt-4">
+            {puppies.length === 0 ? (
+              <EmptyState icon={PawPrint} label="Aucun chiot enregistré pour cette portée." />
+            ) : (
+              puppies.map((puppy) => <PuppyCard key={puppy.id} puppy={puppy} />)
+            )}
+          </CardContent>
+        </Card>
 
-        <div className="space-y-4">
-          {puppies.map((puppy) => (
-            <PuppyCard key={puppy.id} puppy={puppy} />
-          ))}
-        </div>
+        <Card>
+          <CardHeader className="border-b">
+            <CardTitle>Rentabilité de la portée</CardTitle>
+          </CardHeader>
 
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">Rentabilité de la portée</h2>
+          <CardContent className="space-y-6 pt-4">
+            <FinanceSummary expenses={litterExpenses} incomes={litterIncomes} />
 
-          <FinanceSummary expenses={litterExpenses} incomes={litterIncomes} />
+            <div className="flex flex-wrap justify-end gap-2">
+              <AddExpenseDialog
+                defaultLitterId={litter.id}
+                label="+ Dépense pour cette portée"
+              />
 
-          <div className="flex flex-wrap justify-end gap-2">
-            <AddExpenseDialog
-              defaultLitterId={litter.id}
-              label="+ Dépense pour cette portée"
-            />
+              <AddIncomeDialog
+                defaultLitterId={litter.id}
+                label="+ Recette pour cette portée"
+              />
+            </div>
 
-            <AddIncomeDialog
-              defaultLitterId={litter.id}
-              label="+ Recette pour cette portée"
-            />
-          </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Dépenses</h3>
+              <ExpensesTable expenses={litterExpenses} />
+            </div>
 
-          <div>
-            <h3 className="mb-2 font-semibold">Dépenses</h3>
-            <ExpensesTable expenses={litterExpenses} />
-          </div>
-
-          <div>
-            <h3 className="mb-2 font-semibold">Recettes</h3>
-            <IncomesTable incomes={litterIncomes} />
-          </div>
-        </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Recettes</h3>
+              <IncomesTable incomes={litterIncomes} />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </MainLayout>
   );

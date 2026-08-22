@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CalendarDays } from "lucide-react";
 
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
 import AddTaskDialog from "../components/calendar/AddTaskDialog";
 import TaskList from "../components/calendar/TaskList";
 import AlertsList from "../components/calendar/AlertsList";
@@ -75,16 +76,11 @@ export default function Calendar() {
   return (
     <MainLayout>
       <div className="space-y-8">
-        <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold sm:text-4xl">
-            <CalendarDays className="size-8 text-primary" />
-            Calendrier
-          </h1>
-
-          <p className="text-muted-foreground">
-            Alertes, tâches, journal et notes d'élevage.
-          </p>
-        </div>
+        <PageHeader
+          icon={CalendarDays}
+          title="Calendrier"
+          description="Alertes, tâches, journal et notes d'élevage."
+        />
 
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as string)}>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

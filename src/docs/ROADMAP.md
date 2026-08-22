@@ -75,19 +75,22 @@ L'objectif est d'accompagner les éleveurs dans la gestion quotidienne de leur a
 - [x] Paramètres du kennel (identité, coordonnées)
 - [x] Protection par mot de passe local
 
+### Portées et chiots (suite)
+
+- [x] Test d'évaluation comportementale des chiots (grille type Volhard, avant placement)
+
 ---
 
 ## Idées pour la suite
 
 Fonctionnalités identifiées comme manquantes mais pas encore développées, par ordre d'utilité :
 
-1. **Test d'évaluation comportementale des chiots** — grille d'aptitude/tempérament (type Volhard) à remplir avant placement
-2. **Échéancier de paiement** — planifier acompte + solde à échéance, avec alerte de retard (aujourd'hui les paiements sont ponctuels)
-3. **Comparateur de reproducteurs** — comparer plusieurs mâles candidats pour une femelle donnée (COI + compatibilité génétique + titres côte à côte)
-4. **Saillies extérieures (stud service)** — actuellement toute saillie suppose que les deux chiens appartiennent au cheptel
-5. **Co-propriété de chien** — pas de notion de copropriétaire sur une fiche chien
-6. **Gestion de stock** — nourriture, produits vétérinaires, consommables
-7. **Suivi post-vente** — retour client, satisfaction, mises à jour de santé après le départ du chiot
+1. **Échéancier de paiement** — planifier acompte + solde à échéance, avec alerte de retard (aujourd'hui les paiements sont ponctuels)
+2. **Comparateur de reproducteurs** — comparer plusieurs mâles candidats pour une femelle donnée (COI + compatibilité génétique + titres côte à côte)
+3. **Saillies extérieures (stud service)** — actuellement toute saillie suppose que les deux chiens appartiennent au cheptel
+4. **Co-propriété de chien** — pas de notion de copropriétaire sur une fiche chien
+5. **Gestion de stock** — nourriture, produits vétérinaires, consommables
+6. **Suivi post-vente** — retour client, satisfaction, mises à jour de santé après le départ du chiot
 
 ---
 

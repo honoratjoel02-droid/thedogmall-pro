@@ -17,6 +17,7 @@ import DeleteDogDialog from "../components/dogs/DeleteDogDialog";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
+import LoadingState from "../components/ui/loading-state";
 import {
   Tabs,
   TabsContent,
@@ -38,9 +39,7 @@ export default function DogProfile() {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="flex h-96 items-center justify-center">
-          Chargement...
-        </div>
+        <LoadingState rows={4} />
       </MainLayout>
     );
   }

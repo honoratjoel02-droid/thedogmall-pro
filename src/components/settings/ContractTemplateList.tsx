@@ -1,9 +1,13 @@
+import { FileText } from "lucide-react";
+
 import type { ContractTemplate } from "../../types/models/contractTemplate";
 import { useUpdateContractTemplate } from "../../hooks/useContractTemplates";
 
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 import EditContractTemplateDialog from "./EditContractTemplateDialog";
 import DeleteContractTemplateDialog from "./DeleteContractTemplateDialog";
@@ -20,19 +24,15 @@ export default function ContractTemplateList({
   const updateTemplate = useUpdateContractTemplate();
 
   if (isLoading) {
-    return (
-      <div className="flex h-24 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={2} />;
   }
 
   if (templates.length === 0) {
     return (
-      <div className="flex h-24 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun modèle personnalisé. Le contrat standard est utilisé par
-        défaut.
-      </div>
+      <EmptyState
+        icon={FileText}
+        label="Aucun modèle personnalisé. Le contrat standard est utilisé par défaut."
+      />
     );
   }
 

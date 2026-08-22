@@ -1,3 +1,5 @@
+import { Repeat } from "lucide-react";
+
 import type { RecurringExpense } from "../../types/models/recurringExpense";
 import { advanceRecurringDate } from "../../lib/recurringExpenses";
 import { useUpdateRecurringExpense } from "../../hooks/useRecurringExpenses";
@@ -7,6 +9,8 @@ import { useDogs } from "../../hooks/useDogs";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 import EditRecurringExpenseDialog from "./EditRecurringExpenseDialog";
 import DeleteRecurringExpenseDialog from "./DeleteRecurringExpenseDialog";
@@ -40,19 +44,11 @@ export default function RecurringExpenseList({
   const createExpense = useCreateExpense();
 
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (items.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune dépense récurrente enregistrée.
-      </div>
-    );
+    return <EmptyState icon={Repeat} label="Aucune dépense récurrente enregistrée." />;
   }
 
   const sorted = [...items].sort((a, b) =>

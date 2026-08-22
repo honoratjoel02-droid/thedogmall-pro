@@ -1,11 +1,12 @@
 import type { LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { cn } from "../../lib/utils";
 import { Card, CardContent } from "./card";
 
 const TONE_CLASSES = {
   primary: "bg-primary/10 text-primary",
-  success: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  success: "bg-success/10 text-success",
   danger: "bg-destructive/10 text-destructive",
   neutral: "bg-muted text-muted-foreground",
 } as const;
@@ -16,6 +17,7 @@ type StatTileProps = {
   icon: LucideIcon;
   tone?: keyof typeof TONE_CLASSES;
   valueClassName?: string;
+  to?: string;
 };
 
 export default function StatTile({
@@ -24,14 +26,15 @@ export default function StatTile({
   icon: Icon,
   tone = "primary",
   valueClassName,
+  to,
 }: StatTileProps) {
-  return (
-    <Card className="transition-shadow hover:shadow-md">
+  const card = (
+    <Card variant={to ? "interactive" : "default"}>
       <CardContent className="flex items-center justify-between gap-4 p-6">
         <div className="min-w-0">
           <p className="truncate text-sm text-muted-foreground">{label}</p>
 
-          <p className={cn("mt-2 text-3xl font-bold", valueClassName)}>
+          <p className={cn("mt-2 text-3xl font-semibold tracking-tight", valueClassName)}>
             {value}
           </p>
         </div>
@@ -46,5 +49,13 @@ export default function StatTile({
         </div>
       </CardContent>
     </Card>
+  );
+
+  if (!to) return card;
+
+  return (
+    <Link to={to} className="block">
+      {card}
+    </Link>
   );
 }

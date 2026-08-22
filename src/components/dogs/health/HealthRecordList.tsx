@@ -1,7 +1,11 @@
+import { Stethoscope } from "lucide-react";
+
 import type { HealthRecord } from "../../../types/models/healthRecord";
 
 import { Badge } from "../../ui/badge";
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditHealthRecordDialog from "./EditHealthRecordDialog";
 import DeleteHealthRecordDialog from "./DeleteHealthRecordDialog";
@@ -13,19 +17,11 @@ type Props = {
 
 export default function HealthRecordList({ records, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (records.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun suivi santé enregistré.
-      </div>
-    );
+    return <EmptyState icon={Stethoscope} label="Aucun suivi santé enregistré." />;
   }
 
   const sorted = [...records].sort((a, b) => b.date.localeCompare(a.date));

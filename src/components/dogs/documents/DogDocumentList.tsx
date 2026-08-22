@@ -6,6 +6,8 @@ import { useDeleteDogDocument } from "../../../hooks/useDogDocuments";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 type Props = {
   documents: DogDocument[];
@@ -16,19 +18,11 @@ export default function DogDocumentList({ documents, isLoading = false }: Props)
   const deleteDocument = useDeleteDogDocument();
 
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (documents.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun document enregistré.
-      </div>
-    );
+    return <EmptyState icon={FileText} label="Aucun document enregistré." />;
   }
 
   const sorted = [...documents].sort((a, b) =>

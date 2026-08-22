@@ -4,8 +4,12 @@ import { useDogs } from "../../hooks/useDogs";
 import { useLitters } from "../../hooks/useLitters";
 import { useClients } from "../../hooks/useClients";
 
+import { ListTodo } from "lucide-react";
+
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 
 import EditTaskDialog from "./EditTaskDialog";
 import DeleteTaskDialog from "./DeleteTaskDialog";
@@ -22,19 +26,11 @@ export default function TaskList({ tasks, isLoading = false }: Props) {
   const { data: clients = [] } = useClients();
 
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (tasks.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune tâche enregistrée.
-      </div>
-    );
+    return <EmptyState icon={ListTodo} label="Aucune tâche enregistrée." />;
   }
 
   const sorted = [...tasks].sort((a, b) => {

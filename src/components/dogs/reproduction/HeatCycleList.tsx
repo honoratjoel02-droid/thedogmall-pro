@@ -1,6 +1,8 @@
 import type { HeatCycle } from "../../../types/models/heatCycle";
 
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditHeatCycleDialog from "./EditHeatCycleDialog";
 import DeleteHeatCycleDialog from "./DeleteHeatCycleDialog";
@@ -12,19 +14,11 @@ type Props = {
 
 export default function HeatCycleList({ cycles, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-24 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={2} rowClassName="h-10" />;
   }
 
   if (cycles.length === 0) {
-    return (
-      <div className="flex h-24 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune chaleur enregistrée.
-      </div>
-    );
+    return <EmptyState label="Aucune chaleur enregistrée." />;
   }
 
   const sorted = [...cycles].sort((a, b) => b.startDate.localeCompare(a.startDate));

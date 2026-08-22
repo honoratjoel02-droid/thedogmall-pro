@@ -1,12 +1,16 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { ELEVATION_REST } from "@/lib/elevation"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className={cn(
+        "relative w-full overflow-x-auto rounded-xl border border-border/80 bg-card",
+        ELEVATION_REST,
+      )}
     >
       <table
         data-slot="table"
@@ -68,7 +72,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+        "h-10 px-2 text-left align-middle text-xs font-medium tracking-wide whitespace-nowrap text-muted-foreground uppercase [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}

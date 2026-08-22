@@ -1,23 +1,19 @@
+import { Heart } from "lucide-react";
+
 import BreedingCard from "./BreedingCard";
 import { useBreedings } from "../../../hooks/useBreedings";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 export default function BreedingList() {
   const { data: breedings = [], isLoading } = useBreedings();
 
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (breedings.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucune saillie enregistrée.
-      </div>
-    );
+    return <EmptyState icon={Heart} label="Aucune saillie enregistrée." />;
   }
 
   return (

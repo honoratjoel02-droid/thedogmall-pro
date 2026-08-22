@@ -1,4 +1,8 @@
+import { Users } from "lucide-react";
+
 import ClientCard from "./ClientCard";
+import EmptyState from "../ui/empty-state";
+import LoadingState from "../ui/loading-state";
 import type { Client } from "../../types/models/client";
 
 type Props = {
@@ -8,19 +12,11 @@ type Props = {
 
 export default function ClientGrid({ clients, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (clients.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun client enregistré.
-      </div>
-    );
+    return <EmptyState icon={Users} label="Aucun client enregistré." />;
   }
 
   return (

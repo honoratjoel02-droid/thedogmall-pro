@@ -1,3 +1,5 @@
+import { Dna } from "lucide-react";
+
 import type {
   GeneticTest,
   GeneticTestResult,
@@ -5,6 +7,8 @@ import type {
 
 import { Badge } from "../../ui/badge";
 import { Card, CardContent } from "../../ui/card";
+import EmptyState from "../../ui/empty-state";
+import LoadingState from "../../ui/loading-state";
 
 import EditGeneticTestDialog from "./EditGeneticTestDialog";
 import DeleteGeneticTestDialog from "./DeleteGeneticTestDialog";
@@ -26,19 +30,11 @@ const RESULT_VARIANT: Record<
 
 export default function GeneticTestList({ tests, isLoading = false }: Props) {
   if (isLoading) {
-    return (
-      <div className="flex h-40 items-center justify-center text-muted-foreground">
-        Chargement...
-      </div>
-    );
+    return <LoadingState rows={3} />;
   }
 
   if (tests.length === 0) {
-    return (
-      <div className="flex h-40 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
-        Aucun test génétique enregistré.
-      </div>
-    );
+    return <EmptyState icon={Dna} label="Aucun test génétique enregistré." />;
   }
 
   const sorted = [...tests].sort((a, b) => b.testDate.localeCompare(a.testDate));
