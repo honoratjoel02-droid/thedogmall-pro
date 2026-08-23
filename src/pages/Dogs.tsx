@@ -64,7 +64,12 @@ export default function Dogs() {
         />
       </div>
 
-      <DogStats />
+      <DogStats
+        sex={sex}
+        onSexChange={setSex}
+        status={status}
+        onStatusChange={setStatus}
+      />
 
       <DogFilters
         search={search}

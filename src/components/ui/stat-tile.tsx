@@ -18,6 +18,8 @@ type StatTileProps = {
   tone?: keyof typeof TONE_CLASSES;
   valueClassName?: string;
   to?: string;
+  onClick?: () => void;
+  active?: boolean;
 };
 
 export default function StatTile({
@@ -27,9 +29,16 @@ export default function StatTile({
   tone = "primary",
   valueClassName,
   to,
+  onClick,
+  active = false,
 }: StatTileProps) {
+  const interactive = Boolean(to || onClick);
+
   const card = (
-    <Card variant={to ? "interactive" : "default"}>
+    <Card
+      variant={interactive ? "interactive" : "default"}
+      className={cn(active && "border-primary ring-1 ring-primary")}
+    >
       <CardContent className="flex items-center justify-between gap-4 p-6">
         <div className="min-w-0">
           <p className="truncate text-sm text-muted-foreground">{label}</p>
@@ -51,11 +60,21 @@ export default function StatTile({
     </Card>
   );
 
-  if (!to) return card;
+  if (to) {
+    return (
+      <Link to={to} className="block">
+        {card}
+      </Link>
+    );
+  }
 
-  return (
-    <Link to={to} className="block">
-      {card}
-    </Link>
-  );
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className="block w-full text-left">
+        {card}
+      </button>
+    );
+  }
+
+  return card;
 }
