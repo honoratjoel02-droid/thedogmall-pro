@@ -1,15 +1,17 @@
+import { HeartPulse } from "lucide-react";
+
 import MainLayout from "../components/layout/MainLayout";
+import EmptyState from "../components/layout/EmptyState";
 
 export default function Breeding() {
   return (
     <MainLayout>
-      <h1 className="mb-8 text-4xl font-bold">
-        ❤️ Gestations
-      </h1>
-
-      <p className="text-gray-500">
-        Suivi des gestations de l'élevage.
-      </p>
+      <EmptyState
+        icon={HeartPulse}
+        title="Aucune gestation en cours"
+        description="Suivez ici les gestations de votre élevage : dates de saillie, échographies et mise bas prévue."
+        actionLabel="Déclarer une gestation"
+      />
     </MainLayout>
   );
 }

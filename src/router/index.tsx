@@ -9,6 +9,8 @@ import Litters from "../pages/Litters";
 import Clients from "../pages/Clients";
 import Calendar from "../pages/Calendar";
 import Settings from "../pages/Settings";
+import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -38,5 +40,13 @@ export const router = createBrowserRouter([
   {
     path: "/settings",
     element: <Settings />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
