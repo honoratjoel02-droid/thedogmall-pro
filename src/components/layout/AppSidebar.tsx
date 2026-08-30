@@ -6,20 +6,21 @@ import {
   Users,
   CalendarDays,
   Settings,
+  ArrowLeft,
 } from "lucide-react";
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { cn } from "../../lib/utils";
 
 const menu = [
-  { icon: Home, label: "Dashboard", path: "/", end: true },
-  { icon: Dog, label: "Chiens", path: "/dogs" },
-  { icon: Heart, label: "Gestations", path: "/breeding" },
-  { icon: Baby, label: "Portées", path: "/litters" },
-  { icon: Users, label: "Clients", path: "/clients" },
-  { icon: CalendarDays, label: "Calendrier", path: "/calendar" },
-  { icon: Settings, label: "Paramètres", path: "/settings" },
+  { icon: Home, label: "Dashboard", path: "/admin", end: true },
+  { icon: Dog, label: "Chiens", path: "/admin/dogs" },
+  { icon: Heart, label: "Gestations", path: "/admin/breeding" },
+  { icon: Baby, label: "Portées", path: "/admin/litters" },
+  { icon: Users, label: "Clients", path: "/admin/clients" },
+  { icon: CalendarDays, label: "Calendrier", path: "/admin/calendar" },
+  { icon: Settings, label: "Paramètres", path: "/admin/settings" },
 ];
 
 export default function AppSidebar() {
@@ -66,8 +67,18 @@ export default function AppSidebar() {
         })}
       </nav>
 
-      <div className="border-t border-sidebar-border px-6 py-4 text-xs text-sidebar-foreground/50">
-        © {new Date().getFullYear()} TheDogMall
+      <div className="border-t border-sidebar-border px-4 py-4">
+        <Link
+          to="/"
+          className="flex items-center gap-2 rounded-xl px-2 py-2 text-xs text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        >
+          <ArrowLeft size={14} />
+          Retour au site
+        </Link>
+
+        <p className="mt-2 px-2 text-xs text-sidebar-foreground/40">
+          © {new Date().getFullYear()} TheDogMall
+        </p>
       </div>
     </aside>
   );
