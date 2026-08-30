@@ -1,15 +1,21 @@
 import MainLayout from "../components/layout/MainLayout";
+import PageHeader from "../components/layout/PageHeader";
+import { EmptyState } from "../components/ui/empty-state";
 
 export default function Breeding() {
   return (
     <MainLayout>
-      <h1 className="mb-8 text-4xl font-bold">
-        ❤️ Gestations
-      </h1>
+      <PageHeader
+        icon="❤️"
+        title="Gestations"
+        subtitle="Suivi des gestations de l'élevage."
+      />
 
-      <p className="text-gray-500">
-        Suivi des gestations de l'élevage.
-      </p>
+      <EmptyState
+        icon="🤰"
+        title="Aucune gestation en cours"
+        description="Les gestations en cours et à venir apparaîtront ici."
+      />
     </MainLayout>
   );
 }

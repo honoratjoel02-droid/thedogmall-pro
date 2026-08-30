@@ -1,25 +1,23 @@
 import { Bell } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+
 export default function AppHeader() {
   return (
-    <header className="flex h-20 items-center justify-between border-b bg-white px-8">
-      <div>
-        <h2 className="text-2xl font-bold">
-          Dashboard
-        </h2>
+    <header className="flex h-16 shrink-0 items-center justify-end gap-4 border-b border-border bg-card px-8">
+      <button
+        type="button"
+        aria-label="Notifications"
+        className="relative flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+      >
+        <Bell size={18} />
+        <span className="absolute right-2 top-2 size-2 rounded-full bg-primary" />
+      </button>
 
-        <p className="text-sm text-gray-500">
-          Bienvenue sur TheDogMall
-        </p>
-      </div>
-
-      <div className="flex items-center gap-6">
-        <Bell className="cursor-pointer" />
-
-        <Avatar>
-          <AvatarFallback>JO</AvatarFallback>
-        </Avatar>
-      </div>
+      <Avatar>
+        <AvatarFallback className="bg-primary/10 font-semibold text-primary">
+          JO
+        </AvatarFallback>
+      </Avatar>
     </header>
   );
 }
