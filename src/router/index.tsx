@@ -2,14 +2,6 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-import Home from "../pages/site/Home";
-import Products from "../pages/site/Products";
-import ProductDetail from "../pages/site/ProductDetail";
-import Cart from "../pages/site/Cart";
-import Checkout from "../pages/site/Checkout";
-import Contact from "../pages/site/Contact";
-import About from "../pages/site/About";
-
 import Dashboard from "../pages/Dashboard";
 import Dogs from "../pages/Dogs";
 import Breeding from "../pages/Breeding";
@@ -23,58 +15,30 @@ import NotFound from "../pages/NotFound";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/produits",
-    element: <Products />,
-  },
-  {
-    path: "/produits/:productId",
-    element: <ProductDetail />,
-  },
-  {
-    path: "/panier",
-    element: <Cart />,
-  },
-  {
-    path: "/commande",
-    element: <Checkout />,
-  },
-  {
-    path: "/a-propos",
-    element: <About />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-  },
-  {
-    path: "/admin",
     element: <Dashboard />,
   },
   {
-    path: "/admin/dogs",
+    path: "/dogs",
     element: <Dogs />,
   },
   {
-    path: "/admin/breeding",
+    path: "/breeding",
     element: <Breeding />,
   },
   {
-    path: "/admin/litters",
+    path: "/litters",
     element: <Litters />,
   },
   {
-    path: "/admin/clients",
+    path: "/clients",
     element: <Clients />,
   },
   {
-    path: "/admin/calendar",
+    path: "/calendar",
     element: <Calendar />,
   },
   {
-    path: "/admin/settings",
+    path: "/settings",
     element: <Settings />,
   },
   {
